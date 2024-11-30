@@ -2,6 +2,8 @@
 import asyncio
 import sys
 from pathlib import Path
+# Aggiunge la directory principale del progetto al sys.path
+sys.path.append(str(Path(__file__).parent.parent.parent))
 
 import os
 import json
@@ -11,11 +13,13 @@ from datetime import datetime
 from AssetsLibs.Abstraction.lib_NeuralProcess           import ANeuralProcess
 from AssetsLibs.Helpers.Configuration.lib_Configuration import loadConfiguration
 
+
+
 class HearingEngine(ANeuralProcess):
     def __init__(self, senseName):
-        super().__init__()
         self.script_path = Path(__file__).parent.resolve()            # Determina la directory corrente dello script
-        config_path = self.script_path / "config.yaml"                     # Percorso del file di configurazione
+        super().__init__()
+        config_path = self.script_path / "config.yaml"                # Percorso del file di configurazione
 
         if not config_path.exists(): raise FileNotFoundError(f"File di configurazione non trovato: {config_path}")
 

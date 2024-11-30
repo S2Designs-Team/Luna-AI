@@ -50,7 +50,7 @@ from MySelf.Senses.HearingSense.lib_HearingEngine import HearingEngine
 async def main():
     print("Benvenuto nel progetto Luna-AI!")
     # Qui inizieremo a sviluppare le funzionalità del progetto
-    hearingSense = HearingEngine()
+    hearingSense = HearingEngine("Udito")
     hearingSense.wakeUp()
 
     pass

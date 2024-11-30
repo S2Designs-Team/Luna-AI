@@ -69,7 +69,7 @@ echo     "files.exclude": {
 echo        "**/__pycache__": true,
 echo        "**/*.pyc": true
 echo     },
-echo     "python.createEnvironment.contentButton": "show"
+echo     "python.createEnvironment.contentButton": "show",
 echo     "python.linting.enabled": true,
 echo     "python.linting.pylintEnabled": true,
 echo     "python.linting.pylintArgs": [

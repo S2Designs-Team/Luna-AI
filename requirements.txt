@@ -1,0 +1,6 @@
+torch
+transformers
+datasets
+whisper
+pyttsx3
+pytest

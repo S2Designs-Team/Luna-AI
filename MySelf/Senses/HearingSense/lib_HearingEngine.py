@@ -17,14 +17,14 @@ from AssetsLibs.Helpers.Configuration.lib_Configuration import loadConfiguration
 
 class HearingEngine(ANeuralProcess):
     def __init__(self, senseName):
-        self.script_path = Path(__file__).parent.resolve()            # Determina la directory corrente dello script
+        self.script_path = Path(__file__).resolve()            # Determina la directory corrente dello script
         super().__init__()
-        config_path = self.script_path / "config.yaml"                # Percorso del file di configurazione
+        self.config_path = self.script_path / "config.yaml"                # Percorso del file di configurazione
 
-        if not config_path.exists(): raise FileNotFoundError(f"File di configurazione non trovato: {config_path}")
+        if not self.config_path.exists(): raise FileNotFoundError(f"File di configurazione non trovato: {self.config_path}")
 
         # Carica la configurazione
-        self.config                 = loadConfiguration(self.script_dir)  # Carica il file config.yaml dalla propria directory
+        self.config                 = loadConfiguration(self.config_path)  # Carica il file config.yaml dalla propria directory
         self.audio_settings         = self.config["audio_settings"]
         self.transcription_settings = self.config["transcription"]
         self.speaker_settings       = self.config["speaker_recognition"]

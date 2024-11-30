@@ -1,5 +1,5 @@
 ### Struttura fisico-logica di Luna-AI
-
+<PRE>
 MySelf
 │
 ├── Body/ 
@@ -55,3 +55,4 @@ MySelf
 └── Spine/
     │
     └── MovementStimuli/
+</PRE>

@@ -16,6 +16,7 @@ import asyncio
 import os
 import json
 import abc
+from pathlib import Path
 import yaml                          # Per gestire i file YAML
 import logging                       # Utilizzato per il logging avanzato
 from abc import ABC, abstractmethod
@@ -49,6 +50,14 @@ class ANeuralProcess(ABC):
         Percorso dello script.
         """
         return self._script_path
+    
+    @script_path.setter
+    def script_path(self, value):
+        if isinstance(value, Path):  # Controllo opzionale per assicurarsi che sia un oggetto Path
+            self._script_path = value
+        else:
+            raise TypeError("script_path deve essere un oggetto Path.")
+
 
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------

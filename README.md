@@ -370,8 +370,5 @@ LUNA-AI/
  In futuro, sarà possibile migliorare ulteriormente la gestione delle risorse, ottimizzando l'uso della message queue e migliorando l'interazione tra i vari engine per ridurre il carico sui processori.
 
 
-
-
-
 # Conclusioni
 Il progetto Luna-AI è stato progettato per essere un sistema complesso e modulare che simula vari aspetti del comportamento umano, utilizzando un'architettura basata su engine e layer separati. Ogni componente è pensato per funzionare come un processo indipendente, migliorando l'efficienza e la scalabilità del sistema. La struttura del progetto e le scelte architetturali consentono una rapida espansione, manutenzione e aggiornamenti futuri, rendendo Luna-AI una base solida per lo sviluppo di un assistente virtuale avanzato.

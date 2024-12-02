@@ -283,3 +283,12 @@ cromagramma = librosa.feature.chroma_stft(y=y, sr=sr, n_fft= 4096 ,n_chroma= 24 
 ```
 
 **Spettrogramma delle armoniche** : uno spettrogramma armonico si concentra sulle componenti armoniche di un segnale audio. Di solito è derivato da uno spettrogramma standard isolando i picchi corrispondenti alle parziali armoniche. Questa rappresentazione è utile per analizzare i suoni tonali e la musica.
+
+![spettrogramma delle armoniche](_resources/librosa_-_spettrogramma_delle_armoniche.png)
+
+**Spettrogramma percussivo** : uno spettrogramma percussivo enfatizza gli elementi transitori e percussivi di un segnale audio. Spesso si ottiene sottraendo lo spettrogramma armonico dallo spettrogramma originale. Questa rappresentazione è utile per studiare i pattern ritmici e gli strumenti a percussione.
+
+![spettrogramma delle percussioni](_resources/librosa_-_spettrogramma_delle_percussioni.png)
+
+# Conclusione
+Riassumendo, abbiamo imparato a conoscere l'analisi audio utilizzando Librosa e la sua utilità nell'estrazione e nella visualizzazione delle caratteristiche.

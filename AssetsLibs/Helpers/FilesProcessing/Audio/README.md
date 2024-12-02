@@ -1,1 +1,1 @@
-[Introduzione a Librosa](../../../../Documents/Librosa/LIBROSA.md)
+[Introduzione a Librosa](../../../../Documents/Librosa/LIBROSA_ITA.md)

@@ -17,7 +17,7 @@ setup(
     description     ='Progetto di intelligenza artificiale Luna-AI',   #
     url             ='https://github.com/Phobetor1999/LUNA-AI',        # Aggiorna con il link corretto
     classifiers=[
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.10.11',
         'License :: OSI Approved :: Apache 2.0 License',
         'Operating System :: OS Independent',
     ],

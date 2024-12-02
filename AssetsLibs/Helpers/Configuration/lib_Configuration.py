@@ -14,3 +14,10 @@ def loadConfiguration(config_dir):
     
     with open(config_path, "r") as file:
         return yaml.safe_load(file)
+    
+def saveConfiguration(config_dir):
+    """
+    Salva il file `config.yaml` dalla directory specificata.
+    
+    :param config_dir: Directory contenente il file `config.yaml`.
+    """

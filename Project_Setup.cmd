@@ -56,8 +56,7 @@ echo Creazione del File settings.json di vscode per il progetto Luna-AI
 if not exist ".vscode" (
     mkdir .vscode
 )
-:: Scrive il file settings.json
-(
+:: Scrive il file settings.json utilizzato da Visual Studio Code
 echo {
 echo     "git.remote": "origin",
 echo     "git.url": "https://github.com/Phobetor1999/LUNA-AI.git",

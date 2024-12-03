@@ -52,12 +52,12 @@ from MySelf.Senses.HearingSense.lib_HearingEngine import HearingEngine
 def run_console():
     print("Console Mode...started.")
     while True:
-        user_input = input("Inserisci un comando (o 'esci' per terminare): ")
-        if user_input.lower() == "esci":
-            print("Uscita dalla modalità console.")
+        user_input = input("Insert a command (or '[exit]' to terminate): ")
+        if user_input.lower() == "[exit]":
+            print("The console mode is going to be closed.")
             break
         else:
-            print(f"Hai inserito: {user_input}")
+            print(f"You've wrote: {user_input}")
     
 
 def run_gui():

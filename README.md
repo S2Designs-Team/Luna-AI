@@ -1,11 +1,21 @@
 
-# File: LUNA-AI/PROJECT.md
+# <H1><CENTER>L.U.N.A. - AI</CENTER></H1>
+#### <CENTER>(L)inked (U)nified (N)eural (A)rchitecture - Artificial Intelligence</CENTER>
 
-# Progetto Luna-AI: Overview
-Luna-AI è un assistente virtuale complesso che si compone di diverse componenti, strutturate in engine, layers e processi separati, al fine di simulare 
-un ragionamento multi-livello che integra aspetti cognitivi, emotivi, logici e istintivi. 
-Ogni componente del sistema è progettata per funzionare come un processo separato, permettendo una parallelizzazione efficiente delle operazioni e 
-una gestione asincrona delle attività.
+**Descrizione del Progetto LUNA-AI**:<BR>
+LUNA-AI rappresenta un'architettura neurale universale progettata per affrontare una vasta gamma di applicazioni di intelligenza artificiale. La sua natura scalabile e modulare consente di adattarsi a molteplici contesti, come:
+
+- Assistenza Virtuale: Supporto agli utenti in tempo reale con capacità di riconoscimento vocale, comprensione contestuale, e risposte personalizzate.
+- Apprendimento Adattivo: Capacità di apprendere dinamicamente da nuove informazioni per migliorare l’efficacia nel tempo.
+- Multimodalità: Integrazione di dati vocali, testuali, visivi e di sensori per fornire un’esperienza completa e avanzata.
+- Accessibilità Universale: Un’architettura progettata per essere leggera, facilmente implementabile e disponibile per dispositivi con risorse limitate.
+- Mission: Creare un sistema di intelligenza artificiale capace di adattarsi e rispondere a qualsiasi esigenza, sfruttando un'architettura neurale "universale" che abbatta i confini tra le diverse applicazioni dell'IA.
+
+**Overview del Progetto**:<BR>
+LUNA-AI è un assistente virtuale complesso composto da diversi moduli, organizzati in engine, livelli e processi separati, per simulare un ragionamento 
+multilivello che integra aspetti cognitivi, emotivi, logici e istintivi. La progettazione modulare consente una parallelizzazione efficiente e una gestione 
+asincrona delle operazioni.
+
 
 # Architettura del Progetto "Luna"
 

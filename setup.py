@@ -14,8 +14,8 @@ setup(
     # Altri metadati opzionali
     author          ='㊙️anonimo㊙️',
     author_email    ='',
-    description     ='Progetto di intelligenza artificiale Luna-AI',   #
-    url             ='https://github.com/Phobetor1999/LUNA-AI',        # Aggiorna con il link corretto
+    description     ='Progetto di intelligenza artificiale multimodale Luna-AI',   #
+    url             ='https://github.com/Phobetor1999/LUNA-AI',                    # Aggiorna con il link corretto
     classifiers=[
         'Programming Language :: Python :: 3.10.11',
         'License :: OSI Approved :: Apache 2.0 License',

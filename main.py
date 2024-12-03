@@ -40,12 +40,32 @@
 # Luna_AI_main.py
 
 import asyncio
+import sys
 
 from MySelf.Body   import *
 from MySelf.Brain  import *
 from MySelf.Senses import *
 from MySelf.Spine  import *
 from MySelf.Senses.HearingSense.lib_HearingEngine import HearingEngine
+
+
+def run_console():
+    print("Console Mode...started.")
+    while True:
+        user_input = input("Inserisci un comando (o 'esci' per terminare): ")
+        if user_input.lower() == "esci":
+            print("Uscita dalla modalità console.")
+            break
+        else:
+            print(f"Hai inserito: {user_input}")
+    
+
+def run_gui():
+    try:
+
+    except ImportError:
+        print("Errore: tkinter non è installato.")
+
 
 async def main():
     print("Benvenuto nel progetto Luna-AI!")
@@ -56,4 +76,20 @@ async def main():
     pass
 
 if __name__ == "__main__":
+    
+    if len(sys.argv) != 2:
+        print("Usage Help: python startLunaAI.py [gui|console]")
+        sys.exit(1)
+    
+    par_guiMode = sys.argv[1].lower()
+
+    match par_guiMode:
+        case "console":
+            run_console()
+        case "gui":
+            run_gui()
+        case _:
+            print("Parametro non valido. Usa 'gui' per la modalità grafica o 'console' per la modalità console.")
+            sys.exit(1)
+
     asyncio.run(main())

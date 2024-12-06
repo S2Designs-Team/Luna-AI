@@ -1,5 +1,5 @@
 ### Struttura fisico-logica di Luna-AI
-<PRE>
+<PRE> 
 MySelf
 │
 ├── Body/ 

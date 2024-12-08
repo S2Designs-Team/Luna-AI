@@ -12,74 +12,108 @@ REM distributed under the License is distributed on an "AS IS" BASIS,
 REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 REM See the License for the specific language governing permissions and
 REM limitations under the License.
+REM 
+REM +-------------------------------------------------------------------------------------------+
+REM ฆ Table draw chars                                                                          ฆ
+REM ฆ-------------------------------------------------------------------------------------------ฆ
+REM ฆ Double lines         ฆ Single line          ฆ Double lined columns ฆ   Double lined rows  ฆ
+REM ฆ----------------------+----------------------+----------------------+----------------------ฆ   
+REM ฆ Example  ฆ ANSI CHAR ฆ Example  ฆ ANSI CHAR ฆ Example  ฆ ANSI CHAR ฆ Example  ฆ ANSI CHAR ฆ
+REM ฆ----------+-----------+----------+-----------+----------+-----------+----------+-----------ฆ
+REM ฆ +---+    ฆ ษอหอป     ฆ +---+    ฆ ฺฤยฤฟ     ฆ +---+    ฆ ึฤาฤท     ฆ +---+    ฆ ีอัอธ     ฆ
+REM ฆ ฆ ฆ ฆ    ฆ บ บ บ     ฆ ฆ ฆ ฆ    ฆ ณ ณ ณ     ฆ ฆ ฆ ฆ    ฆ บ บ บ     ฆ ฆ ฆ ฆ    ฆ ณ ณ ณ     ฆ
+REM ฆ ฆ-+-ฆ    ฆ ฬอฮอน     ฆ +-+-ฆ    ฆ รฤลฤด     ฆ ฆ-+-ฆ    ฆ วฤืฤถ     ฆ ฆ-+-ฆ    ฆ ฦอุอต     ฆ
+REM ฆ ฆ ฆ ฆ    ฆ บ บ บ     ฆ ฆ ฆ ฆ    ฆ ณ ณ ณ     ฆ ฆ ฆ ฆ    ฆ บ บ บ     ฆ ฆ ฆ ฆ    ฆ ณ ณ ณ     ฆ
+REM ฆ +---+    ฆ ศอสอผ     ฆ +---+    ฆ ภฤมฤู     ฆ +---+    ฆ ำฤะฤฝ     ฆ +---+    ฆ ิอฯอพ     ฆ
+REM +-------------------------------------------------------------------------------------------+
+REM 
+REM +---------------------------------------------------------------------------------------------------------------+
+REM ฆ TEXT COLORS                                                                                                   ฆ
+REM ฆ---------------------------------------------------------------------------------------------------------------ฆ
+REM ฆ FORE COLORS                                           ฆ BACKGROUND COLORS                                     ฆ
+REM ฆ-------------------------------------------------------+-------------------------------------------------------ฆ   
+REM ฆ           DARKER          ฆ           LIGHTER         ฆ           DARKER          ฆ           LIGHTER         ฆ
+REM ฆ---------------------------+---------------------------+---------------------------+---------------------------ฆ
+REM ฆ COLOR NAME  ฆ  ANSI CODE  ฆ COLOR NAME  ฆ  ANSI CODE  ฆ COLOR NAME  ฆ  ANSI CODE  ฆ COLOR NAME  ฆ  ANSI CODE  ฆ
+REM ฆ-------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------ฆ
+REM ฆ BLACK       ฆ [30m       ฆ BLACK       ฆ [90m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ RED         ฆ [31m       ฆ RED         ฆ [91m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ GREEN       ฆ [32m       ฆ GREEN       ฆ [92m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ YELLOW      ฆ [33m       ฆ YELLOW      ฆ [93m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ BLUE        ฆ [34m       ฆ BLUE        ฆ [94m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ MAGENTA     ฆ [35m       ฆ MAGENTA     ฆ [95m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ CYAN        ฆ [36m       ฆ CYAN        ฆ [96m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM ฆ WHITE       ฆ [37m       ฆ WHITE       ฆ [97m       ฆ             ฆ             ฆ             ฆ             ฆ
+REM +---------------------------------------------------------------------------------------------------------------+
 
-REM table draw chars 
-REM +---+    ษอหอป
-REM ฆ + ฆ    ฬ ฮ น
-REM +---+    ศอสอผ
-REM - ฆ    อ บ
-
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ LUNA-AI Project setup procedure                                            บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ LUNA-AI Project setup procedure                                             บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 echo La directory corrente e': %CD%
 :: Imposta la directory del progetto
 set PROJECT_DIR=%CD%
 pause
 
 CLS
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Installazione o Aggiornamento di pip...                                    บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Installazione o Aggiornamento di pip...                                     บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 python -m pip install --upgrade pip
+call :CHECK_FAIL
 pause
 
 CLS
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Installazione virtualenv...                                                บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Installazione virtualenv...                                                 บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 echo Installazione virtualenv
 python -m pip install virtualenv
+call :CHECK_FAIL
 pause
 
 CLS
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Creazione dell'environment virtuale per Luna-AI...                         บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Creazione dell'environment virtuale per Luna-AI...                          บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 python -m venv venv
+call :CHECK_FAIL
 pause
 
 CLS
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Verifico se Git e' inizializzato...                                        บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
-:: Verifica se Git ่ inizializzato
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Verifico se Git e' inizializzato...                                         บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+:: Verifica se Git   inizializzato
 if not exist ".git" (
     echo Inizializzo il repository Git...
     git init
+	call :CHECK_FAIL
 )
 
-
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Configuro il repository remoto...                                          บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Configuro il repository remoto...                                           บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 :: Configura il repository remoto
 git remote remove origin 2>nul
-git remote add origin https://github.com/Phobetor1999/LUNA-AI.git
+call :CHECK_FAIL
 
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Verifico la configurazione del repository remoto...                        บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+git remote add origin https://github.com/Phobetor1999/LUNA-AI.git
+call :CHECK_FAIL
+
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Verifico la configurazione del repository remoto...                         บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 :: Verifica la configurazione del repository
 git remote -v
+call :CHECK_FAIL
 
-echo 
 :: Crea la directory .vscode se non esiste
-echo ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
-echo บ Creazione del File settings.json di vscode per il progetto Luna-AI...      บ
-echo ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Creazione del File settings.json di vscode per il progetto Luna-AI...       บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 if not exist ".vscode" (
     mkdir .vscode
+	call :CHECK_FAIL
 )
 :: Scrive il file settings.json utilizzato da Visual Studio Code
 echo {
@@ -103,26 +137,35 @@ echo     ]
 echo }
 ) > .vscode\settings.json
 echo File settings.json creato con successo nella cartella .vscode!
+call :CHECK_FAIL
 pause
 
 CLS
-echo Installazione dei pacchetti richiesti dal progetto Luna-AI e avvio di Visual Studio Code
-@Call .\venv\Scripts\activate.bat
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Installazione dei pacchetti richiesti dal progetto Luna-AI e avvio di       บ
+echo บ Visual Studio Code.                                                         บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+call ".\venv\scripts\activate.bat"
+call :CHECK_FAIL
 pause
+
 python -m pip install --upgrade pip
+call :CHECK_FAIL
 pause
+
 pip install -r requirements.txt
+call :CHECK_FAIL
 pause
+
 start "" && code %PROJECT_DIR% :0
 
 REM start "" && .\venv\Scripts\activate.bat && python -m pip install --upgrade pip &&  pip install -r requirements.txt && code %PROJECT_DIR% | .\venv\Scripts\activate.bat :0
-
-GOTO EOF
+goto :eof
 
 :: /// check if the app has failed
 :CHECK_FAIL
-[AT]echo off
 if NOT ["%errorlevel%"]==["0"] (
     pause
     exit /b %errorlevel%
 )
+goto :eof 

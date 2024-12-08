@@ -11,23 +11,23 @@ import whisper
 from datetime import datetime
 
 from AssetsLibs.Abstraction.lib_NeuralProcess           import ANeuralProcess
-from AssetsLibs.Helpers.Configuration.lib_Configuration import loadConfiguration
-
-
 
 class HearingEngine(ANeuralProcess):
-    def __init__(self, senseName):
-        self.script_path = Path(__file__).resolve()            # Determina la directory corrente dello script
+    def __init__(self, senseName="HearingSense"):
+                                             # Determina la directory corrente dello script
         super().__init__()
-        self.config_path = self.script_path / "config.yaml"                # Percorso del file di configurazione
-
-        if not self.config_path.exists(): raise FileNotFoundError(f"File di configurazione non trovato: {self.config_path}")
-
+    
+        self.script_name      = __name__
+        self.script_directory = Path(os.path.dirname(__file__)).resolve()
+        self.script_path      = Path(os.path.join(self.script_directory, self.script_name)).resolve()
+        print(f"Hear_Engine => DEBUG: PERCORSO DELLO SCRIPT = {self.script_path}.")
+        print(f"Hear_Engine => DEBUG: PERCORSO DELLA CONFIGURAZIONE = {self.config_path}.")
+    
         # Carica la configurazione
-        self.config                 = loadConfiguration(self.config_path)  # Carica il file config.yaml dalla propria directory
-        self.audio_settings         = self.config["audio_settings"]
-        self.transcription_settings = self.config["transcription"]
-        self.speaker_settings       = self.config["speaker_recognition"]
+        self.configuration          = self._loadConfiguration()                                   # Carica il file config.yaml dalla propria directory
+        self.audio_settings         = self.configuration["audio_settings"]
+        self.transcription_settings = self.configuration["transcription"]
+        self.speaker_settings       = self.configuration["speaker_recognition"]
         self.model                  = None
         # self.vad                    = webrtcvad.Vad()
         #self.vad.set_mode(self.audio_settings["vad_mode"])
@@ -91,20 +91,3 @@ class HearingEngine(ANeuralProcess):
         transcription = result["text"]
         print(f"Hear_Engine => Transcription result: {transcription}")
         return transcription
-    
-    # async def wakeUp(self):
-    #    """
-    #    Attiva il Processo Neurale e fa partire il thread della propria logica
-    #    (definita nella classe concreta all'interno del metodo handleStimuli).
-    #    """
-    #    self.logger.info(f"[{self.__class__.__name__}] Avvio del Processo Neurale...")
-
-    #    if self._am_i_active:
-    #        raise RuntimeError("Il Processo Neurale è già attivo.")
-         
-        # Metodo astratto implementato dalla classe concreta
-    #    await self.initialize()
-    #    self._am_i_active = True
-
-        # Avvia il task asincrono per gestire gli stimoli
-    #    self._incomingStimuliEvaluationTask = asyncio.create_task(self._evaluateIncomingStimuli())

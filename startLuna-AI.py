@@ -73,7 +73,7 @@ async def main():
     print("Benvenuto nel progetto Luna-AI!")
     # Qui inizieremo a sviluppare le funzionalità del progetto
     hearingSense = HearingEngine("Udito")
-    hearingSense.wakeUp()
+    _ = await hearingSense.wakeUp()
     body = Body()
     body.legs.leftLeg
     pass
@@ -85,6 +85,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     par_guiMode = sys.argv[1].lower()
+    asyncio.run(main())
 
     match par_guiMode:
         case "console":
@@ -96,5 +97,3 @@ if __name__ == "__main__":
         case _:
             print("Parameter(s) not valid. Use 'gui' to start Luna in Graphic Interfaced Mode or 'console' for the Console Mode.")
             sys.exit(1)
-
-    # asyncio.run(main())

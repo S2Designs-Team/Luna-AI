@@ -21,6 +21,7 @@ import yaml                          # Per gestire i file YAML
 import logging                       # Utilizzato per il logging avanzato
 from abc import ABC, abstractmethod
 from multiprocess import Process 
+from ..Helpers.Configuration.lib_Configuration import ConfigurationHelper
 
 class ANeuralProcess(ABC):
     
@@ -29,11 +30,20 @@ class ANeuralProcess(ABC):
     """ 
     Classe astratta per definire la struttura base di un processo neurale. 
     """
-    _name         : str       = "ANeuralProcessBase"      # Nome di base del Processo Neurale
-    #_logEngine    : LogEngine = None
-    _script_path  : str       = None                      # Percorso del file script 
-    _am_i_active  : bool      = False                     # Flag che indica se il processo Neurale è attivo (True) o dormiente (False)
-    _stimuli_queue = None  # Variabile per la coda degli stimoli
+    _name             : str            = "ANeuralProcessBase"  # Nome di base del Processo Neurale
+    _logger           : logging.Logger = None
+    _script_directory : str            = None                  # Directory del file script (Directory)
+    _script_name      : str            = None                  # FileName dello script (FileName)
+    _script_path      : str            = None                  # Percorso del file script (Directory + FileName)
+    
+    _config_directory : str            = None                  # Directory del file di configurazione (Directory)
+    _config_name      : str            = None                  # FileName di configurazione (FileName)
+    _config_path      : str            = None                  # Percorso del file di configurazione (Directory + FileName)
+
+    _configuration                     = None                  # Configurazione del processo letta dal file config.yaml
+
+    _am_i_active      : bool           = False                 # Flag che indica se il processo Neurale è attivo (True) o dormiente (False)
+    _stimuli_queue                     = None                  # Variabile per la coda degli stimoli
 
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------------
@@ -45,18 +55,106 @@ class ANeuralProcess(ABC):
         return self._am_i_active
     
     @property
+    def script_directory(self): 
+        """
+        Directory dello script (Getter di proprietà).
+        """
+        return self._script_directory
+    
+    @script_directory.setter
+    def script_directory(self, value):
+        """
+        Directory dello script (Setter di proprietà).
+        """
+
+        if isinstance(value, Path):  # Controllo opzionale per assicurarsi che sia un oggetto Path
+            self._script_directory = value
+        else:
+            raise TypeError("script_directory deve essere un oggetto Path.")
+
+    @property
+    def script_name(self): 
+        """
+        Nome dello script (Getter di proprietà).
+        """
+        return self._script_name
+   
+    @script_name.setter
+    def script_name(self, value):
+        """
+        Nome dello script (Setter di proprietà).
+        """
+        self._script_name = value
+
+    @property
     def script_path(self): 
         """
-        Percorso dello script.
+        Percorso dello script (Getter di proprietà).
         """
         return self._script_path
-    
+   
     @script_path.setter
     def script_path(self, value):
+        """
+        Percorso dello script (Setter di proprietà).
+        """
         if isinstance(value, Path):  # Controllo opzionale per assicurarsi che sia un oggetto Path
             self._script_path = value
         else:
             raise TypeError("script_path deve essere un oggetto Path.")
+            
+
+    @property
+    def config_directory(self): 
+        """
+        Directory del file di configurazione (Getter di proprietà).
+        """
+        return self._config_directory
+    
+    @script_directory.setter
+    def script_directory(self, value):
+        """
+        Directory del file di configurazione (Setter di proprietà).
+        """
+
+        if isinstance(value, Path):  # Controllo opzionale per assicurarsi che sia un oggetto Path
+            self._config_directory = value
+        else:
+            raise TypeError("config_directory deve essere un oggetto Path.")
+        
+    @property
+    def config_name(self): 
+        """
+        Nome del file di configurazione (Getter di proprietà).
+        """
+        return self._config_name
+   
+    @config_name.setter
+    def config_name(self, value):
+        """
+        Nome del file di configurazione (Setter di proprietà).
+        """
+        if isinstance(value, str):  # Controllo opzionale per assicurarsi che sia un oggetto str
+            self.config_name = value
+        else:
+            raise TypeError("config_name deve essere un oggetto str.")
+
+    @property
+    def config_path(self): 
+        """
+        Percorso del file di configurazione (Getter di proprietà).
+        """
+        return self._config_path
+   
+    @config_path.setter
+    def config_path(self, value):
+        """
+        Percorso del file di configurazione (Setter di proprietà).
+        """
+        if isinstance(value, Path):  # Controllo opzionale per assicurarsi che sia un oggetto Path
+            self._config_path = value
+        else:
+            raise TypeError("config_path deve essere un oggetto Path.")
 
 
     #- [CONSTRUCTOR]
@@ -66,12 +164,15 @@ class ANeuralProcess(ABC):
         Inizializza il Processo Neurale caricando automaticamente il file config.yaml 
         dal percorso dello script.
         """
-        self._name       = "HearingEngine"
-        if self.script_path is None:
-            raise NotImplementedError(
-                f"[{self.__class__.__name__}] La variabile 'script_path' deve essere definita nella classe concreta."
-            )
-        self.config                         = self._loadConfig()
+        self._script_name                   = "BasicNeuralEngine"
+        self._script_path                   = Path(__file__).resolve() 
+        self._script_directory              = Path(os.path.dirname(__file__)).resolve()
+
+        self._config_name                   = "config.yaml"
+        self._config_directory              = os.path.join(self._script_directory)
+        self._config_path                   = Path(os.path.join(self.config_directory, self.config_name))
+
+        self.configuration                  = self._loadConfiguration()
         self._esternalStimuliDir            = os.path.join(self.script_path, "externalStimuli")
         self._incomingStimuliEvaluationTask = None
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali
@@ -80,18 +181,12 @@ class ANeuralProcess(ABC):
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
       
-    def _loadConfig(self):
+    def _loadConfiguration(self):
         """ 
         Carica il file di configurazione 'config.yaml' presente nello stesso percorso della classe concreta.
         :return: Dizionario con la configurazione caricata. 
         """
-        config_file = os.path.join(self.script_path, "config.yaml")
-
-        if not os.path.exists(config_file):
-            raise FileNotFoundError(f"File di configurazione non trovato: {config_file}")
-        
-        with open(config_file, 'r') as f:
-            return yaml.safe_load(f)
+        return ConfigurationHelper().loadConfiguration(self.config_directory)
         
     async def _readExternalStimuli(self):
         """
@@ -189,7 +284,7 @@ class ANeuralProcess(ABC):
             await self._stimuli_queue.put(stimuli)
             self.logger.info(f"[{self.__class__.__name__}] Stimolo inviato: {stimuli}")
         except Exception as e:
-            self.logger.error(f"[{self.__class__.__name__}] Errore durante l'invio dello stimolo: {e}")
+            self.logger.error("[%s] Errore durante l'invio dello stimolo: %s", self.__class__.__name__, e)
 
     async def wakeUp(self):
         """

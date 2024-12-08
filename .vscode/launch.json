@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Python Debugger: Luna-AI console",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file} console"
+        },
+        {
+            "name": "Python Debugger: Luna-AI GUI",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file} GUI"
+        }
+    ]
+}

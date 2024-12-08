@@ -1,6 +1,6 @@
 from .Thigh.lib_LeftThigh import LeftThigh
 
-class RightLeg:
+class LeftLeg:
     
     thigh:LeftThigh = None
 

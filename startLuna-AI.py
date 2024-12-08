@@ -42,7 +42,7 @@
 import asyncio
 import sys
 
-from MySelf.Body   import *
+from MySelf.Body.lib_Body  import *
 from MySelf.Brain  import *
 from MySelf.Senses import *
 from MySelf.Spine  import *
@@ -58,7 +58,6 @@ def run_console():
             break
         else:
             print(f"You've wrote: {user_input}")
-    
 
 def run_gui():
     try:
@@ -75,7 +74,8 @@ async def main():
     # Qui inizieremo a sviluppare le funzionalità del progetto
     hearingSense = HearingEngine("Udito")
     hearingSense.wakeUp()
-
+    body = Body()
+    body.legs.leftLeg
     pass
 
 if __name__ == "__main__":

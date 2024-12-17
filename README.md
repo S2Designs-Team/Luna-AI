@@ -14,9 +14,7 @@ LUNA-AI rappresenta un'architettura neurale universale progettata per affrontare
 - Mission: Creare un sistema di intelligenza artificiale capace di adattarsi e rispondere a qualsiasi esigenza, sfruttando un'architettura neurale "universale" che abbatta i confini tra le diverse applicazioni dell'IA.
 
 **Overview del Progetto**:<BR>
-LUNA-AI è un assistente virtuale complesso composto da diversi moduli, organizzati in engine, livelli e processi separati, per simulare un ragionamento 
-multilivello che integra aspetti cognitivi, emotivi, logici e istintivi. La progettazione modulare consente una parallelizzazione efficiente e una gestione 
-asincrona delle operazioni.
+LUNA-AI è un assistente virtuale complesso composto da diversi moduli, organizzati in engine (Senses) e livelli di elaborazione o ragionamento (Layers) basati su processi separati, per simulare il più possibile il funzionamento cerebrale umano e implementando elaborazioni multilivello che integrano aspetti cognitivi, emotivi, logici e istintivi. La progettazione modulare consente una parallelizzazione efficiente e una gestione asincrona di tali operazioni.
 
 
 # Architettura del Progetto "Luna"
@@ -93,7 +91,7 @@ asincrona delle operazioni.
 # Integrazione dei Layers
  Questi strati lavoreranno insieme in maniera fluida. Ecco come possono interagire:
 
- - Interazione tra strati: Gli strati di basso livello, come il riconoscimento vocale e TTS, interagiscono direttamente con gli strati superiori come la memoria e l'emotività. Ad esempio, se Luna riconosce un tono di tristezza, lo strato emotivo lo comunica al sistema, che attiverà risposte più empatiche.
+ - Interazione tra strati: Gli strati di basso livello (come il riconoscimento vocale (ASR), lo la trascrizione del "parlato" (STT), la conversione del testo in audio (TTS) etc...)interagiscono direttamente con gli strati superiori come la memoria e l'emotività. Ad esempio, se Luna riconosce un tono di tristezza, lo strato emotivo lo comunica al sistema, che attiverà risposte più empatiche.
  
  - Memoria dinamica: Lo strato della memoria aggiornerà costantemente il suo contenuto in base alle risposte di Luna, creando un sistema che si evolve nel tempo.
 
@@ -104,7 +102,7 @@ La struttura delle cartelle del progetto Luna-AI è stata progettata per separar
 Ogni sezione ha uno scopo specifico e ogni file contiene il codice per implementare una funzionalità ben definita. La struttura finale è la seguente:
 <PRE>
 LUNA-AI/
-├── main.py                                               # File principale del progetto
+├── startLuna-AI.py                                       # File principale del progetto
 ├── requirements.txt                                      # Dipendenze globali
 ├── README.md                                             # INTRODUZIONE AL PROGETTO (questo file)
 │   
@@ -139,23 +137,51 @@ LUNA-AI/
 ├── DevTools/
 │   └── __init__.py
 │   
-├── Documentss/                                           # Directory di progetto contenente la documentazione.
-│   ├── PROJECT_SETUP.md                                  # Documentazione di guida al setup del progetto.
+├── Documentss/                                       # Directory di progetto contenente la documentazione.
+│   ├── PROJECT_SETUP.md                              # Documentazione di guida al setup del progetto.
 │   └── TODO_TASKS.md
 │
 ├── MySelf/
 │   │
 │   ├── Body/
 │   │   ├── Arms/
+│   │   │   ├── Left/                                 # Contiene i dati di posizionamento 3D e sensoriali (aptici e termici) del braccio sinistro
+│   │   │   │   └── ForeArm/                          # Contiene i dati di posizionamento 3D e sensoriali (aptici e termici) dell'avambraccio sinistro
+│   │   │   │       └── Hand/                         # Contiene i dati di posizionamento 3D e sensoriali (aptici e termici) della mano sinistra
+│   │   │   │
+│   │   │   └── Right/                                # Contiene i dati di posizionamento 3D e sensoriali (aptici e termici) del braccio destro
+│   │   │       └── ForeArm/                          # Contiene i dati di posizionamento 3D e sensoriali (aptici e termici) dell'avambraccio destro
+│   │   │           └── Hand/                         # Contiene i dati di posizionamento 3D e sensoriali (aptici e termici) della mano destro
+│   │   │
+│   │   ├── Chest/
+│   │   │
 │   │   ├── Head/
+│   │   │   ├── HeadPivot/                            #
+│   │   │   ├── LeftEye/                              #
+│   │   │   ├── Mouth/                                #
+│   │   │   ├── Nose/                                 #
+│   │   │   ├── RightEye/                             #
+│   │   │   └── Tongue/                               #
+│   │   │
 │   │   └── Legs/
+│   │       ├── Left/                                 #
+│   │       │   └── Thigh/                            #
+│   │       │       └── Shin/                         #
+│   │       │           └── Foot/                     #
+│   │       └── Right/                                #
+│   │           └── Thigh/                            #
+│   │               └── Shin/                         #
+│   │                   └── Foot/                     #
 │   │
 │   ├── Brain/ 
 │   │   ├── Knowledge/
-│   │   │   ├── ConceptualMem/
-│   │   │   ├── EmotionalalMem/
-│   │   │   ├── LongTermMem/
-│   │   │   └── ShortTermMem/
+│   │   │   ├── AuditoryMem/                          # Contiene i dati uditivi rilevanti per il riconoscimento delle sorgenti sonore e dei timbri vocali
+│   │   │   ├── ConceptualMem/                        # Contiene i dati relativi ai nuovi concetti assimilati dall'ultimo training
+│   │   │   ├── EmotionalalMem/                       # Contiene i dati relativi ai nuovi stati emozionali assimilati dall'ultimo training
+│   │   │   ├── LongTermMem/                          # Contiene i collegamenti relativi a dati ed eventi assimilate nelle sessioni di training precedenti
+│   │   │   ├── SelfExperiencesMem/                   # Contiene i collegamenti relativi a dati ed eventi associati ad esperienze passate e assimilate nelle sessioni di training precedenti
+│   │   │   ├── ShortTermMem/                         # Contiene i collegamenti relativi a dati ed eventi assimilati dall'ultimo training
+│   │   │   └── VisualMem/                            # Contiene i dati visivi di rilevanza per il riconoscimento di volti e oggetti
 │   │   │
 │   │   └── Layers/
 │   │       ├── AutoReflection/
@@ -269,33 +295,38 @@ LUNA-AI/
     └── TestData/                                         # Cartella con file di test audio o altri dati di test
         └── dummy_audio.wav
 </PRE>
+
 # Decisioni strutturali e Motivationi
 
-## 1. Sottocartella Assets/Abstaction:
+## 1. Sottocartella AssetsLibs/Abstaction:
 
- - Descrizione: Ogni classe di astrazione di base è contenuta in una propria sottocartella con un file .py per il codice operativo, e un file README.md che descrive la funzione e la configurazione.
+ - Descrizione: Ogni classe di astrazione di base è contenuta in una propria sottocartella con un file .py per il codice operativo, e un file README.md che ne descrive la funzione e la configurazione.
 
  - Motivazione: Gli engine e i brain_layers sono processi che compongono Luna-AI, ognuno dei quali gestisce specifiche funzionalità proprie ma che ereditano da classi astratte definite all'interno della sottocartella 'abstraction'.
 
-## 2. Sottocartella Aassets/CognitiveEngines/:
-
- - Descrizione: Ogni engine è contenuto in una propria sottocartella con un file .py per il codice operativo, e un file README.md che descrive la funzione e la configurazione dell'engine.
-
- - Motivazione: Gli engine sono i motori principali che alimentano le capacità di Luna-AI, ognuno dei quali gestisce specifiche funzionalità come LLM (Language Model), NLP, TTS (Text-to-Speech), STT (Speech-to-Text), CV (Computer Vision), RAG (Retrieval-Augmented Generation) e Voice-to-Voice. Ogni engine è separato in una propria cartella per modularità e chiarezza.
-
-## 3. Sottocartella Aassets/Helpers/:
+## 2. Sottocartella AassetsLibs/Helpers/:
 
  - Descrizione: Include file Python come message_queue.py, async_utils.py, config_loader.py, e logger.py, che forniscono supporto generico per la gestione dei dati, la configurazione e la logica asincrona.
 
  - Motivazione: Gli helper sono moduli di supporto che gestiscono funzionalità comuni e utili tra gli engine, come la gestione della coda dei messaggi, l'asincronia, il logging e il caricamento della configurazione.
 
-## 4. Sottocartella BrainLayers/*Layer/:
+## 3. Sottocartella AassetsLibs/AI_Modules/:
 
- - Descrizione: Ogni layer (come l'inconscio, l'emotività, la memoria soggettiva, il ragionamento logico e cognitivo) è rappresentato da una cartella con un file .py che contiene la logica di quel layer. Ogni layer avrà anche un README.md per descriverne il funzionamento.
+ - Descrizione: Include file Python come message_queue.py, async_utils.py, config_loader.py, e logger.py, che forniscono supporto generico per la gestione dei dati, la configurazione e la logica asincrona.
+
+ - Motivazione: Gli helper sono moduli di supporto che gestiscono funzionalità comuni e utili tra gli engine, come la gestione della coda dei messaggi, l'asincronia, il logging e il caricamento della configurazione.
+
+## 4. Sottocartella MySelf/Senses/:
+
+ - Descrizione: Ogni classe engine è contenuta in una propria sottocartella con un file .py per il codice operativo, e un file README.md che ne descrive la funzione e la configurazione.
+
+ - Motivazione: Gli engine o sensi sono i "motori" principali che alimentano le capacità di Luna-AI, ognuno dei quali gestisce specifiche funzionalità come LLM (Language Model), NLP, TTS (Text-to-Speech), STT (Speech-to-Text), CV (Computer Vision), RAG (Retrieval-Augmented Generation) e Voice-to-Voice. Ogni engine è separato in una propria cartella per modularità e chiarezza.
+
+## 5. Sottocartella MySelf/Brain/Layers/*/:
+
+ - Descrizione: Ogni layer (come l'inconscio, l'emotività, la memoria soggettiva, il ragionamento logico e cognitivo etc..) è rappresentato da una cartella con un file .py che contiene la logica di quel layer. Ogni layer avrà anche un "README.md" per descriverne il funzionamento e il proprio file di configurazione "config.yaml".
 
  - Motivazione: I layers di Luna-AI rappresentano vari livelli di elaborazione e simulano i processi cognitivi, emotivi e logici di un'intelligenza artificiale simile alla mente umana. Sono stati separati in layer distinti per permettere una gestione modulare dei vari aspetti dell'AI.
-
-
 
 
 # Funzioni e Compiti dei File
@@ -362,8 +393,6 @@ LUNA-AI/
 ## 6. Documentazione per Ogni Componente:
 
  - Ogni cartella di engine e layer contiene un file README.md, che descrive il funzionamento del componente specifico, le sue dipendenze, configurazioni e come interagisce con gli altri moduli. Questo permette una facile comprensione e manutenzione del sistema.
-
-
 
 
 

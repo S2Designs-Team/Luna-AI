@@ -18,7 +18,7 @@ class VisionEngine(ANeuralProcess):
         print(f"VisionEngine result: {result}")
         return result
     
-    async def handleExtrernalStimuli(self, message):
+    async def handleExtrernalStimuli(self):
         """
         Elaborates the image stimuli simulating the vision sense.
         """

@@ -1,1 +1,0 @@
-# HearEngine (Simulates the Hearing sense)

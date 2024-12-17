@@ -13,25 +13,21 @@
 # limitations under the License.
 
 import asyncio
+import inspect
 import os
 import json
-import abc
 from pathlib import Path
-import yaml                          # Per gestire i file YAML
 import logging                       # Utilizzato per il logging avanzato
 from abc import ABC, abstractmethod
-from multiprocess import Process 
 from ..Helpers.Configuration.lib_Configuration import ConfigurationHelper
 
 class ANeuralProcess(ABC):
-    
-    #from Engines.libLogEngine import LogEngine
-
-    """ 
+    """
     Classe astratta per definire la struttura base di un processo neurale. 
     """
     _name             : str            = "ANeuralProcessBase"  # Nome di base del Processo Neurale
-    _logger           : logging.Logger = None
+    _logger           : logging.Logger = None 
+    _project_root     : str            = None                  # Directory root del progetto (Directory)
     _script_directory : str            = None                  # Directory del file script (Directory)
     _script_name      : str            = None                  # FileName dello script (FileName)
     _script_path      : str            = None                  # Percorso del file script (Directory + FileName)
@@ -44,6 +40,7 @@ class ANeuralProcess(ABC):
 
     _am_i_active      : bool           = False                 # Flag che indica se il processo Neurale è attivo (True) o dormiente (False)
     _stimuli_queue                     = None                  # Variabile per la coda degli stimoli
+    _external_stimuli_directory:str    = None                  # Directory principale degli stimoli esterni
 
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------------
@@ -151,10 +148,22 @@ class ANeuralProcess(ABC):
         """
         Percorso del file di configurazione (Setter di proprietà).
         """
-        if isinstance(value, Path):  # Controllo opzionale per assicurarsi che sia un oggetto Path
+        if isinstance(value, str):  # Controllo opzionale per assicurarsi che sia un oggetto Path
             self._config_path = value
         else:
             raise TypeError("config_path deve essere un oggetto Path.")
+
+    @property
+    def external_stimuli_directory(self):
+        """
+        """
+        return self._external_stimuli_directory
+    
+    @external_stimuli_directory.setter
+    def external_stimuli_directory(self, value):
+        """
+        """
+        self._external_stimuli_directory = value
 
 
     #- [CONSTRUCTOR]
@@ -164,37 +173,52 @@ class ANeuralProcess(ABC):
         Inizializza il Processo Neurale caricando automaticamente il file config.yaml 
         dal percorso dello script.
         """
-        self._script_name                   = "BasicNeuralEngine"
-        self._script_path                   = Path(__file__).resolve() 
-        self._script_directory              = Path(os.path.dirname(__file__)).resolve()
+        # - Configurazione del logging
+        # ----------------------------
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+        self.logger = logging.getLogger(__name__)
 
+        # - Recupera il percorso completo dell'entry point dell'applicazione
+        # ------------------------------------------------------------------
+        app_entry_frame                     = inspect.stack()[-1]
+        main_module                         = app_entry_frame.filename
+        self._project_root                  = os.path.dirname(main_module)
+
+        # - Recupera il percorso completo del file del chiamante
+        # ------------------------------------------------------
+        caller_frame                        = inspect.stack()[1]
+        caller_module                       = inspect.getmodule(caller_frame[0])
+        if caller_module and hasattr(caller_module, "__file__"):
+            self._script_path = os.path.abspath(caller_module.__file__)
+        else:
+            raise RuntimeError("Impossibile determinare il percorso del file della classe concreta.")
+        self._script_directory              = os.path.dirname(self._script_path)
+        self._script_name                   = os.path.basename(self._script_path)
+        
         self._config_name                   = "config.yaml"
-        self._config_directory              = os.path.join(self._script_directory)
-        self._config_path                   = Path(os.path.join(self.config_directory, self.config_name))
+        self._config_directory              = self._script_directory
+        self._config_path                   = os.path.join(self.config_directory, self.config_name)
 
-        self.configuration                  = self._loadConfiguration()
-        self._esternalStimuliDir            = os.path.join(self.script_path, "externalStimuli")
+        self.configuration:dict             = self._loadConfiguration()
+        self._external_stimuli_directory    = os.path.join(self._project_root, "MySelf\\Senses\\_ExternalStimuli\\")
+
         self._incomingStimuliEvaluationTask = None
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali
         
-        # Configurazione del logging
-        logging.basicConfig(level=logging.INFO)
-        self.logger = logging.getLogger(__name__)
-      
     def _loadConfiguration(self):
         """ 
         Carica il file di configurazione 'config.yaml' presente nello stesso percorso della classe concreta.
         :return: Dizionario con la configurazione caricata. 
         """
         return ConfigurationHelper().loadConfiguration(self.config_directory)
-        
+    
     async def _readExternalStimuli(self):
         """
         Legge i file JSON dalla directory di input e restituisce una lista di stimoli.
         :return: Lista di dizionari rappresentanti gli stimoli.
         """
-        if not self._esternalStimuliDir:
-            raise ValueError(f"[{self.__class__.__name__}] Directory di input stimoli esterni non configurata.")
+        if not self.external_stimuli_directory:
+            raise ValueError(f"[{self.__class__.__name__}] Directory di input per gli stimoli esterni non configurata.")
         
         stimuli = []
         for filename in os.listdir(self._esternalStimuliDir):
@@ -204,7 +228,7 @@ class ANeuralProcess(ABC):
                     with open(file_path, 'r') as f:
                         stimuli.append(json.load(f))
                 except json.JSONDecodeError as e:
-                    self.logger.error(f"[{self.__class__.__name__}] Errore nella decodifica di {filename}: {e}")
+                    self.logger.error("[%s] Errore nella decodifica di %s: %s", self.__class__.__name__, filename, e)
 
                 except Exception as e:
                     print(f"[{self.__class__.__name__}] Errore durante la lettura di {filename}: {e}")
@@ -212,9 +236,9 @@ class ANeuralProcess(ABC):
                     try:
                         if os.Path.exists(file_path):
                             os.remove(file_path)  # Elimina il file dopo la lettura
-                            self.logger.info(f"[{self.__class__.__name__}] File di stimolo esterno rimosso {file_path}: {e}")
+                            self.logger.info("[%s] File di stimolo esterno rimosso %s: %s", self.__class__.__name__, file_path, e)
                     except Exception as e:
-                        self.logger.warning(f"[{self.__class__.__name__}] Impossibile eliminare il file di stimolo esterno {file_path}: {e}")
+                        self.logger.warning("[%s] Impossibile eliminare il file di stimolo esterno %s: %s", self.__class__.__name__, file_path, e)
         return stimuli
 
     async def _evaluateIncomingStimuli(self):
@@ -223,19 +247,19 @@ class ANeuralProcess(ABC):
         """
         while self.am_i_active:
             try:            
-                neuralStimuli = await self._stimuli_queue.get()
-                externalStimuli = await self._readExternalStimuli()
-                if neuralStimuli:
-                    await self.handleSelfStimuli(neuralStimuli)
-                if externalStimuli:
-                    await self.handleExternalStimuli(externalStimuli)
+                #neuralStimuli = await self._stimuli_queue.get()
+                #externalStimuli = await self._readExternalStimuli()
+                #if neuralStimuli:
+                #    await self.handleSelfStimuli(neuralStimuli)
+                #if externalStimuli:
+                await self.handleExternalStimuli()        
 
             except asyncio.CancelledError:
-                self.logger.info(f"[{self.__class__.__name__}] Valutazione stimoli interrotta.")
+                self.logger.info("[%s] Valutazione stimoli interrotta.", self.__class__.__name__)
                 break
 
             except Exception as e:
-                self.logger.error(f"[{self.__class__.__name__}] Errore durante la valutazione degli stimoli: {e}")
+                self.logger.error("[%s] Errore durante la valutazione degli stimoli: %s", self.__class__.__name__, str(e))
 
 
     @abstractmethod
@@ -273,7 +297,7 @@ class ANeuralProcess(ABC):
         Qui si deve richiamare il metodo sendStimuli che invia lo stimolo esterno al message queue
         con per poter essere processato dal Processo Neurale di competenza.
         """
-        pass    
+        pass
 
     async def sendStimuli(self, stimuli):
         """
@@ -282,7 +306,7 @@ class ANeuralProcess(ABC):
         """
         try:
             await self._stimuli_queue.put(stimuli)
-            self.logger.info(f"[{self.__class__.__name__}] Stimolo inviato: {stimuli}")
+            self.logger.info("[%s] Stimolo inviato: %s", self.__class__.__name__, stimuli)
         except Exception as e:
             self.logger.error("[%s] Errore durante l'invio dello stimolo: %s", self.__class__.__name__, e)
 
@@ -291,7 +315,8 @@ class ANeuralProcess(ABC):
         Attiva il Processo Neurale e fa partire il thread della propria logica
         (definita nella classe concreta all'interno del metodo handleStimuli).
         """
-        self.logger.info(f"[{self.__class__.__name__}] Avvio del Processo Neurale...")
+        # self.logger.info("[%s] Avvio del Processo Neurale...", self.__class__.__name__)
+        self.logger.info("[%s] Avvio del Processo Neurale...", self.__class__.__name__)
 
         if self._am_i_active:
             raise RuntimeError("Il Processo Neurale è già attivo.")
@@ -308,7 +333,7 @@ class ANeuralProcess(ABC):
         Mette il Processo Neurale a riposo (ferma la logica di processamento degli stimoli).
         """
         if not self.am_i_active:
-            raise RuntimeError("Il Processo Neurale non è attivo.")        
+            raise RuntimeError("Neural process is not active.")        
         
         self._am_i_active = False
         if self._incomingStimuliEvaluationTask:
@@ -317,8 +342,8 @@ class ANeuralProcess(ABC):
         try:
             await self._incomingStimuliEvaluationTask
         except asyncio.CancelledError:
-            self.logger.info(f"[{self.__class__.__name__}] Processo messo a riposo.")
+            self.logger.info("[%s] Process is now in sleep mode.", self.__class__.__name__)
         except Exception as e:
-            self.logger.error(f"[{self.__class__.__name__}] Errore durante il riposo del processo: {e}")  
+            self.logger.error("[%s] Error occurred during the process sleep mode: %s", self.__class__.__name__, e)
         finally:
             self._incomingStimuliEvaluationTask = None

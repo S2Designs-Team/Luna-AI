@@ -1,12 +1,18 @@
 # Hearing Sense configuration
 
-audio_settings:
-  sample_rate: 16000
-  channels: 1
-  block_size: 1024
-  # vad_mode
-  # Modalità aggressiva per VAD (da 0 a 3)
-  vad_mode: 3
+input_audio_sensor:
+  # Parametri di registrazione
+  input_audio_sensor_index:               1                # Id del dispositivo da urilizzare come input audio device vedi [Dev Tools] "INPUT_AUDIO_DEVICES.py"
+  input_audio_sensor_bits_format:         16               # 16-bit per sample
+  input_audio_sensor_channels:            1                # Audio mono
+  input_audio_sensor_rate:                44100            # Frequenza di campionamento (Hz)
+  input_audio_sensor_chunk:               1024             # Dimensione dei blocchi di lettura
+  input_audio_sensor_max_record_duration: 5                # Durata della registrazione (secondi)
+  input_audio_sensor_output_path:         "output.wav"     # File audio che rappresenta lo stimolo uditivo
+
+speech_recognition:
+  model_01:                               "speechbrain/spkrec-xvect-voxceleb"
+  model_02:                               "speechbrain/asr-wav2vec2-libri"
 
 speaker_recognition:
   focus_speaker_id: "speaker1"
@@ -24,4 +30,4 @@ transcription:
   #                                small  - Più accurato, ma più lento.
   #                                medium - Alta precisione, richiede più risorse.
   #                                large  - Massima precisione, utilizza molta memoria.
-  whisper_model: "medium"  
+  whisper_model_name: "medium"  

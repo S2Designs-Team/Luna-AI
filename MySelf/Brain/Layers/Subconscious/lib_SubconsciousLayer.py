@@ -1,4 +1,3 @@
-import asyncio
 from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
 
 # Classe derivata che simula il layer del processo Inconscio del cervello

@@ -1,20 +1,73 @@
+<style>
+  .ProjectTitleArea {
+    user-select:     none;
+  }
+  .ProjectLogo {
+    position:        relative;
+    float:           left;
+    background:      url(GUI/Resources/LUNA-A_001.png) center no-repeat;
+    min-height:      200px;
+    min-width:       200px;
+    user-select:     none;
+    background-size: cover;
+  } 
+  .ProjectTitle {
+    position:        relative;
+  }
+  .ProjectDescription, 
+  .ProjectOverview {
+    margin-left:     20px;
+  }
+  .ProjectTitleArea LI {
+    position:        relative;
+    decoration:      none;
+  }
+ 
+</style>
 
-# <CENTER>![alt text](GUI/Resources/LUNA-A_001.png)</CENTER>
+<!-- # <CENTER>![LUNA-AI Logo](GUI/Resources/LUNA-A_001.png)</CENTER> -->
+<DIV class="ProjectTitleArea">
+    <DIV class="ProjectLogo">
+    </DIV>
+    <DIV class="ProjectTitle">
+        <H1><CENTER>L.U.N.A. - AI</CENTER></H1>
+    </DIV>
+    <DIV class="ProjectSubTitle">    
+        <CENTER>(L)inked (U)nified (N)eural (A)rchitecture - Artificial Intelligence</CENTER>
+    </DIV>
+    </BR></BR></BR></BR></BR></BR></BR>
+    <DIV class="ProjectDescription">      
+        <B>Descrizione del Progetto:</B><BR>
+        LUNA-AI rappresenta un'architettura neurale universale progettata per affrontare una vasta gamma di applicazioni di intelligenza artificiale. La sua natura scalabile e modulare consente di adattarsi a molteplici contesti, come:
+        <UL>
+            <LI>
+                Assistenza Virtuale: Supporto agli utenti in tempo reale con capacità di riconoscimento vocale, comprensione contestuale, e risposte personalizzate.
+            </LI>
+            <LI>
+                Apprendimento Adattivo: Capacità di apprendere dinamicamente da nuove informazioni per migliorare l’efficacia nel tempo.
+            </LI>
+            <LI>
+                Multimodalità: Integrazione di dati vocali, testuali, visivi e di sensori per fornire un’esperienza completa e avanzata.
+            </LI>
+            <LI>
+                Accessibilità Universale: Un’architettura progettata per essere leggera, facilmente implementabile e disponibile per dispositivi con risorse limitate.
+            </LI>
+            <LI>
+                Mission: Creare un sistema di intelligenza artificiale capace di adattarsi e rispondere a qualsiasi esigenza, sfruttando un'architettura neurale "universale" che abbatta i confini tra le diverse applicazioni dell'IA.
+            </LI>
+        </UL>
+    </DIV>
+    </BR>
+    <DIV class="ProjectOverview">
+        <B>Overview:</B><BR>
+        LUNA-AI è un assistente virtuale complesso composto da diversi moduli, organizzati in engine (Senses) e livelli di elaborazione o ragionamento (Layers) basati su processi separati, per simulare il più possibile il funzionamento cerebrale umano e implementando elaborazioni multilivello che integrano aspetti cognitivi, emotivi, logici e istintivi. La progettazione modulare consente una parallelizzazione efficiente e una gestione asincrona di tali operazioni.
+    </DIV>
+</DIV>
+</BR></BR></BR></BR>
 
-# <H1><CENTER>L.U.N.A. - AI</CENTER></H1>
-#### <CENTER>(L)inked (U)nified (N)eural (A)rchitecture - Artificial Intelligence</CENTER>
 
-**Descrizione del Progetto LUNA-AI**:<BR>
-LUNA-AI rappresenta un'architettura neurale universale progettata per affrontare una vasta gamma di applicazioni di intelligenza artificiale. La sua natura scalabile e modulare consente di adattarsi a molteplici contesti, come:
 
-- Assistenza Virtuale: Supporto agli utenti in tempo reale con capacità di riconoscimento vocale, comprensione contestuale, e risposte personalizzate.
-- Apprendimento Adattivo: Capacità di apprendere dinamicamente da nuove informazioni per migliorare l’efficacia nel tempo.
-- Multimodalità: Integrazione di dati vocali, testuali, visivi e di sensori per fornire un’esperienza completa e avanzata.
-- Accessibilità Universale: Un’architettura progettata per essere leggera, facilmente implementabile e disponibile per dispositivi con risorse limitate.
-- Mission: Creare un sistema di intelligenza artificiale capace di adattarsi e rispondere a qualsiasi esigenza, sfruttando un'architettura neurale "universale" che abbatta i confini tra le diverse applicazioni dell'IA.
 
-**Overview del Progetto**:<BR>
-LUNA-AI è un assistente virtuale complesso composto da diversi moduli, organizzati in engine (Senses) e livelli di elaborazione o ragionamento (Layers) basati su processi separati, per simulare il più possibile il funzionamento cerebrale umano e implementando elaborazioni multilivello che integrano aspetti cognitivi, emotivi, logici e istintivi. La progettazione modulare consente una parallelizzazione efficiente e una gestione asincrona di tali operazioni.
 
 
 # Architettura del Progetto "Luna"

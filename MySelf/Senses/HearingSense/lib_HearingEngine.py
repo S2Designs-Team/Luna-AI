@@ -9,20 +9,18 @@ from AssetsLibs.Abstraction.lib_NeuralProcess           import ANeuralProcess
 
 class HearingEngine(ANeuralProcess):
 
-    _INPUT_AUDIO_DEVICE_LIST:list[int, str]         = {}
-    _INPUT_AUDIO_SENSOR:pyaudio.PyAudio             = None
-    _INPUT_AUDIO_SENSOR_INDEX:int                   = None
-    _INPUT_AUDIO_SENSOR_FORMAT:int                  = pyaudio.paInt16  # 16-bit per sample
-    _INPUT_AUDIO_SENSOR_CHANNELS:int                = 1                # Audio mono
-    _INPUT_AUDIO_SENSOR_RATE:int                    = 44100            # Frequenza di campionamento (Hz)
-    _INPUT_AUDIO_SENSOR_CHUNK:int                   = 1024             # Dimensione dei blocchi di lettura
-    _INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION:int     = 5                # Durata della registrazione (secondi)
-    _INPUT_AUDIO_SENSOR_OUTPUT_PATH:str             = "heared_sounds.wav"
+    _INPUT_AUDIO_SENSOR:pyaudio.PyAudio         = None
+    _INPUT_AUDIO_SENSOR_INDEX:int               = None
+    _INPUT_AUDIO_SENSOR_FORMAT:int              = pyaudio.paInt16  # 16-bit per sample
+    _INPUT_AUDIO_SENSOR_CHANNELS:int            = 1                # Audio mono
+    _INPUT_AUDIO_SENSOR_RATE:int                = 44100            # Frequenza di campionamento (Hz)
+    _INPUT_AUDIO_SENSOR_CHUNK:int               = 1024             # Dimensione dei blocchi di lettura
+    _INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION:int = 5                # Durata della registrazione (secondi)
+    _INPUT_AUDIO_SENSOR_OUTPUT_PATH:str         = "heared_sounds.wav"
 
-    _STT_MODEL                                      = None
-    _STT_MODEL_NAME:str                             = ""
-    _speech_recognition:SpeechRecognition           = None
-    _speech_recognizer:SpeechRecognition.Recognizer = None
+    _STT_MODEL                                  = None
+    _STT_MODEL_NAME                             = ""
+    _speech_recognizer                          = None
     
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------------
@@ -51,42 +49,42 @@ class HearingEngine(ANeuralProcess):
     @property
     def INPUT_AUDIO_SENSOR_FORMAT(self):
         """
-        Gets the amount of bits per sample (by default 16 bits)
+        Bits per sample (by default 16 bits)
         """        
         return self._INPUT_AUDIO_SENSOR_FORMAT
 
     @INPUT_AUDIO_SENSOR_FORMAT.setter
     def INPUT_AUDIO_SENSOR_FORMAT(self, value:int):
         """
-        Sets the amount of bits per sample (by default 16 bits)
+        Bits per sample (by default 16 bits)
         """
         self._INPUT_AUDIO_SENSOR_FORMAT = value
 
     @property
     def INPUT_AUDIO_SENSOR_CHANNELS(self):
         """
-        Gets Channels of the audio (by default 1 channel)
+        Channels of the audio (by default 1 channel)
         """
         return self._INPUT_AUDIO_SENSOR_CHANNELS
 
     @INPUT_AUDIO_SENSOR_CHANNELS.setter
     def INPUT_AUDIO_SENSOR_CHANNELS(self, value:int):
         """
-        Sets Channels of the audio (by default 1 channel)
+        Channels of the audio (by default 1 channel)
         """
         self._INPUT_AUDIO_SENSOR_CHANNELS = value
 
     @property
     def INPUT_AUDIO_SENSOR_RATE(self):
         """
-        Gets the sampling frequency expressed in Hz (by default 44100)
+        Frequenza di campionamento in Hz (by default 44100)
         """
         return self._INPUT_AUDIO_SENSOR_RATE
 
     @INPUT_AUDIO_SENSOR_RATE.setter
     def INPUT_AUDIO_SENSOR_RATE(self, value:int):
         """
-        Sets the sampling frequency expressed in Hz (by default 44100)
+        Frequenza di campionamento in Hz (by default 44100)
         """
         self._INPUT_AUDIO_SENSOR_RATE = value    
 
@@ -107,28 +105,28 @@ class HearingEngine(ANeuralProcess):
     @property
     def INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION(self):
         """
-        Gets the auduio recording len expressed in seconds (by default 5)
+        Durata della registrazione in secondi (by default 5)
         """
         return self._INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION
 
     @INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION.setter
     def INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION(self, value:int):
         """
-        Sets the auduio recording len expressed in seconds (by default 5)
+        Durata della registrazione in secondi (by default 5)
         """
         self._INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION = value
 
     @property
     def INPUT_AUDIO_SENSOR_OUTPUT_PATH(self):
         """
-        Gets the File audio path representing the hearing stimuli(by default 'heared_sounds.wav')
+        File audio che rappresenta lo stimolo uditivo (by default 'heared_sounds.wav')
         """
         return self._INPUT_AUDIO_SENSOR_OUTPUT_PATH
 
     @INPUT_AUDIO_SENSOR_OUTPUT_PATH.setter
     def INPUT_AUDIO_SENSOR_OUTPUT_PATH(self, value:int):
         """
-        Sets the File audio path representing the hearing stimuli(by default 'heared_sounds.wav')
+        File audio che rappresenta lo stimolo uditivo (by default 'heared_sounds.wav')
         """
         self._INPUT_AUDIO_SENSOR_OUTPUT_PATH = value
 
@@ -136,28 +134,24 @@ class HearingEngine(ANeuralProcess):
     @property
     def STT_MODEL(self):
         """
-        Gets the Speech To Text Model
         """
         return self._STT_MODEL
 
     @STT_MODEL.setter
     def STT_MODEL(self, value):
         """
-        Sets the Speech To Text Model
         """
         self._STT_MODEL = value
 
     @property
     def STT_MODEL_NAME(self):
         """
-        Gets the Speech To Text Model name
         """
         return self._STT_MODEL_NAME
 
     @STT_MODEL_NAME.setter
     def STT_MODEL_NAME(self, value):
         """
-        Sets the Speech To Text Model name
         """
         self._STT_MODEL_NAME = value
 
@@ -212,12 +206,11 @@ class HearingEngine(ANeuralProcess):
     async def initialize(self):
         """
         Inizializza il motore di Speech-to-Text.
+        self.asrModel1 = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-xvect-voxceleb", savedir="tmpdir")
+        self.asrModel2 = SpeakerRecognition.from_hparams(source="speechbrain/asr-wav2vec2-libri",    savedir="tmpdir")
         """
         
         self.parseConfiguration()
-        
-        # self.asrModel1 = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-xvect-voxceleb", savedir="tmpdir")
-        # self.asrModel2 = SpeakerRecognition.from_hparams(source="speechbrain/asr-wav2vec2-libri",    savedir="tmpdir")
         
         self.logger.info("[HearingEngine] => Loading Whisper model '%s'....", self.STT_MODEL_NAME)
         self.STT_MODEL = whisper.load_model(self.STT_MODEL_NAME)
@@ -229,12 +222,10 @@ class HearingEngine(ANeuralProcess):
 
     def __initialize_speech_recognizer(self):
         """
-        Initialize the speech recognition engine
         """
-        self._speech_recognition = SpeechRecognition()
-        self._speech_recognizer  = SpeechRecognition.Recognizer()
-        self.INPUT_AUDIO_SENSOR  = pyaudio.PyAudio()
-        self._INPUT_AUDIO_DEVICE_LIST    = self.INPUT_AUDIO_SENSOR.get_default_input_device_info()
+        self._speech_recognizer = SpeechRecognition.Recognizer()
+
+        self.INPUT_AUDIO_SENSOR = pyaudio.PyAudio()
 
         if self.INPUT_AUDIO_SENSOR_INDEX is None:
             self.logger.error("[HearingEngine] => No INPUT_AUDIO_SENSOR_INDEX configuration parameter has been setted in the config.yaml file. Please provide it and retry!")

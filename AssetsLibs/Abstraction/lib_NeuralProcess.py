@@ -207,7 +207,16 @@ class ANeuralProcess(ABC):
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali
 
         # Metodo astratto implementato dalla classe concreta
-        self.initialize()
+        self._initializationTask            = asyncio.create_task(self.initialize())
+        while not self._is_process_initialized:
+            try:
+                asyncio.sleep(0.1)
+            except asyncio.CancelledError:
+                self.logger.info("[%s] Initialization interruption.", self.__class__.__name__)
+                break
+
+            except Exception as e:
+                self.logger.error("[%s] Error occurred during the initialization: %s", self.__class__.__name__, str(e))
         
     def _loadConfiguration(self):
         """ 

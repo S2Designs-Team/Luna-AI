@@ -45,7 +45,7 @@ async def main():
 
     # Qui inizieremo a sviluppare le funzionalità del progetto
     LUNA = MySelf()
-    LUNA.turnOn()
+    _ = await LUNA.turnOn()
     _ = await LUNA.wakeUp()
     pass
 

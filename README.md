@@ -23,9 +23,7 @@
     position:        relative;
     decoration:      none;
   }
- 
 </style>
-
 <!-- # <CENTER>![LUNA-AI Logo](GUI/Resources/LUNA-A_001.png)</CENTER> -->
 <DIV class="ProjectTitleArea">
     <DIV class="ProjectLogo">

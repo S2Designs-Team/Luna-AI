@@ -1,7 +1,13 @@
 from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
 
 class VisionEngine(ANeuralProcess):
-    async def initialize(self, senseName):
+
+    #- [CONSTRUCTOR]
+    #--------------------------------------------------------------------------------------------------
+    def __init__(self):
+        super().__init__()
+
+    async def initialize(self):
         """
         Initializes the Vision Engine.
         """
@@ -18,7 +24,7 @@ class VisionEngine(ANeuralProcess):
         print(f"VisionEngine result: {result}")
         return result
     
-    async def handleExtrernalStimuli(self):
+    async def handleExternalStimuli(self, message:str = ""):
         """
         Elaborates the image stimuli simulating the vision sense.
         """

@@ -1,13 +1,13 @@
 # Luna_AI_main.py
+import tracemalloc
 import os
 import asyncio
 import sys
 
-from MySelf.Brain  import *
-from MySelf.Senses import *
-from MySelf.Spine  import *
-from MySelf.Senses.HearingSense.lib_HearingEngine import HearingEngine
+from MySelf.lib_MySelf import MySelf
 
+# Starts the monitoring of the memory allocation
+tracemalloc.start()
 
 def run_console():
     print("Console Mode...started.")
@@ -29,20 +29,31 @@ def showCommandHelp():
     print("Usage Help: python startLunaAI.py [gui|console]")
 
 
+async def monitor_memory():
+    while True:
+        snapshot = tracemalloc.take_snapshot()
+        top_stats = snapshot.statistics('lineno')
+        print("\n[ Memory usage update ]")
+        for stat in top_stats[:5]:
+            print(stat)
+        await asyncio.sleep(5)  # Controlla la memoria ogni 5 secondi
+
+
 async def main():
-    print("╔═════════════════════════════════════════════════════════════════════════════╗")
-    print("║ Benvenuto nel progetto Luna-AI!                                             ║")
-    print("╚═════════════════════════════════════════════════════════════════════════════╝")
-    
+    # Avvia il monitoraggio continuo della memoria
+    asyncio.create_task(monitor_memory())
+
     # Qui inizieremo a sviluppare le funzionalità del progetto
-    hearingSense = HearingEngine()
-    _ = await hearingSense.wakeUp()
-    #body = Body()
+    LUNA = MySelf()
+    LUNA.turnOn()
+    _ = await LUNA.wakeUp()
     pass
 
 if __name__ == "__main__":
-   
     os.system('cls' if os.name == 'nt' else 'clear')
+    print("╔═════════════════════════════════════════════════════════════════════════════╗")
+    print("║ Benvenuto nel progetto Luna-AI!                                             ║")
+    print("╚═════════════════════════════════════════════════════════════════════════════╝")
 
     if len(sys.argv) != 2:
         print("Usage Help: python startLunaAI.py [gui|console]")
@@ -61,3 +72,13 @@ if __name__ == "__main__":
         case _:
             print("Parameter(s) not valid. Use 'gui' to start Luna in Graphic Interfaced Mode or 'console' for the Console Mode.")
             sys.exit(1)
+
+    # Al termine del programma, prendi uno snapshot di tracemalloc
+    snapshot = tracemalloc.take_snapshot()
+    top_stats = snapshot.statistics('lineno')
+    snapshot.dump(".\\DevTools\\TraceMAlloc_dumps\\LunaTraceMAlloc.pkl")
+
+    print("\n[ Top 10 memory allocation ]")
+    for stat in top_stats[:100]:
+        print(stat)
+

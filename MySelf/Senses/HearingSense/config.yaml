@@ -6,7 +6,7 @@ input_audio_sensor:
   input_audio_sensor_bits_format:         16               # 16-bit per sample
   input_audio_sensor_channels:            1                # Audio mono
   input_audio_sensor_rate:                44100            # Frequenza di campionamento (Hz)
-  input_audio_sensor_chunk:               1024             # Dimensione dei blocchi di lettura
+  input_audio_sensor_chunk:               4096             # Dimensione dei blocchi di lettura
   input_audio_sensor_max_record_duration: 5                # Durata della registrazione (secondi)
   input_audio_sensor_output_path:         "output.wav"     # File audio che rappresenta lo stimolo uditivo
 

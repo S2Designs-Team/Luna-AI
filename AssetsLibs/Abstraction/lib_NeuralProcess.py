@@ -25,22 +25,23 @@ class ANeuralProcess(ABC):
     """
     Classe astratta per definire la struttura base di un processo neurale. 
     """
-    _name             : str            = "ANeuralProcessBase"  # Nome di base del Processo Neurale
-    _logger           : logging.Logger = None 
-    _project_root     : str            = None                  # Directory root del progetto (Directory)
-    _script_directory : str            = None                  # Directory del file script (Directory)
-    _script_name      : str            = None                  # FileName dello script (FileName)
-    _script_path      : str            = None                  # Percorso del file script (Directory + FileName)
+    _name:str                       = "ANeuralProcessBase"  # Nome di base del Processo Neurale
+    _logger:logging.Logger          = None 
+    _project_root:str               = None                  # Directory root del progetto (Directory)
+    _script_directory:str           = None                  # Directory del file script (Directory)
+    _script_name:str                = None                  # FileName dello script (FileName)
+    _script_path:str                = None                  # Percorso del file script (Directory + FileName)
     
-    _config_directory : str            = None                  # Directory del file di configurazione (Directory)
-    _config_name      : str            = None                  # FileName di configurazione (FileName)
-    _config_path      : str            = None                  # Percorso del file di configurazione (Directory + FileName)
+    _config_directory:str           = None                  # Directory del file di configurazione (Directory)
+    _config_name:str                = None                  # FileName di configurazione (FileName)
+    _config_path:str                = None                  # Percorso del file di configurazione (Directory + FileName)
 
-    _configuration                     = None                  # Configurazione del processo letta dal file config.yaml
+    _configuration                  = None                  # Configurazione del processo letta dal file config.yaml
 
-    _am_i_active      : bool           = False                 # Flag che indica se il processo Neurale è attivo (True) o dormiente (False)
-    _stimuli_queue                     = None                  # Variabile per la coda degli stimoli
-    _external_stimuli_directory:str    = None                  # Directory principale degli stimoli esterni
+    _am_i_active:bool               = False                 # Flag che indica se il processo Neurale è attivo (True) o dormiente (False)
+    _is_process_initialized:bool    = False
+    _stimuli_queue                  = None                  # Variabile per la coda degli stimoli
+    _external_stimuli_directory:str = None                  # Directory principale degli stimoli esterni
 
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------------
@@ -204,6 +205,9 @@ class ANeuralProcess(ABC):
 
         self._incomingStimuliEvaluationTask = None
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali
+
+        # Metodo astratto implementato dalla classe concreta
+        self.initialize()
         
     def _loadConfiguration(self):
         """ 
@@ -315,14 +319,12 @@ class ANeuralProcess(ABC):
         Attiva il Processo Neurale e fa partire il thread della propria logica
         (definita nella classe concreta all'interno del metodo handleStimuli).
         """
-        # self.logger.info("[%s] Avvio del Processo Neurale...", self.__class__.__name__)
         self.logger.info("[%s] Avvio del Processo Neurale...", self.__class__.__name__)
 
         if self._am_i_active:
             raise RuntimeError("Il Processo Neurale è già attivo.")
          
-        # Metodo astratto implementato dalla classe concreta
-        await self.initialize()
+
         self._am_i_active = True
 
         # Avvia il task asincrono per gestire gli stimoli

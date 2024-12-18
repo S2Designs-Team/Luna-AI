@@ -7,8 +7,7 @@ from MySelf.Senses.SpeechSense.lib_SpeechEngine   import SpeechEngine
 class CognitiveLayer(ANeuralProcess):
     def __init__(self):
         super().__init__()
-        self.vision_engine = VisionEngine()
-        self.stt_engine    = HearingEngine("")
+        self.stt_engine    = HearingEngine()
         self.tts_engine    = SpeechEngine()
 
     async def initialize(self):

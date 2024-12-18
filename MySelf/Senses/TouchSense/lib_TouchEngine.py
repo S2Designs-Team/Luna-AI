@@ -1,7 +1,13 @@
 from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
 
 class TouchEngine(ANeuralProcess):
-    async def initialize(self, senseName):
+
+    #- [CONSTRUCTOR]
+    #--------------------------------------------------------------------------------------------------
+    def __init__(self):
+        super().__init__()
+
+    async def initialize(self):
         """
         Initializes the Touch Engine.
         """
@@ -18,7 +24,7 @@ class TouchEngine(ANeuralProcess):
         print(f"TouchEngine result: {result}")
         return result
     
-    async def handleExternalStimuli(self, message):
+    async def handleExternalStimuli(self, message:str = ""):
         """
         Elaborates the touch stimuli to simulate the Touch Sense.
         """

@@ -196,7 +196,7 @@ class HearingEngine(ANeuralProcess):
         self.logger.info("    ├──> INPUT AUDIO SENSOR::CHANNELS:            %s", self.INPUT_AUDIO_SENSOR_CHANNELS)
         self.logger.info("    ├──> INPUT AUDIO SENSOR::RATE:                %s", self.INPUT_AUDIO_SENSOR_RATE)
         self.logger.info("    ├──> INPUT AUDIO SENSOR::CHUNK:               %s", self.INPUT_AUDIO_SENSOR_CHUNK)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::MAX_RECO[]RD_DURATION: %s", self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::MAX_RECORD_DURATION: %s", self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
         self.logger.info("    ├──> INPUT AUDIO SENSOR::OUTPUT_PATH:         %s", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
 
         self.STT_MODEL_NAME                         = self.get_config_value("transcription", "whisper_model_name")

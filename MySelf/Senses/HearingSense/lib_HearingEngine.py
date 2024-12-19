@@ -191,16 +191,16 @@ class HearingEngine(ANeuralProcess):
         self.INPUT_AUDIO_SENSOR_CHUNK               = self.get_config_value("input_audio_sensor", "input_audio_sensor_chunk")
         self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION = self.get_config_value("input_audio_sensor", "input_audio_sensor_max_record_duration")
         self.INPUT_AUDIO_SENSOR_OUTPUT_PATH         = os.path.join(self.external_stimuli_directory, "Audible\\", (self.get_config_value("input_audio_sensor", "input_audio_sensor_output_path")))
-        self.logger.info("    |==> INPUT AUDIO SENSOR::INDEX:               %s", self.INPUT_AUDIO_SENSOR_INDEX)
-        self.logger.info("    |==> INPUT AUDIO SENSOR::FORMAT:              %s", self.INPUT_AUDIO_SENSOR_FORMAT)
-        self.logger.info("    |==> INPUT AUDIO SENSOR::CHANNELS:            %s", self.INPUT_AUDIO_SENSOR_CHANNELS)
-        self.logger.info("    |==> INPUT AUDIO SENSOR::RATE:                %s", self.INPUT_AUDIO_SENSOR_RATE)
-        self.logger.info("    |==> INPUT AUDIO SENSOR::CHUNK:               %s", self.INPUT_AUDIO_SENSOR_CHUNK)
-        self.logger.info("    |==> INPUT AUDIO SENSOR::MAX_RECORD_DURATION: %s", self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
-        self.logger.info("    |==> INPUT AUDIO SENSOR::OUTPUT_PATH:         %s", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::INDEX:               %s", self.INPUT_AUDIO_SENSOR_INDEX)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::FORMAT:              %s", self.INPUT_AUDIO_SENSOR_FORMAT)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::CHANNELS:            %s", self.INPUT_AUDIO_SENSOR_CHANNELS)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::RATE:                %s", self.INPUT_AUDIO_SENSOR_RATE)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::CHUNK:               %s", self.INPUT_AUDIO_SENSOR_CHUNK)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::MAX_RECO[]RD_DURATION: %s", self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::OUTPUT_PATH:         %s", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
 
         self.STT_MODEL_NAME                         = self.get_config_value("transcription", "whisper_model_name")
-        self.logger.info("    |==> STT_MODEL::NAME:                         %s", self.STT_MODEL_NAME)
+        self.logger.info("    ├──> STT_MODEL::NAME:                         %s", self.STT_MODEL_NAME)
 
 
     async def initialize(self):
@@ -209,15 +209,18 @@ class HearingEngine(ANeuralProcess):
         self.asrModel1 = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-xvect-voxceleb", savedir="tmpdir")
         self.asrModel2 = SpeakerRecognition.from_hparams(source="speechbrain/asr-wav2vec2-libri",    savedir="tmpdir")
         """
-        
+        self.logger.info("[HearingSense]::[initialize]")
         self.parseConfiguration()
         
-        self.logger.info("[HearingEngine] => Loading Whisper model '%s'....", self.STT_MODEL_NAME)
+        self.logger.info("    ├──> Loading Whisper model '%s'....", self.STT_MODEL_NAME)
         self.STT_MODEL = whisper.load_model(self.STT_MODEL_NAME)
-        self.logger.info("[HearingEngine] => Whisper model '%s' correctly loaded!", self.STT_MODEL_NAME)
-        self.logger.info("[HearingEngine] => SpeechToTextEngine: initialized.")
+        self.logger.info("    ├──>  Whisper model '%s' correctly loaded!", self.STT_MODEL_NAME)
+        self.logger.info("    ├──> SpeechToTextEngine: initialized.")
 
         self.__initialize_speech_recognizer()
+
+        self.is_process_initialized = True
+
 
 
     def __initialize_speech_recognizer(self):

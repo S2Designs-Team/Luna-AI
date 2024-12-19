@@ -1,0 +1,11 @@
+{
+   "version": "2.0.0",
+"tasks": [
+       {
+           "label":          "clear-terminal",
+           "type":           "shell",
+           "command":        "cls", // Per Windows usa cls, per Linux/macOS usa clear
+           "problemMatcher": []
+       }
+   ]
+}

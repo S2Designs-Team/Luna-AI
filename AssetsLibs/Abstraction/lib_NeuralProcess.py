@@ -39,7 +39,7 @@ class ANeuralProcess(ABC):
     _configuration                  = None                  # Configurazione del processo letta dal file config.yaml
 
     _am_i_active:bool               = False                 # Flag che indica se il processo Neurale è attivo (True) o dormiente (False)
-    _is_process_initialized:bool    = False
+    __is_process_initialized:bool    = False
     _stimuli_queue                  = None                  # Variabile per la coda degli stimoli
     _external_stimuli_directory:str = None                  # Directory principale degli stimoli esterni
 
@@ -52,6 +52,14 @@ class ANeuralProcess(ABC):
         """
         return self._am_i_active
     
+    @property
+    def is_process_initialized(self):
+        return self.__is_process_initialized
+
+    @is_process_initialized.setter
+    def is_process_initialized(self, value:bool):
+        self.__is_process_initialized = value
+
     @property
     def script_directory(self): 
         """
@@ -203,20 +211,12 @@ class ANeuralProcess(ABC):
         self.configuration:dict             = self._loadConfiguration()
         self._external_stimuli_directory    = os.path.join(self._project_root, "MySelf\\Senses\\_ExternalStimuli\\")
 
+        self._ininitializationTask          = None
         self._incomingStimuliEvaluationTask = None
+        self._ininitializationTask          = asyncio.create_task(self.initializeTask())
+        
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali
 
-        # Metodo astratto implementato dalla classe concreta
-        self._initializationTask            = asyncio.create_task(self.initialize())
-        while not self._is_process_initialized:
-            try:
-                asyncio.sleep(0.1)
-            except asyncio.CancelledError:
-                self.logger.info("[%s] Initialization interruption.", self.__class__.__name__)
-                break
-
-            except Exception as e:
-                self.logger.error("[%s] Error occurred during the initialization: %s", self.__class__.__name__, str(e))
         
     def _loadConfiguration(self):
         """ 
@@ -274,9 +274,21 @@ class ANeuralProcess(ABC):
             except Exception as e:
                 self.logger.error("[%s] Errore durante la valutazione degli stimoli: %s", self.__class__.__name__, str(e))
 
+    async def initializeTask(self):
+        # Metodo astratto implementato dalla classe concreta
+        self._initializationTask            = asyncio.create_task(self.initialize())
+        while not self.is_process_initialized:
+            try:
+                _ = await asyncio.sleep(0.1)
+            except asyncio.CancelledError:
+                self.logger.info("[%s] Initialization interruption.", self.__class__.__name__)
+                break
+
+            except Exception as e:
+                self.logger.error("[%s] Error occurred during the initialization: %s", self.__class__.__name__, str(e))
 
     @abstractmethod
-    async def initialize(self):
+    def initialize(self):
         """
         Metodo astratto per l'inizializzazione del Processo Neurale.
         Deve essere implementato dalle classi concrete.

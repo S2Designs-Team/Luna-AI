@@ -7,11 +7,12 @@ class OlfactoryEngine(ANeuralProcess):
     def __init__(self):
         super().__init__()
 
-    async def initialize(self):
+    def initialize(self):
         """
         Inizializza il motore di Text-to-Speech.
         """
         print("SpeechEngine => TextToSpeechEngine: initialized.")
+        self.is_process_initialized = True
     
     async def handleSelfStimuli(self, message):
         """

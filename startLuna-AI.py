@@ -45,7 +45,7 @@ async def main():
 
     # Qui inizieremo a sviluppare le funzionalità del progetto
     LUNA = MySelf()
-    _ = await LUNA.turnOn()
+    _ = await LUNA.async_init()
     _ = await LUNA.wakeUp()
     pass
 
@@ -79,6 +79,6 @@ if __name__ == "__main__":
     snapshot.dump(".\\DevTools\\TraceMAlloc_dumps\\LunaTraceMAlloc.pkl")
 
     print("\n[ Top 10 memory allocation ]")
-    for stat in top_stats[:100]:
+    for stat in top_stats[:10]:
         print(stat)
 

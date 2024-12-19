@@ -1,16 +1,35 @@
 {
+    "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Luna-AI console",
+            "name": "DEV-Debug: Luna-AI console",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file} console"
+            "program": "./startLuna-AI.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "preLaunchTask": "clear-terminal",
+            "args": [
+                "console"
+            ]
         },
         {
-            "name": "Python Debugger: Luna-AI GUI",
+            "name": "DEV-Debug: Luna-AI GUI",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file} GUI"
+            "program": "./startLuna-AI.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "preLaunchTask": "clear-terminal",
+            "args": [
+                "GUI"
+            ]
+        },
+        {
+            "name": "Debug-File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}"
         }
     ]
 }

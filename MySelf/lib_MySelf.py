@@ -9,19 +9,22 @@ import logging                       # Utilizzato per il logging avanzato
 import asyncio
 import inspect
 import os
+
 class MySelf():
 
-    _MY_SENSES:dict[str,ANeuralProcess]  = []
-    _logger:logging.Logger          = None 
-
+    _MY_SENSES:dict[str,ANeuralProcess] = []
+    _logger:logging.Logger              = None 
+    _is_myself_initialized              = False
+    _am_i_awake                         = False
 
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------
     def __init__(self):
-        # - Configurazione del logging
+        # - Logger configuration
         # ----------------------------
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
         self.logger = logging.getLogger(__name__)
+
         # - Recupera il percorso completo del file del chiamante
         # ------------------------------------------------------
         caller_frame                        = inspect.stack()[1]
@@ -78,7 +81,7 @@ class MySelf():
                 self.logger.error("[MySelf] => Error during the initialization of '%s': %s", sense_name, str(e), exc_info=True)
                 raise RuntimeError(f"['{sense_name}' SENSE] Initialization failure.") from e
 
-        self.is_process_initialized = True
+        self._is_myself_initialized = True
         
     def _loadConfiguration(self):
         """ 
@@ -92,11 +95,12 @@ class MySelf():
         """
         #- Simula il risveglio dei sensi
         #-------------------------------
-        #_ = await self._MY_SENSES["Hearing"].wakeUp()
+        _ = await self._MY_SENSES["Hearing"].wakeUp()
         #_ = await self._MY_SENSES["Visual"].wakeUp()
         #_ = await self._MY_SENSES["Touch"].wakeUp()
         #_ = await self._MY_SENSES["Vocal"].wakeUp()
         #_ = await self._MY_SENSES["Olfactory"].wakeUp()
+        self._am_i_awake = True
         return
 
     async def sleep(self):
@@ -106,7 +110,8 @@ class MySelf():
         #self._MY_SENSES["Visual"].sleep()
         #self._MY_SENSES["Touch"].sleep()
         #self._MY_SENSES["Vocal"].sleep()
-        #self._MY_SENSES["Olfactory"].sleep()       
+        #self._MY_SENSES["Olfactory"].sleep()    
+        self._am_i_awake = False   
         return
     
     async def turnOn(self):
@@ -125,15 +130,16 @@ class MySelf():
         #else: 
         _ = await self.sleep()
         
-        #self.am_i_active = False
+        # self.am_i_active = False
         return
         
-    
     async def handleSelfStimuli(self, message):
         """
         Elaborates internal (self) stimuli.
         """
-        # Simulates the result of the processed internal (self) stimuli 
+        self.logger.info("Processing internal stimuli: %s", message)
+
+        # Simulates the result of the processed internal (self) stimuli      
         result = f"Internal (self) stimuli: {message}"
         print(f"Processed internal (self) stimuli: result => {result}")
         return result
@@ -142,7 +148,9 @@ class MySelf():
         """
         Elaborates external stimuli to simulate.
         """
-        # Simulates the result of the processed external stimuli 
+        self.logger.info("Processing external stimuli: %s", message)
+
+        # Simulates the result of the processed external stimuli        
         result = f"External stimuli: {message}"
         print(f"Processed external stimuli: result => {result}")
         return result

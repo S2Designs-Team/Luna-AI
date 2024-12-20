@@ -11,7 +11,7 @@ class SpeechEngine(ANeuralProcess):
         """
         Initializes the Text-to-Speech Engine.
         """
-        print("SpeechEngine => TextToSpeechEngine: initialized.")
+        self.logger.info("[SpeechEngine]::[Initialize]")
         self.is_process_initialized = True
 
     async def handleSelfStimuli(self, message):

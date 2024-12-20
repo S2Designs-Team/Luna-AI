@@ -11,7 +11,7 @@ class TouchEngine(ANeuralProcess):
         """
         Initializes the Touch Engine.
         """
-        print("TouchEngine: initialized.")
+        self.logger.info("[TouchEngine]::[Initialize]")   
         self.is_process_initialized = True
 
     async def handleSelfStimuli(self, message):

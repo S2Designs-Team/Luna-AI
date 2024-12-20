@@ -11,8 +11,8 @@ class VisionEngine(ANeuralProcess):
         """
         Initializes the Vision Engine.
         """
+        self.logger.info("[VisionEngine]::[Initialize]")        
         self.is_process_initialized = True
-        self.logger.info("VisionEngine: initialized.")
 
     async def handleSelfStimuli(self, message):
         """
@@ -29,7 +29,7 @@ class VisionEngine(ANeuralProcess):
         """
         Elaborates the image stimuli simulating the vision sense.
         """
-        self.logger.info(f"VisionEngine: processing vision image stimuli - {message}")
+        self.logger.info("VisionEngine: processing vision image stimuli - %s", message)
 
         # Simulates the vision result
         result = f"Detected objects in image: {message}"

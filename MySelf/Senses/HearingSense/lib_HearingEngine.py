@@ -203,7 +203,7 @@ class HearingEngine(ANeuralProcess):
         self.logger.info("    ├──> STT_MODEL::NAME:                         %s", self.STT_MODEL_NAME)
 
 
-    async def initialize(self):
+    def initialize(self):
         """
         Inizializza il motore di Speech-to-Text.
         self.asrModel1 = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-xvect-voxceleb", savedir="tmpdir")

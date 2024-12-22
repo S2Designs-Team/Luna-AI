@@ -26,12 +26,12 @@ async def main():
     _ = await LUNA.async_init()
     _ = await LUNA.wakeUp()
 
-    # Avvia il monitoraggio continuo della memoria
+    # Starts the continuous memory allocation monitoring
     my_monitor_task = asyncio.create_task(monitor_current_memory())
 
     try:
-        # Simula altre operazioni asincrone per testare il monitoraggio
-        await asyncio.sleep(10)  # Tempo per testare il monitoraggio
+        # Simulates some other async operations just to test the monitoring
+        await asyncio.sleep(10)  # Time to test the monitoring
     finally:
         my_monitor_task.cancel()
         try:
@@ -98,7 +98,7 @@ async def monitor_current_memory():
             for my_processed_top_memory_stat in my_current_memory_stats[:5]:
                 print(my_processed_top_memory_stat)
 
-            await asyncio.sleep(5)  # Controlla la memoria ogni 5 secondi
+            await asyncio.sleep(5)  # Checks memory allocation each 5 seconds
 
     except asyncio.CancelledError:
         print("Memory monitor coroutine has been cancelled.")
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     except Exception as app_exception:
         print(f"An unexpected error occurred: {app_exception}")
     finally:
-        # Al termine del programma, prendi uno snapshot di tracemalloc
+        # AT the end (before the exit execution has been completed), takes a snapshot of tracemalloc
         my_final_snapshot     = tracemalloc.take_snapshot()
         my_final_memory_stats = my_final_snapshot.statistics('lineno')
         my_timestamp          = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")

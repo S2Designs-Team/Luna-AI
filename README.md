@@ -2,6 +2,5 @@
 
 ## PROJECT DOCUMENTATION
 
-    [English](/Documents/ENG.md)
-
-    [Italian](/Documents/ITA.md)
+[English](/Documents/ENG.md)
+[Italian](/Documents/ITA.md)

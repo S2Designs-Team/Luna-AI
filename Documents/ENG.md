@@ -1,5 +1,5 @@
 
-# <CENTER>![alt text](/GUI/Resources/LUNA-A_001.png)</CENTER>
+# <CENTER>![LUNA-AI_Logo](/GUI/Resources/LUNA-A_001.png)</CENTER>
 
 # <H1><CENTER>L.U.N.A. - AI</CENTER></H1>
 #### <CENTER>(L)inked (U)nified (N)eural (A)rchitecture - Artificial Intelligence</CENTER>

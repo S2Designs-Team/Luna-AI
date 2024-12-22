@@ -2,11 +2,6 @@
 
 ## PROJECT DOCUMENTATION
 
-<DIV>
-    <DIV>
-        [English](Documents/ENG.md)
-    </DIV>
-    <DIV>
-        [Italian](Documents/ENG.md)
-    </DIV>
-</DIV>
+    [English](/Documents/ENG.md)
+
+    [Italian](/Documents/ITA.md)

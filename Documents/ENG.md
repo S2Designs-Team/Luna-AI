@@ -1,5 +1,5 @@
 
-# <CENTER>![alt text](GUI/Resources/LUNA-A_001.png)</CENTER>
+# <CENTER>![alt text](/GUI/Resources/LUNA-A_001.png)</CENTER>
 
 # <H1><CENTER>L.U.N.A. - AI</CENTER></H1>
 #### <CENTER>(L)inked (U)nified (N)eural (A)rchitecture - Artificial Intelligence</CENTER>
@@ -98,49 +98,62 @@ This is the most "intelligent" and profound level, where Luna can use her memory
  - Ragionamento contestuale: Quando Luna affronta un problema complesso, lo strato del ragionamento logico interviene, mentre il layer emotivo può determinare la modalità di risposta (empatica, razionale, etc.).
 
 # Project Structure
-La struttura delle cartelle del progetto Luna-AI è stata progettata per separare chiaramente i vari engine, layers e i moduli di supporto (helpers). 
-Ogni sezione ha uno scopo specifico e ogni file contiene il codice per implementare una funzionalità ben definita. La struttura finale è la seguente:
+The folder structure of the Luna-AI project has been designed to clearly separate the various engines, layers, and support modules (helpers). Each section has a specific purpose, and each file contains the code to implement a well-defined functionality. The final structure is as follows:
 <PRE>
 LUNA-AI/
 ├── startLuna-AI.py                                       # Main project file
 ├── requirements.txt                                      # Global dependencies
-├── README.md                                             # PROJECT INTRODUCTION (questo file)
-│   
-├── Documentss/                                           # Project directory contenente la documentazione.
-│   ├── PROJECT_SETUP.md                                  # Documentation di guida al setup del progetto.
-│   └── TTS_SETUP.md
-│
+├── README.md                                             # PROJECT INTRODUCTION (this file)
+│                                                         #-----------------------------------------------------------------------------------------
+├── DevTools/                                             #
+│   └── __init__.py                                       #
+│                                                         #-----------------------------------------------------------------------------------------
 ├── AssetsLibs/                                           # Directory del progetto contenente gli assets di basso livello nececessari.
-│   │
-│   ├── Abstraction/                                      # Directory del progetto contenente gli assets e le classi Astratte di Luna-AI
-│   │   └── Process/                                      # Directory del progetto contenente l'Astrazione di base dei processi di Luna-AI 
-│   │       ├── README.md                                 # Documento di introduzione al processBase astratto di Luna-AI
-│   │       ├── __init__.py
-│   │       └── lib_NeuralProcess.py                      # Base abstract process ereditato da tutti i Brain layers e gli engines di basso livello di Luna-AI
+│   │                                                     #-----------------------------------------------------------------------------------------
+│   ├── Abstraction/                                      # Project directory containing the assets and abstract classes of Luna-AI.
+│   │   │
+│   │   └── Process/                                      # Project directory containing the basic abstraction of Luna-AI processes. 
+│   │       ├── README.md                                 # Documento di introduzione al processBase astratto di Luna-AI.
+│   │       ├── __init__.py                               # Python placeholder file to let all scripts inside this folder to be treated as modules.
+│   │       └── lib_NeuralProcess.py                      # Base abstract process ereditato da tutti i Brain layers e gli engines di basso livello di Luna-AI.
 │   │
 │   ├── AI_Models/                                        # Directory contenitore per i modelli addestrati e moduli specifici
-│   │   ├── README.md
-│   │   └── __init__.py
+│   │   ├── README.md                                     # Documento di introduzione al processBase astratto di Luna-AI.
+│   │   └── __init__.py                                   # Python placeholder file to let all scripts inside this folder to be treated as modules.
 │   │
 │   ├── Helpers/
 │   │   ├── README.md
-│   │   ├── __init__.py
+│   │   ├── __init__.py                                   # Python placeholder file to let all scripts inside this folder to be treated as modules.
 │   │   ├── message_queue.py
 │   │   ├── async_utils.py
 │   │   ├── logger.py
 │   │   │
 │   │   └── Configuration/
 │   │       ├── README.md
-│   │       ├── __init__.py
+│   │       ├── __init__.py                               # Python placeholder file to let all scripts inside this folder to be treated as modules.
 │   │       └── lib_Configuration.py
 │   │
-├── DevTools/
-│   └── __init__.py
-│   
 ├── Documentss/                                       # Project directory contenente la documentazione.
 │   ├── PROJECT_SETUP.md                              # Documentation di guida al setup del progetto.
 │   └── TODO_TASKS.md
-│
+│                                                         #-----------------------------------------------------------------------------------------
+├── Documents/                                            # Project directory containing the documentation.
+│   ├── GGUF/                                             #
+│   │   ├── ENG.md                                        # 
+│   │   └── ITA.md                                        # 
+│   ├── LIBROSA/                                          #
+│   │   ├── ENG.md                                        # 
+│   │   └── ITA.md                                        # 
+│   ├── LICENSES/                                         #
+│   │   ├── ENG.md                                        # 
+│   │   └── ITA.md                                        # 
+│   ├── PROJECT_SETUP/                                    #
+│   │   ├── ENG.md                                        # 
+│   │   └── ITA.md                                        # 
+│   ├── RAG/                                              #
+│   │   ├── ENG.md                                        # 
+│   │   └── ITA.md                                        # 
+│   └── TTS_SETUP.md
 ├── MySelf/
 │   │
 │   ├── Body/
@@ -178,9 +191,9 @@ LUNA-AI/
 │   │   │   ├── AuditoryMem/                          # Contains data uditivi rilevanti per il riconoscimento delle sorgenti sonore e dei timbri vocali
 │   │   │   ├── ConceptualMem/                        # Contains data relativi ai nuovi concetti assimilati dall'ultimo training
 │   │   │   ├── EmotionalalMem/                       # Contains data relativi ai nuovi stati emozionali assimilati dall'ultimo training
-│   │   │   ├── LongTermMem/                          # Contiene i collegamenti relativi a dati ed eventi assimilate nelle sessioni di training precedenti
-│   │   │   ├── SelfExperiencesMem/                   # Contiene i collegamenti relativi a dati ed eventi associati ad esperienze passate e assimilate nelle sessioni di training precedenti
-│   │   │   ├── ShortTermMem/                         # Contiene i collegamenti relativi a dati ed eventi assimilati dall'ultimo training
+│   │   │   ├── LongTermMem/                          # Contains i collegamenti relativi a dati ed eventi assimilate nelle sessioni di training precedenti
+│   │   │   ├── SelfExperiencesMem/                   # Contains i collegamenti relativi a dati ed eventi associati ad esperienze passate e assimilate nelle sessioni di training precedenti
+│   │   │   ├── ShortTermMem/                         # Contains i collegamenti relativi a dati ed eventi assimilati dall'ultimo training
 │   │   │   └── VisualMem/                            # Contains data visivi di rilevanza per il riconoscimento di volti e oggetti
 │   │   │
 │   │   └── Layers/
@@ -296,33 +309,33 @@ LUNA-AI/
         └── dummy_audio.wav
 </PRE>
 
-# Decisioni strutturali e Motivationi
+# Structural Decisions and Motivations
 
-## 1. Sottocartella AssetsLibs/Abstaction:
+## 1. Subfolder AssetsLibs/Abstraction:
 
- - Descrizione: Ogni classe di astrazione di base è contenuta in una propria sottocartella con un file .py per il codice operativo, e un file README.md che ne descrive la funzione e la configurazione.
+ - Description: Each basic abstraction class is contained in its own subfolder with a .py file for the operational code and a README.md file that describes its function and configuration.
 
- - Motivazione: Gli engine e i brain_layers sono processi che compongono Luna-AI, ognuno dei quali gestisce specifiche funzionalità proprie ma che ereditano da classi astratte definite all'interno della sottocartella 'abstraction'.
+ - Motivation: The engines and brain_layers are processes that make up Luna-AI, each of which handles specific functionalities but inherits from abstract classes defined within the 'abstraction' subfolder.
 
-## 2. Sottocartella AassetsLibs/Helpers/:
+## 2. Subfolder AassetsLibs/Helpers/:
 
- - Descrizione: Include file Python come message_queue.py, async_utils.py, config_loader.py, e logger.py, che forniscono supporto generico per la gestione dei dati, la configurazione e la logica asincrona.
+ - Description: Include file Python come message_queue.py, async_utils.py, config_loader.py, e logger.py, che forniscono supporto generico per la gestione dei dati, la configurazione e la logica asincrona.
 
- - Motivazione: Gli helper sono moduli di supporto che gestiscono funzionalità comuni e utili tra gli engine, come la gestione della coda dei messaggi, l'asincronia, il logging e il caricamento della configurazione.
+ - Motivation: Gli helper sono moduli di supporto che gestiscono funzionalità comuni e utili tra gli engine, come la gestione della coda dei messaggi, l'asincronia, il logging e il caricamento della configurazione.
 
-## 3. Sottocartella AassetsLibs/AI_Modules/:
+## 3. Subfolder AassetsLibs/AI_Modules/:
 
- - Descrizione: Include file Python come message_queue.py, async_utils.py, config_loader.py, e logger.py, che forniscono supporto generico per la gestione dei dati, la configurazione e la logica asincrona.
+ - Description: Include file Python come message_queue.py, async_utils.py, config_loader.py, e logger.py, che forniscono supporto generico per la gestione dei dati, la configurazione e la logica asincrona.
 
- - Motivazione: Gli helper sono moduli di supporto che gestiscono funzionalità comuni e utili tra gli engine, come la gestione della coda dei messaggi, l'asincronia, il logging e il caricamento della configurazione.
+ - Motivation: Gli helper sono moduli di supporto che gestiscono funzionalità comuni e utili tra gli engine, come la gestione della coda dei messaggi, l'asincronia, il logging e il caricamento della configurazione.
 
-## 4. Sottocartella MySelf/Senses/:
+## 4. Subfolder MySelf/Senses/:
 
  - Descrizione: Ogni classe engine è contenuta in una propria sottocartella con un file .py per il codice operativo, e un file README.md che ne descrive la funzione e la configurazione.
 
  - Motivazione: Gli engine o sensi sono i "motori" principali che alimentano le capacità di Luna-AI, ognuno dei quali gestisce specifiche funzionalità come LLM (Language Model), NLP, TTS (Text-to-Speech), STT (Speech-to-Text), CV (Computer Vision), RAG (Retrieval-Augmented Generation) e Voice-to-Voice. Ogni engine è separato in una propria cartella per modularità e chiarezza.
 
-## 5. Sottocartella MySelf/Brain/Layers/*/:
+## 5. Subfolder MySelf/Brain/Layers/*/:
 
  - Descrizione: Ogni layer (come l'inconscio, l'emotività, la memoria soggettiva, il ragionamento logico e cognitivo etc..) è rappresentato da una cartella con un file .py che contiene la logica di quel layer. Ogni layer avrà anche un "README.md" per descriverne il funzionamento e il proprio file di configurazione "config.yaml".
 

@@ -1,5 +1,5 @@
 # INTRODUZIONE:
-Vi siete mai chiesti come fa Siri a riconoscere le parole che dici? O il fatto che Spotify sappia di che genere è una canzone 
+Vi siete mai chiesti come fa Siri a riconoscere le parole che dite? O il fatto che Spotify sappia di che genere è una canzone 
 senza che venga menzionato da nessuna parte.
 <BR>
 Tutto questo è possibile grazie all'Analisi Audio :)

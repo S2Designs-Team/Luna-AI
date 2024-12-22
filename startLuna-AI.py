@@ -16,7 +16,7 @@ async def main():
     Main async function that initializes and manages the main loop.
     """
     print("╔═════════════════════════════════════════════════════════════════════════════╗")
-    print("║ Benvenuto nel progetto Luna-AI!                                             ║")
+    print("║ Welcome to Luna-AI project!                                                 ║")
     print("╚═════════════════════════════════════════════════════════════════════════════╝")  
 
     # Utilizza GPUInfo per ottenere il dispositivo

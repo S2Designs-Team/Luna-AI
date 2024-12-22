@@ -13,7 +13,7 @@ async def main(memory_dump_file_path):
     # Puoi esplorare le informazioni nello snapshot. Ecco alcune opzioni:
 
     # 1. Mostrare la statistica sulle allocazioni
-    print("Mostra le allocazioni più significative:")
+    print("Shows the most relevant allocations:")
     top_stats = snapshot.statistics('lineno')
     for stat in top_stats[:10]:  # Mostra le prime 10 righe con maggiore allocazione
         print(stat)
@@ -28,9 +28,9 @@ async def main(memory_dump_file_path):
         # Crea un grafico a barre
         plt.figure(figsize=(10, 6))
         plt.barh(labels, sizes, color='skyblue')
-        plt.xlabel("Dimensione (KB)")
-        plt.ylabel("File e Linea")
-        plt.title("Top 10 allocazioni di memoria")
+        plt.xlabel("Size (KB)")
+        plt.ylabel("File and Line no.")
+        plt.title("Top 10 memory allocations")
         plt.tight_layout()
         plt.show()
 
@@ -48,9 +48,9 @@ async def main(memory_dump_file_path):
 
         plt.bar(indices, allocations)
         plt.xticks(indices, labels, rotation=90)
-        plt.xlabel('Allocazioni di memoria')
-        plt.ylabel('Dimensione (bytes)')
-        plt.title('Distribuzione dell\'uso della memoria')
+        plt.xlabel('Memory allocations')
+        plt.ylabel('Size (bytes)')
+        plt.title('Memory usage distribution')
         plt.show()
 
     except ImportError:

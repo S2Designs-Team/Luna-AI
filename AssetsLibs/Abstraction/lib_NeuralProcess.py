@@ -213,7 +213,7 @@ class ANeuralProcess(ABC):
 
         self._ininitializationTask          = None
         self._incomingStimuliEvaluationTask = None
-        # [sni]
+        # [sni] bla bla bla
         # self._ininitializationTask          = asyncio.create_task(self.initializeTask())
         self.initialize()
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali

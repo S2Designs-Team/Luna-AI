@@ -329,16 +329,16 @@ class HearingEngine(ANeuralProcess):
 
         # Verifica se l'audio proviene dal parlante su cui Luna è focalizzata
         if identifiedSpeaker_id != focusedSpeaker_id:
-            self.logger.error(f"[HearingEngine]::[handleSelfStimuli] => Ignored: Audio is not from the focused speaker (expected: {focusedSpeaker_id}, got: {identifiedSpeaker_id}).")
+            self.logger.error("[HearingEngine]::[handleSelfStimuli] => Ignored: Audio is not from the focused speaker (expected: %s, got: %s).", focusedSpeaker_id, identifiedSpeaker_id)
             return None
         
-        self.logger.info(f"[HearingEngine]::[handleSelfStimuli] => Recognized speaker '{focusedSpeaker_id}'. Proceeding with transcription...")
-        self.logger.info(f"[HearingEngine]::[handleSelfStimuli] => SpeechToTextEngine: processing audio from speaker '{focusedSpeaker_id}' ")
+        self.logger.info("[HearingEngine]::[handleSelfStimuli] => Recognized speaker '%s'. Proceeding with transcription...", focusedSpeaker_id)
+        self.logger.info("[HearingEngine]::[handleSelfStimuli] => SpeechToTextEngine: processing audio from speaker '%s'.", focusedSpeaker_id)
 
         # Esegue la trascrizione dell'audio
         result = self._STT_MODEL.transcribe(message)
         transcription = result["text"]
-        self.logger.info(f"[HearingEngine]::[handleSelfStimuli] => Transcription result: {transcription}")
+        self.logger.info("[HearingEngine]::[handleSelfStimuli] => Transcription result: %s", transcription)
         return transcription
     
     async def handleExternalStimuli(self, message:str = ""):

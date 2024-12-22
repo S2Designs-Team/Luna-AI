@@ -9,6 +9,7 @@ class CognitiveLayer(ANeuralProcess):
         super().__init__()
         self.stt_engine    = HearingEngine()
         self.tts_engine    = SpeechEngine()
+        self.vision_engine = VisionEngine()
 
     async def initialize(self):
         """

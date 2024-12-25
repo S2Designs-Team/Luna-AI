@@ -1,6 +1,9 @@
 import os
 from typing import Optional
 import whisper
+from pydub import AudioSegment
+from pydub.playback import play
+import wave
 import pyaudio
 import wave
 import speech_recognition as SpeechRecognition
@@ -11,19 +14,28 @@ from AssetsLibs.Helpers.EnvironmentInfo.INPUT_AUDIO_DEVICES.lib_InputAudioDevice
 
 class HearingEngine(ANeuralProcess):
 
-    _INPUT_AUDIO_SENSOR:pyaudio.PyAudio         = None
-    _INPUT_AUDIO_SENSOR_INDEX:int               = None
-    _INPUT_AUDIO_SENSOR_FORMAT:int              = pyaudio.paInt16  # 16-bit per sample
-    _INPUT_AUDIO_SENSOR_CHANNELS:int            = 1                # Audio mono
-    _INPUT_AUDIO_SENSOR_RATE:int                = 44100            # Frequenza di campionamento (Hz)
-    _INPUT_AUDIO_SENSOR_CHUNK:int               = 1024             # Dimensione dei blocchi di lettura
-    _INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION:int = 5                # Durata della registrazione (secondi)
-    _INPUT_AUDIO_SENSOR_OUTPUT_PATH:str         = "heared_sounds.wav"
+    _INPUT_AUDIO_SENSOR:pyaudio.PyAudio              = None
+    _INPUT_AUDIO_SENSOR_INDEX:int                    = None
+    _INPUT_AUDIO_SENSOR_FORMAT:int                   = pyaudio.paInt32  # 32-bit per sample
+    _INPUT_AUDIO_SENSOR_CHANNELS:int                 = 1                # Audio mono
+    _INPUT_AUDIO_SENSOR_RATE:int                     = 44100            # Frequenza di campionamento (Hz)
+    _INPUT_AUDIO_SENSOR_CHUNK:int                    = 1024             # Dimensione dei blocchi di lettura
+    _INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION:int      = 5                # Durata della registrazione (secondi)
+    _INPUT_AUDIO_SENSOR_OUTPUT_PATH:str              = "heared_sounds.wav"
+
+    _SPEECH_RECOGNITION_ENERGY_THRESHOLD:int         = 300
+    _SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD:bool    = True
+    _SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING:float = 0.15
+    _SPEECH_RECOGNITION_DYN_ENERGY_RATIO:float       = 1.5
+    _SPEECH_RECOGNITION_PAUSE_THRESHOLD:float        = 0.8
+    _SPEECH_RECOGNITION_OPERATION_TIMEOUT:int        = None
+
 
     _STT_MODEL                                  = None
     _STT_MODEL_NAME                             = ""
     _speech_recognizer                          = None
     _STREAM                                     = None
+    _selected_input_audio_device_info           = None
     
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------------
@@ -127,12 +139,56 @@ class HearingEngine(ANeuralProcess):
         return self._INPUT_AUDIO_SENSOR_OUTPUT_PATH
 
     @INPUT_AUDIO_SENSOR_OUTPUT_PATH.setter
-    def INPUT_AUDIO_SENSOR_OUTPUT_PATH(self, value:int):
-        """
-        File audio che rappresenta lo stimolo uditivo (by default 'heared_sounds.wav')
-        """
+    def INPUT_AUDIO_SENSOR_OUTPUT_PATH(self, value:str):
         self._INPUT_AUDIO_SENSOR_OUTPUT_PATH = value
 
+    @property
+    def SPEECH_RECOGNITION_ENERGY_THRESHOLD(self):
+        return self._SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD
+
+    @SPEECH_RECOGNITION_ENERGY_THRESHOLD.setter
+    def SPEECH_RECOGNITION_ENERGY_THRESHOLD(self, value:int):
+        self._SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD = value
+
+    @property
+    def SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD(self):
+        return self._SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD
+    
+    @SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD.setter
+    def SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD(self, value:bool):
+        self._SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD = value
+
+    @property
+    def SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING(self):
+        return self._SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING
+    
+    @SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING.setter
+    def SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING(self, value:float):
+        self._SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING = value
+
+    @property
+    def SPEECH_RECOGNITION_DYN_ENERGY_RATIO(self):
+        return self._SPEECH_RECOGNITION_DYN_ENERGY_RATIO
+    
+    @SPEECH_RECOGNITION_DYN_ENERGY_RATIO.setter
+    def SPEECH_RECOGNITION_DYN_ENERGY_RATIO(self, value:float):
+        self._SPEECH_RECOGNITION_DYN_ENERGY_RATIO = value
+
+    @property
+    def SPEECH_RECOGNITION_PAUSE_THRESHOLD(self):
+        return self._SPEECH_RECOGNITION_PAUSE_THRESHOLD
+    
+    @SPEECH_RECOGNITION_PAUSE_THRESHOLD.setter
+    def SPEECH_RECOGNITION_PAUSE_THRESHOLD(self, value:float):
+        self._SPEECH_RECOGNITION_PAUSE_THRESHOLD = value
+
+    @property
+    def SPEECH_RECOGNITION_OPERATION_TIMEOUT(self):
+        return self._SPEECH_RECOGNITION_OPERATION_TIMEOUT
+    
+    @SPEECH_RECOGNITION_OPERATION_TIMEOUT.setter
+    def SPEECH_RECOGNITION_OPERATION_TIMEOUT(self, value:int):
+        self._SPEECH_RECOGNITION_OPERATION_TIMEOUT = value
 
     @property
     def STT_MODEL(self):
@@ -184,35 +240,53 @@ class HearingEngine(ANeuralProcess):
         """
         Carica la configurazione letta dal file di configurazione 'config.yaml'
         """
+        #----------------------------
         #- Parametri di registrazione
         #----------------------------
-        self.INPUT_AUDIO_SENSOR_INDEX               = self.get_config_value("input_audio_sensor", "input_audio_sensor_index")
-        self.INPUT_AUDIO_SENSOR_FORMAT              = self.get_config_value("input_audio_sensor", "input_audio_sensor_bits_format")
-        self.INPUT_AUDIO_SENSOR_CHANNELS            = self.get_config_value("input_audio_sensor", "input_audio_sensor_channels")
-        self.INPUT_AUDIO_SENSOR_RATE                = self.get_config_value("input_audio_sensor", "input_audio_sensor_rate")
-        self.INPUT_AUDIO_SENSOR_CHUNK               = self.get_config_value("input_audio_sensor", "input_audio_sensor_chunk")
-        self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION = self.get_config_value("input_audio_sensor", "input_audio_sensor_max_record_duration")
-        self.INPUT_AUDIO_SENSOR_OUTPUT_PATH         = os.path.join(self.external_stimuli_directory, "Audible\\", (self.get_config_value("input_audio_sensor", "input_audio_sensor_output_path")))
+        self.INPUT_AUDIO_SENSOR_INDEX                  = self.get_config_value("input_audio_sensor", "input_audio_sensor_index")
+        self.INPUT_AUDIO_SENSOR_FORMAT                 = self.get_config_value("input_audio_sensor", "input_audio_sensor_bits_format")
+        self.INPUT_AUDIO_SENSOR_CHANNELS               = self.get_config_value("input_audio_sensor", "input_audio_sensor_channels")
+        self.INPUT_AUDIO_SENSOR_RATE                   = self.get_config_value("input_audio_sensor", "input_audio_sensor_rate")
+        self.INPUT_AUDIO_SENSOR_CHUNK                  = self.get_config_value("input_audio_sensor", "input_audio_sensor_chunk")
+        self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION    = self.get_config_value("input_audio_sensor", "input_audio_sensor_max_record_duration")
+        self.INPUT_AUDIO_SENSOR_OUTPUT_PATH            = os.path.join(self.external_stimuli_directory, "Audible\\", (self.get_config_value("input_audio_sensor", "input_audio_sensor_output_path")))
+        #------------------------------------        
+        #- Parametri dello Speech Recognition
+        #------------------------------------
+        self.SPEECH_RECOGNITION_ENERGY_THRESHOLD       = self.get_config_value("speech_recognition", "energy_threshold")
+        self.SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD   = self.get_config_value("speech_recognition", "dynamic_energy_threshold")
+        self.SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING = self.get_config_value("speech_recognition", "dynamic_energy_adjustment_damping")
+        self.SPEECH_RECOGNITION_DYN_ENERGY_RATIO       = self.get_config_value("speech_recognition", "dynamic_energy_ratio")
+        self.SPEECH_RECOGNITION_PAUSE_THRESHOLD        = self.get_config_value("speech_recognition", "pause_threshold")
+        self.SPEECH_RECOGNITION_OPERATION_TIMEOUT      = self.get_config_value("speech_recognition", "operation_timeout")
+        #--------------------------------        
         #- Parametri dello Speech To Text
         #--------------------------------
-        self.STT_MODEL_NAME                         = self.get_config_value("transcription", "whisper_model_name")
+        self.STT_MODEL_NAME                            = self.get_config_value("transcription", "whisper_model_name")
+        #-------------------------------------        
         #- Input audio device Name selezionato 
         #-------------------------------------
         if self.INPUT_AUDIO_SENSOR_INDEX is None:
             self.logger.error("[HearingEngine] => No INPUT_AUDIO_SENSOR_INDEX configuration parameter has been setted in the config.yaml file. Please provide it and retry!")
             return
-        my_device_info                              = InputAudioDevices.get_device_infos(self.INPUT_AUDIO_SENSOR_INDEX)
-        
-        self.logger.info("[HearingEngine]::[parseConfiguration] => reading  '%s'", self.config_path)        
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::INDEX:                %s" , self.INPUT_AUDIO_SENSOR_INDEX)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::NAME:                '%s'", my_device_info['name'] )          
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::FORMAT:               %s" , self.INPUT_AUDIO_SENSOR_FORMAT)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::CHANNELS:             %s" , self.INPUT_AUDIO_SENSOR_CHANNELS)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::RATE:                 %s" , self.INPUT_AUDIO_SENSOR_RATE)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::CHUNK:                %s" , self.INPUT_AUDIO_SENSOR_CHUNK)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::MAX_RECORD_DURATION:  %s" , self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
-        self.logger.info("    ├──> INPUT AUDIO SENSOR::OUTPUT_PATH:         '%s'", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
-        self.logger.info("    ├──> STT_MODEL::NAME:                         '%s'", self.STT_MODEL_NAME)
+        self._selected_input_audio_device_info                              = InputAudioDevices.get_device_infos(self.INPUT_AUDIO_SENSOR_INDEX)
+
+        self.logger.info("[HearingEngine]::[parseConfiguration] => reading   '%s'", self.config_path)        
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::INDEX:                 %s" , self.INPUT_AUDIO_SENSOR_INDEX)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::NAME:                 '%s'", self._selected_input_audio_device_info['name'] )          
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::FORMAT:                %s" , self.INPUT_AUDIO_SENSOR_FORMAT)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::CHANNELS:              %s" , self.INPUT_AUDIO_SENSOR_CHANNELS)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::RATE:                  %s" , self.INPUT_AUDIO_SENSOR_RATE)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::CHUNK:                 %s" , self.INPUT_AUDIO_SENSOR_CHUNK)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::MAX_RECORD_DURATION:   %s" , self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
+        self.logger.info("    ├──> INPUT AUDIO SENSOR::OUTPUT_PATH:          '%s'", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
+        self.logger.info("    ├──> STT_MODEL::NAME:                          '%s'", self.STT_MODEL_NAME)
+        self.logger.info("    ├──> SPEECH RECOGNITION::ENERGY_THRESHOLD       %s" , self.SPEECH_RECOGNITION_ENERGY_THRESHOLD)
+        self.logger.info("    ├──> SPEECH RECOGNITION::DYN_ENERGY_THRESHOLD   %s" , self.SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD)
+        self.logger.info("    ├──> SPEECH RECOGNITION::DYN_ENERGY_ADJ_DAMPING %s" , self.SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING)
+        self.logger.info("    ├──> SPEECH RECOGNITION::DYN_ENERGY_RATIO       %s" , self.SPEECH_RECOGNITION_DYN_ENERGY_RATIO)
+        self.logger.info("    ├──> SPEECH RECOGNITION::PAUSE_THRESHOLD        %s" , self.SPEECH_RECOGNITION_PAUSE_THRESHOLD)
+        self.logger.info("    └──> SPEECH RECOGNITION::OPERATION_TIMEOUT      %s" , self.SPEECH_RECOGNITION_OPERATION_TIMEOUT)       
 
 
     def initialize(self):
@@ -233,7 +307,9 @@ class HearingEngine(ANeuralProcess):
         """
         """
         self.logger.info("    ├──> Initializing STT Whisper model '%s'....", self.STT_MODEL_NAME)
-        self.STT_MODEL = whisper.load_model(self.STT_MODEL_NAME,)
+        self.logger.info("    ├──> Initializing the selected INPUT AUDIO SENSOR....(%s)", self._selected_input_audio_device_info['name'])
+        self.STT_MODEL = whisper.load_model(self.STT_MODEL_NAME)
+        self._INPUT_AUDIO_SENSOR = pyaudio.PyAudio()
 
     def __initialize_speech_recognizer(self):
         """
@@ -246,49 +322,73 @@ class HearingEngine(ANeuralProcess):
         
         with SpeechRecognition.Microphone(device_index=self.INPUT_AUDIO_SENSOR_INDEX) as source:
             # listen for 5 seconds and calculate the ambient noise energy level
-            self._speech_recognizer.adjust_for_ambient_noise(source, duration=5)
+            self._speech_recognizer.adjust_for_ambient_noise(source, duration=1)
 
         
     async def __record_audio(self):
         """
         Records the input audio and saves it to a file.
         """
+        self.logger.info("[HearingEngine]::[__record_audio]")
         try:
-            self.logger.info("[HearingEngine] => Starting input audio recording for %d seconds.", self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)
-
-            if self.INPUT_AUDIO_SENSOR_INDEX is None:
-                self.logger.error("[HearingEngine] => No INPUT_AUDIO_SENSOR_INDEX configuration has been setted in the config.yaml file. Please provide it and retry!")
+            try:
+                # Apre il flusso audio con il dispositivo selezionato
+                self._STREAM = self.INPUT_AUDIO_SENSOR.open(format             = self.INPUT_AUDIO_SENSOR_FORMAT,
+                                                            channels           = self.INPUT_AUDIO_SENSOR_CHANNELS,
+                                                            rate               = self.INPUT_AUDIO_SENSOR_RATE,
+                                                            input              = True,
+                                                            input_device_index = self.INPUT_AUDIO_SENSOR_INDEX,
+                                                            frames_per_buffer  = self.INPUT_AUDIO_SENSOR_CHUNK)
+            except Exception as e:
+                self.logger.error("    └──> [ERROR]  Error opening the input audio stream: %s", e)
                 return
+
+            my_speechRecognizer = SpeechRecognition.Recognizer()
+            my_speechRecognizer.energy_threshold                  = self.SPEECH_RECOGNITION_ENERGY_THRESHOLD
+            my_speechRecognizer.dynamic_energy_threshold          = self.SPEECH_RECOGNITION_DYN_ENERGY_THRESHOLD
+            my_speechRecognizer.dynamic_energy_adjustment_damping = self.SPEECH_RECOGNITION_DYN_ENERGY_ADJ_DAMPING
+            my_speechRecognizer.dynamic_energy_ratio              = self.SPEECH_RECOGNITION_DYN_ENERGY_RATIO
+            my_speechRecognizer.pause_threshold                   = self.SPEECH_RECOGNITION_PAUSE_THRESHOLD
+            my_speechRecognizer.operation_timeout                 = self.SPEECH_RECOGNITION_OPERATION_TIMEOUT
+            self.logger.info("    ├    ├──> ID Dispositivo:.................... %s", self.INPUT_AUDIO_SENSOR_INDEX)
+            self.logger.info("    ├    ├──> Dispositivo selezionato:........... %s", self._selected_input_audio_device_info['name'])
+            self.logger.info("    ├    ├──> Canali input:...................... %s", self._selected_input_audio_device_info['maxInputChannels'])
+            self.logger.info("    ├    ├──> Freq. di campionamento supportata:. %s", self._selected_input_audio_device_info['defaultSampleRate'])
+            self.logger.info("    ├    ├──> Energy threshold:.................. %s", my_speechRecognizer.energy_threshold)
+            self.logger.info("    ├    ├──> Dynamic energy threshold:.......... %s", my_speechRecognizer.dynamic_energy_threshold)
+            self.logger.info("    ├    ├──> Dynamic energy adjustment damping:. %s", my_speechRecognizer.dynamic_energy_adjustment_damping)
+            self.logger.info("    ├    ├──> Dynamic energy ratio:.............. %s", my_speechRecognizer.dynamic_energy_ratio)
+            self.logger.info("    ├    ├──> Pause threshold:................... %s", my_speechRecognizer.pause_threshold)
+            self.logger.info("    ├    └──> Operation timeout:................. %s", my_speechRecognizer.operation_timeout)
             
-            self.logger.info("[HearingEngine] => Input audio recording...")
+            # Usa il microfono come sorgente audio
+            with SpeechRecognition.Microphone() as source:
 
-            frames = []
-            # Apre il flusso audio con il dispositivo selezionato
-            self._STREAM = self.INPUT_AUDIO_SENSOR.open(format             = self.INPUT_AUDIO_SENSOR_FORMAT,
-                                                        channels           = self.INPUT_AUDIO_SENSOR_CHANNELS,
-                                                        rate               = self.INPUT_AUDIO_SENSOR_RATE,
-                                                        input              = True,
-                                                        input_device_index = self.INPUT_AUDIO_SENSOR_INDEX,
-                                                        frames_per_buffer  = self.INPUT_AUDIO_SENSOR_CHUNK)
+                self.logger.info("    ├──> Input audio recording...")
+                try:
 
-            for _ in range(0, int(self.INPUT_AUDIO_SENSOR_RATE / self.INPUT_AUDIO_SENSOR_CHUNK * self.INPUT_AUDIO_SENSOR_MAX_RECORD_DURATION)):
-                data = self._STREAM.read(self.INPUT_AUDIO_SENSOR_CHUNK)
-                frames.append(data)
-            
-            self.logger.info("[HearingEngine] => Input audio recording finished.")
-            self._STREAM.stop_stream()
-            self._STREAM.close()
+                    # Opzione per ridurre il rumore ambientale
+                    my_speechRecognizer.adjust_for_ambient_noise(source, duration=1)                 
+                    
+                    self.logger.info("    ├    ├──> Noise reduction active...")
+                    audio = my_speechRecognizer.listen(source, timeout=10)  # Timeout dopo 10 secondi
+                    self.logger.info("    ├    └──> Input audio recording completeted.")
 
-            # Salva la registrazione in un file
-            with wave.open(self.INPUT_AUDIO_SENSOR_OUTPUT_PATH, 'wb') as wf:
-                wf.setnchannels(self.INPUT_AUDIO_SENSOR_CHANNELS)
-                wf.setsampwidth(self.INPUT_AUDIO_SENSOR.get_sample_size(self.INPUT_AUDIO_SENSOR_FORMAT))
-                wf.setframerate(self.INPUT_AUDIO_SENSOR_RATE)
-                wf.writeframes(b''.join(frames))
-            self.logger.info("[HearingEngine] => Input audio saved to '%s'.", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)                
+                    # Salva l'audio in un file WAV
+                    with open(self.INPUT_AUDIO_SENSOR_OUTPUT_PATH, "wb") as f:
+                         f.write(audio.get_wav_data())
+
+                         self.logger.info("    └──> Input audio saved as '%s'.", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
+
+                except Exception as e:
+                    self.logger.error("    └──> [ERROR] Errore durante la registrazione: %s", e)
+
+            # Opzionale: Riproduci l'audio registrato
+            audio = AudioSegment.from_file(self.INPUT_AUDIO_SENSOR_OUTPUT_PATH, format="wav")
+            play(audio)
 
         except Exception as e:
-            self.logger.error("[HearingEngine] Error during input audio recording: %s", e)
+            self.logger.error("[ERROR][HearingEngine]::[__record_audio] => Error during input audio recording: %s", e)
 
     def transcribe_audio(self):
         """

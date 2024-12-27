@@ -145,7 +145,7 @@ echo %fC_Green%ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออ
 (
 echo {
 echo     "git.remote": "origin",
-echo     "git.url": "https://github.com/Phobetor1999/LUNA-AI.git",
+echo     "git.url": "https://github.com/S2Designs-Team/Luna-AI.git",
 echo     "python.pythonPath": "venv\\Scripts\\python.exe",
 echo     "python.envFile": "${workspaceFolder}\\.env",
 echo     "python.formatting.provider": "black",

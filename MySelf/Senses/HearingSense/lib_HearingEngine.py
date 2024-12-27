@@ -1,5 +1,8 @@
 import os
 from typing import Optional
+import librosa
+from matplotlib import pyplot as plt
+import numpy as np
 import whisper
 from pydub import AudioSegment
 from pydub.playback import play
@@ -446,7 +449,6 @@ class HearingEngine(ANeuralProcess):
         Elabora l'audio esterno simulando l'udito, identifica lo speaker e rimanda lo stimolo uditivo al processamento degli stimoli interni
         (handleSelfStimuli) che utilizzerà uno STT (Whisper) per trascrivere l'audio analizzato.
         """
-
         # Passo 1: Registra l'audio
         _ = await self.__record_audio()
 
@@ -461,4 +463,3 @@ class HearingEngine(ANeuralProcess):
         else:
             self.logger.info("[HearingEngine]::[handleExternalStimuli] => Speaker %s not recognized. Audio ignored.", identifiedSpeaker_id)
             return None
-        

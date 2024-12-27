@@ -95,7 +95,7 @@ This is the most "intelligent" and profound level, where Luna can use her memory
  
  - Dynamic Memory: The memory layer will constantly update its content based on Luna's responses, creating a system that evolves over time..
 
- - Ragionamento contestuale: When Luna faces a complex problem, the logical reasoning layer intervenes, while the emotional layer can determine the response mode (empathetic, rational, etc.)..
+ - Contextual Reasoning: When Luna faces a complex problem, the logical reasoning layer intervenes, while the emotional layer can determine the response mode (empathetic, rational, etc.)..
 
 # Project Structure
 The folder structure of the Luna-AI project has been designed to clearly separate the various engines, layers, and support modules (helpers, assets etc..). Each section has a specific purpose, and each file contains the code to implement a well-defined functionality. The final structure is as follows:
@@ -134,70 +134,70 @@ The folder structure of the Luna-AI project has been designed to clearly separat
 TO VIEW THE DETAILED PROJECT STRUCTURE MAP CLICK [HERE](/Documents/PROJECT_STRUCTURE_MAP/ENG.md)
 
 
-# Funzioni e Compiti dei File
+# Functions and tasks of the Files
 
-## 1. Engine Files (llm_engine.py, speech_engine.py, ecc.):
+## 1. Engine Files (llm_engine.py, speech_engine.py, etc..):
 
  - Description: Each engine file contains the specific implementation of the engine and the functions necessary to perform the related task (for example, LLM for text generation, or STT for speech recognition).
 
- - Compiti: Ogni engine avrà funzioni per inizializzare l'engine (Init), attivarlo (Activate) e metterlo in uno stato di inattività o sospensione (Sleep), come definito nell'astrazione della classe EngineProcess_base. Ogni engine sarà progettato per lavorare in modo asincrono, permettendo il parallelismo tra i vari motori.
+ - Tasks: Each engine will have functions to initialize the engine (Init), activate it (Activate), and put it in a dormant or suspended state (Sleep), as defined in the EngineProcess_base class abstraction. Each engine will be designed to operate asynchronously, allowing parallelism between the various engines.
 
-## 2. Brain Layer Files (unconscious_layer.py, emotional_layer.py, ecc.):
+## 2. Brain Layer Files (unconscious_layer.py, emotional_layer.py, etc..):
 
- - Descrizione: Ogni file del layer implementa un "strato" del comportamento dell'assistente, simulando una specifica parte del processo mentale, come il ragionamento emotivo o logico.
-
- - Compiti: Ogni layer avrà il compito di gestire e elaborare informazioni a un livello particolare del sistema, influenzando il comportamento complessivo di Luna-AI. Ogni layer opererà come un processo separato e comunicherà con gli altri layer attraverso messaggi asincroni.
+ - Description: Each layer file implements a "layer" of the assistant's behavior, simulating a specific part of the mental process, such as emotional or logical reasoning.
+ 
+ - Tasks: Each layer will be responsible for managing and processing information at a specific level of the system, influencing the overall behavior of Luna-AI. Each layer will operate as a separate process and communicate with other layers through asynchronous messages.
 
 ## 3. EnginesHelpers/ Files (message_queue.py, async_utils.py, ecc.):
 
- - Descrizione: Questi file forniscono funzionalità di supporto per la gestione delle code di messaggi, l'asincronia, il caricamento delle configurazioni e il logging. Sono essenziali per il coordinamento tra i vari processi.
+ - Description: These files provide support functionality for managing message queues, asynchrony, configuration loading, and logging. They are essential for coordinating between the various processes.
 
- - Compiti: 
-    - message_queue.py: Gestisce le code di messaggi tra i vari engine e layer, centralizzando la comunicazione.
+ - Tasks: 
+    - message_queue.py: Manages the message queues between the various engines and layers, centralizing communication.
 
-    - async_utils.py: Fornisce strumenti per la gestione asincrona dei processi, come la gestione di operazioni parallele e la sincronizzazione.
+    - async_utils.py: Provides tools for asynchronous process management, such as handling parallel operations and synchronization.
     
-    - config_loader.py: Carica e gestisce la configurazione del sistema (ad esempio, i parametri per ogni motore).
+    - config_loader.py: Loads and manages the system configuration (e.g., parameters for each engine).
     
-    - logger.py: Gestisce il logging dell'applicazione, registrando errori, eventi importanti e operazioni di sistema.
+    - logger.py: Manages the application logging, recording errors, important events, and system operations.
 
-## 4. File di Configurazione e Dati:
+## 4. Configuration and Data Files:
 
- - Descrizione: La cartella config/ contiene file di configurazione per personalizzare i vari aspetti del comportamento di Luna-AI. La cartella models/ conterrà i modelli di machine learning utilizzati per gli engine come LLM, NLP, ecc.
+ - Description: Ogni cartella contiene un proprio file configurazione (congif.yaml) per personalizzare i vari aspetti del comportamento di Luna-AI. La cartella AI_Models/ conterrà i modelli di machine learning utilizzati per gli engine come LLM, NLP, ecc.
 
 # Additional Considerations
 
- - Asincronia e Parallelismo: Ogni engine e layer è progettato per funzionare in modo asincrono, consentendo il parallelismo nelle operazioni e una gestione più efficiente delle risorse. I processi sono separati per evitare blocchi o rallentamenti nell'esecuzione.
+ - Asynchrony and Parallelism: Each engine and layer is designed to operate asynchronously, enabling parallelism in operations and more efficient resource management. The processes are separated to avoid blocking or slowing down execution.
 
- - Comunicazione tra i Layer: La comunicazione tra i vari layer e engine avviene tramite la message queue centralizzata. Ogni processo invia e riceve messaggi asincroni, coordinando il flusso di comunicazione e assicurando che ogni componente del sistema possa operare indipendentemente senza bloccare l'esecuzione degli altri. Questo approccio aumenta l'efficienza e la scalabilità di Luna-AI.
+ - Communication between Layers: Communication between the various layers and engines occurs through the centralized message queue. Each process sends and receives asynchronous messages, coordinating the flow of communication and ensuring that each system component can operate independently without blocking the execution of others. This approach increases the efficiency and scalability of Luna-AI.
 
 
  
-# Riassunto delle scelte progettuali
+# Summary of Design Choices
 
-## 1. Struttura Modulare:
+## 1. Modular Structure:
 
- - La struttura del progetto è organizzata in modo modulare per separare logicamente ogni engine e layer in cartelle specifiche. Ogni componente è indipendente e ben definito, facilitando l'espansione futura e il mantenimento del codice.
+ - The project structure is organized in a modular way to logically separate each engine and layer into specific folders. Each component is independent and well-defined, facilitating future expansion and code maintenance..
 
-## 2. Classi Astratte e Ereditarietà:
+## 2. Abstract Classes and Inheritance:
 
- - Ogni engine e layer eredita da una classe base astratta, EngineProcess_base, che definisce i metodi principali (Init, Activate, Sleep) che ogni componente deve implementare. Questo approccio assicura coerenza tra i vari motori e permette di gestire i processi in modo uniforme.
+ - Each engine and layer inherits from an abstract base class, EngineProcess_base, which defines the main methods (Init, Activate, Sleep) that each component must implement. This approach ensures consistency between the various engines and allows for uniform process management.
 
-## 3. Processi Asincroni e Parallelismo:
+## 3. Asynchronous Processes and Parallelism:
 
- - La parallelizzazione è un aspetto fondamentale del progetto. Ogni engine e layer opera come un processo separato, gestito in modo asincrono, il che consente a Luna-AI di eseguire operazioni contemporaneamente su più fronti, migliorando le prestazioni e l'efficienza del sistema complessivo.
+ - Parallelization is a key aspect of the project. Each engine and layer operates as a separate process, managed asynchronously, which allows Luna-AI to perform operations simultaneously on multiple fronts, improving the performance and efficiency of the overall system.
 
-## 4. Message Queue Centralizzata:
+## 4. Centralized Message Queue:
 
- - Tutti i processi comunicano tramite una message queue centralizzata, che gestisce la trasmissione dei messaggi tra i vari engine e layer. Questo approccio semplifica la gestione dei dati e la sincronizzazione, centralizzando il flusso di informazioni tra i vari moduli.
+ - All processes communicate through a centralized message queue, which handles the transmission of messages between the various engines and layers. This approach simplifies data management and synchronization, centralizing the flow of information between the different modules.
 
-## 5. Codifica in Python:
+## 5. Python Coding:
 
- - Il progetto è stato sviluppato utilizzando Python, un linguaggio potente e versatile per la gestione di processi asincroni, machine learning e intelligenza artificiale. Python è anche adatto a lavorare con diverse librerie e strumenti necessari per l'implementazione di motori NLP, LLM, CV, TTS, STT e RAG.
+ - The project is developed using Python, a powerful and versatile language for managing asynchronous processes, machine learning, and artificial intelligence. Python is also well-suited to work with various libraries and tools necessary for implementing NLP, LLM, CV, TTS, STT, and RAG engines.
 
-## 6. Documentation per Ogni Componente:
+## 6. Documentation for each component:
 
- - Ogni cartella di engine e layer contiene un file README.md, che descrive il funzionamento del componente specifico, le sue dipendenze, configurazioni e come interagisce con gli altri moduli. Questo permette una facile comprensione e manutenzione del sistema.
+ - Each engine and layer folder contains a README.md file, which describes the functioning of the specific component, its dependencies, configurations, and how it interacts with other modules. This allows for easy understanding and maintenance of the system.
 
 
 

@@ -6,7 +6,7 @@ ENG: Open the relative localized project documentation by clicking the below lin
 
 ITA: Apri la documentazione del progetto localizzata cliccando sul link sottostante corrispondente alla tua lingua preferita.
 
-[English version](/Documents/ENG.md)
+[English version](/Documents/PROJECT_INTRODUCTION/ENG.md)
 
 
-[Italian version](/Documents/ITA.md)
+[Italian version](/Documents/PROJECT_INTRODUCTION/ITA.md)

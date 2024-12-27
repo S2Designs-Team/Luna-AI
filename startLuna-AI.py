@@ -18,7 +18,7 @@ async def main():
     print("╔═════════════════════════════════════════════════════════════════════════════╗")
     print("║ Welcome to Luna-AI project!                                                 ║")
     print("╚═════════════════════════════════════════════════════════════════════════════╝")  
-
+ 
     # Utilizza GPUInfo per ottenere il dispositivo
     my_process_unit_device = GPUInfo.check_gpu_availability()    
     

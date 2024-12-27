@@ -1,19 +1,19 @@
 {
     "git.remote": "origin",
-    "git.url": "https://github.com/Phobetor1999/LUNA-AI.git",
+    "git.url": "https://github.com/S2Designs-Team/Luna-AI.git",
     "python.pythonPath": "venv\\Scripts\\python.exe",
     "python.envFile": "${workspaceFolder}\\.env",
     "python.formatting.provider": "black",
     "python.terminal.activateEnvInCurrentTerminal": true,
     "editor.formatOnSave": true,
     "files.exclude": {
-       "**/__pycache__": true,
-       "**/*.pyc": true
+        "**/__pycache__": true,
+        "**/*.pyc": true
     },
     "python.createEnvironment.contentButton": "show",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
-        "--disable=C0111" 
+        "--disable=C0111"
     ]
 }

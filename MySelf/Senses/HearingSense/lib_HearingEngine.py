@@ -1,14 +1,9 @@
 import os
 from typing import Optional
-import librosa
-from matplotlib import pyplot as plt
-import numpy as np
 import whisper
 from pydub import AudioSegment
 from pydub.playback import play
-import wave
 import pyaudio
-import wave
 import speech_recognition as SpeechRecognition
 
 from AssetsLibs.Abstraction.lib_NeuralProcess                                     import ANeuralProcess
@@ -236,7 +231,7 @@ class HearingEngine(ANeuralProcess):
                 config_value = config_value[key]
             return config_value
         except KeyError:
-            self.logger.warning("ATTENTION: No configuration key %s has been setted in the config.yaml file.", ' -> '.join(keys))
+            self.logger.warning("ATTENTION: No configuration key %s has been setted in the config.yaml file.", ' -> '.join(keys), exc_info=True)
             return None
 
     def parseConfiguration(self):
@@ -298,34 +293,47 @@ class HearingEngine(ANeuralProcess):
         self.asrModel1 = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-xvect-voxceleb", savedir="tmpdir")
         self.asrModel2 = SpeakerRecognition.from_hparams(source="speechbrain/asr-wav2vec2-libri",    savedir="tmpdir")
         """
-        self.parseConfiguration()
+        try:
+            self.parseConfiguration()
         
-        self.logger.info("[HearingSense]::[initialize]")
-        self.__initialize_speech_to_text()
-        self.__initialize_speech_recognizer()
+            self.logger.info("[HearingSense]::[initialize]")
+            self.__initialize_speech_to_text()
+            self.__initialize_speech_recognizer()
 
-        self.is_process_initialized = True
+            self.is_process_initialized = True
+        except Exception as e:
+            self.logger.error("[HearingSense]::[initialize] => Error during initialization: %s", e, exc_info=True)
+            self.is_process_initialized = False
 
     def __initialize_speech_to_text(self):
         """
         """
         self.logger.info("    ├──> Initializing STT Whisper model '%s'....", self.STT_MODEL_NAME)
-        self.logger.info("    ├──> Initializing the selected INPUT AUDIO SENSOR....(%s)", self._selected_input_audio_device_info['name'])
-        self.STT_MODEL = whisper.load_model(self.STT_MODEL_NAME)
-        self._INPUT_AUDIO_SENSOR = pyaudio.PyAudio()
+        self.logger.info("    ├──> Initializing the selected INPUT AUDIO SENSOR....(%s)", self._selected_input_audio_device_info['name'])        
+        try:
+            self.STT_MODEL = whisper.load_model(self.STT_MODEL_NAME)
+            self._INPUT_AUDIO_SENSOR = pyaudio.PyAudio()
+        except Exception as e:
+            self.logger.error("    └──> [ERROR] %s", e, exc_info=True)
 
     def __initialize_speech_recognizer(self):
         """
         """        
         #- SPEECH RECOGNIZER INITIALIZATION
-        #----------------------------------        
-        self.logger.info("    ├──> Initializing the speech recognizer....Please wait.")        
-        self._speech_recognizer = SpeechRecognition.Recognizer()
-        self.logger.info("    ├──> Calibrating hearing sense from microphone...Please wait.")
+        #----------------------------------
+        try:
+            self.logger.info("    ├──> Initializing the speech recognizer....Please wait.")        
+            self._speech_recognizer = SpeechRecognition.Recognizer()
+        except Exception as e:
+            self.logger.error("        └──> [ERROR] %s", e, exc_info=True)
         
-        with SpeechRecognition.Microphone(device_index=self.INPUT_AUDIO_SENSOR_INDEX) as source:
-            # listen for 5 seconds and calculate the ambient noise energy level
-            self._speech_recognizer.adjust_for_ambient_noise(source, duration=1)
+        try:
+            self.logger.info("    ├──> Calibrating hearing sense from microphone...Please wait.")
+            with SpeechRecognition.Microphone(device_index=self.INPUT_AUDIO_SENSOR_INDEX) as source:
+                # listen for 5 seconds and calculate the ambient noise energy level
+                self._speech_recognizer.adjust_for_ambient_noise(source, duration=1)
+        except Exception as e:
+            self.logger.error("        └──> [ERROR] %s", e, exc_info=True)
 
         
     async def __record_audio(self):
@@ -384,12 +392,15 @@ class HearingEngine(ANeuralProcess):
                          self.logger.info("    └──> Input audio saved as '%s'.", self.INPUT_AUDIO_SENSOR_OUTPUT_PATH)
 
                 except Exception as e:
-                    self.logger.error("    └──> [ERROR] Errore durante la registrazione: %s", e)
+                    self.logger.error("    └──> [ERROR] Error occurred during the outcoming sound recording: %s", e)
 
             # Opzionale: Riproduci l'audio registrato
             audio = AudioSegment.from_file(self.INPUT_AUDIO_SENSOR_OUTPUT_PATH, format="wav")
             play(audio)
 
+        except KeyboardInterrupt:
+            print("[INFO] Manual interruption during incoming audio recording.")
+            raise
         except Exception as e:
             self.logger.error("[ERROR][HearingEngine]::[__record_audio] => Error during input audio recording: %s", e)
 
@@ -424,24 +435,30 @@ class HearingEngine(ANeuralProcess):
         """
         Elabora audio simulando l'udito.
         """
+        self.logger.info("[HearingEngine]::[handleSelfStimuli]")
+        try: 
+            focusedSpeaker_id = "001"
 
-        focusedSpeaker_id = "001"
+            # Identifica il parlante attuale dall'audio
+            identifiedSpeaker_id = self.identify_speaker(message)
 
-        # Identifica il parlante attuale dall'audio
-        identifiedSpeaker_id = self.identify_speaker(message)
-
-        # Verifica se l'audio proviene dal parlante su cui Luna è focalizzata
-        if identifiedSpeaker_id != focusedSpeaker_id:
-            self.logger.error("[HearingEngine]::[handleSelfStimuli] => Ignored: Audio is not from the focused speaker (expected: %s, got: %s).", focusedSpeaker_id, identifiedSpeaker_id)
-            return None
+            # Verifica se l'audio proviene dal parlante su cui Luna è focalizzata
+            if identifiedSpeaker_id != focusedSpeaker_id:
+                self.logger.error("[HearingEngine]::[handleSelfStimuli] => Ignored: Audio is not from the focused speaker (expected: %s, got: %s).", focusedSpeaker_id, identifiedSpeaker_id)
+                return None
         
-        self.logger.info("[HearingEngine]::[handleSelfStimuli] => Recognized speaker '%s'. Proceeding with transcription...", focusedSpeaker_id)
-        self.logger.info("[HearingEngine]::[handleSelfStimuli] => SpeechToTextEngine: processing audio from speaker '%s'.", focusedSpeaker_id)
+            self.logger.info("[HearingEngine]::[handleSelfStimuli] => Recognized speaker '%s'. Proceeding with transcription...", focusedSpeaker_id)
+            self.logger.info("[HearingEngine]::[handleSelfStimuli] => SpeechToTextEngine: processing audio from speaker '%s'.", focusedSpeaker_id)
 
-        # Esegue la trascrizione dell'audio
-        result = self._STT_MODEL.transcribe(message)
-        transcription = result["text"]
-        self.logger.info("[HearingEngine]::[handleSelfStimuli] => Transcription result: %s", transcription)
+            # Esegue la trascrizione dell'audio
+            result = self._STT_MODEL.transcribe(message)
+            transcription = result["text"]
+            self.logger.info("[HearingEngine]::[handleSelfStimuli] => Transcription result: %s", transcription)
+
+        except Exception as e:
+            self.logger.error("    └──> [ERROR] Error occurred: %s", e)
+        finally:
+            pass
         return transcription
     
     async def handleExternalStimuli(self, message:str = ""):

@@ -34,7 +34,7 @@ async def monitor_current_memory():
             await asyncio.sleep(5)  # Checks memory allocation each 5 seconds
 
     except asyncio.CancelledError:
-        print("Memory monitor coroutine has been cancelled.")
+        print("[INFO] Memory monitor coroutine has been cancelled.")
     except Exception as monitor_current_memory_exeption:
         print(f"An error occurred in monitor_current_memory: {monitor_current_memory_exeption}")
 
@@ -98,7 +98,6 @@ async def handle_mode_async(mode):
                 print("Parameter(s) not valid. Use 'gui' to start Luna in Graphic Interfaced Mode or 'console' for the Console Mode.")
                 sys.exit(1)
     except asyncio.CancelledError:
-        print("[INFO] Manual interruption detected. Closing the program...")
         for task in tasks:
             task.cancel()  # Properly clear the tasks.
         await asyncio.gather(*tasks, return_exceptions=True)
@@ -128,7 +127,7 @@ if __name__ == "__main__":
     try:
         asyncio.run(handle_mode_async(par_mode))
     except KeyboardInterrupt:
-        print("\n[INFO] Interruzione manuale rilevata. Chiudo il programma...")
+        print("[INFO] Manual interruption detected. Closing the program...")
     except Exception as app_exception:
         print(f"[ERROR] An unexpected error occurred: {app_exception}")
     finally:

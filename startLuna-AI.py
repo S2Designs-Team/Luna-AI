@@ -1,6 +1,5 @@
 # Luna_AI_main.py
 import datetime
-import multiprocessing
 import tkinter as tk
 import asyncio
 import tracemalloc
@@ -56,7 +55,7 @@ async def run_luna_being():
     Main async function that initializes and manages the main loop.
     """ 
     #Use GPUInfo to retrieve the GPU device"
-    my_process_unit_device = GPUInfo.check_gpu_availability()    
+    #my_process_unit_device = GPUInfo.check_gpu_availability()    
 
     try:
         _ = await Luna_AI_Process.async_init()

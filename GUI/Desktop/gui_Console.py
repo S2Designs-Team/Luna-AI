@@ -48,13 +48,19 @@ class LunaApp:
         self.command_area.delete(0, tk.END)
 
     def stopGui(self):
-        """Ferma e chiude l'applicazione"""
-        self.log("Luna AI sta per essere spenta...")
-        self.root.quit()
+        """
+        Stops and closes the Application GUI.
+        """
+        self.log("Luna AI is going to be turned off...")
+        self.running = False
+        self.root.quit()     # Termnate the mainloop
+        self.root.destroy()  # Close the windows
 
     def startGui(self):
-        """Avvia l'interfaccia grafica"""
-        self.log("Benvenuto in Luna AI. Scrivi 'help' per vedere i comandi.")
+        """
+        Starts the Application GUI.
+        """
+        self.log("Welcome in Luna AI. Write 'help' to show all the available commands.")
         self.root.mainloop()
 
 # Esegui l'app

@@ -21,6 +21,10 @@ shutdown_event = asyncio.Event()
 Luna_AI_Process:MySelf       = None 
 # Centralized Logger
 Logger_Manager:LoggerManager = None
+# App Global main Tasks
+Tasks:list                   = []
+
+Gui_Thread:threading.Thread  = None
 
 async def monitor_current_memory():
     """
@@ -36,11 +40,8 @@ async def monitor_current_memory():
                 print(my_processed_top_memory_stat)
 
             await asyncio.sleep(5)  # Checks memory allocation each 5 seconds
-
-    except asyncio.CancelledError:
-        print("[INFO] Memory monitor coroutine has been cancelled.")
     except Exception as monitor_current_memory_exeption:
-        print(f"An error occurred in monitor_current_memory: {monitor_current_memory_exeption}")
+        Logger_Manager.info(f"An error occurred in monitor_current_memory: {monitor_current_memory_exeption}")
 
 async def run_luna_gui():
     """
@@ -48,16 +49,16 @@ async def run_luna_gui():
     """      
     try:
         def start_gui():
-            root = tk.Tk()
-            app = LunaApp(root, Logger_Manager)
+            main_root = tk.Tk()
+            app = LunaApp(main_root, Logger_Manager)
             app.startGui()
 
-        gui_thread = threading.Thread(target=start_gui)
-        gui_thread.start()
+        Gui_Thread = threading.Thread(target=start_gui, daemon=True)
+        Gui_Thread.start()
         print("Graphic Interfaced Mode...started.")
 
         # Aspetta la fine del thread GUI per sincronizzarlo con asyncio
-        while gui_thread.is_alive():
+        while Gui_Thread.is_alive():
             await asyncio.sleep(0.1)
 
         print("Graphic Interfaced Mode...started.")
@@ -78,7 +79,8 @@ async def run_luna_being():
         Luna_AI_Process = MySelf(Logger_Manager)
         _ = await Luna_AI_Process.async_init()
         await Luna_AI_Process.wakeUp()
-
+    except Exception as app_exception:
+        Logger_Manager.error(f"An unexpected error occurred: {app_exception}")
     finally:
         await Luna_AI_Process.turnOff()
         print("Luna has been gracefully turned off.")
@@ -87,7 +89,6 @@ async def handle_mode_async(mode):
     """
     Handles the execution mode based on starting call arguments.
     """
-    tasks = []
     try:
         match mode:
             case "console":
@@ -105,22 +106,19 @@ async def handle_mode_async(mode):
                 #AppMemory_process.join()
                 print ("NOT YET IMPLEMENTED")
             case "gui":
-                tasks.append(asyncio.create_task(run_luna_gui()))
-                tasks.append(asyncio.create_task(run_luna_being()))
-                tasks.append(asyncio.create_task(monitor_current_memory()))
-                await asyncio.gather(*tasks)
+                Tasks.append(asyncio.create_task(run_luna_gui()))
+                Tasks.append(asyncio.create_task(run_luna_being()))
+                Tasks.append(asyncio.create_task(monitor_current_memory()))
+                await asyncio.gather(*Tasks)
             case "help":
                 show_command_help()
             case _:
                 print("Parameter(s) not valid. Use 'gui' to start Luna in Graphic Interfaced Mode or 'console' for the Console Mode.")
                 sys.exit(1)
-    except asyncio.CancelledError:
-        for task in tasks:
-            task.cancel()  # Properly clear the tasks.
-        await asyncio.gather(*tasks, return_exceptions=True)
-        print("[INFO] All tasks have been cleared.")        
+    except Exception as app_exception:
+        Logger_Manager.error(f"An unexpected error occurred: {app_exception}")
     finally:
-        for task in tasks:
+        for task in Tasks:
             task.cancel()  # Cancels all the tasks                
 
 def show_command_help():
@@ -138,17 +136,35 @@ if __name__ == "__main__":
     Logger_Manager.info("╚═════════════════════════════════════════════════════════════════════════════╝") 
     
     if len(sys.argv) != 2:
-        print("Usage Help: python startLunaAI.py [gui|console|help]")
+        Logger_Manager.info("Usage Help: python startLunaAI.py [gui|console|help]")
         sys.exit(1)
 
     par_mode = sys.argv[1].lower()
     
     try:
         asyncio.run(handle_mode_async(par_mode))
+
     except KeyboardInterrupt:
-        print("[INFO] Manual interruption detected. Closing the program...")
+        Logger_Manager.info("Manual interruption detected. Closing the program...")
+
+        for task in Tasks:
+            task.cancel()  # Properly clear all the tasks.
+
+        # Closing the Gui_Thread if it is running
+        if Gui_Thread and Gui_Thread.is_alive():
+            Logger_Manager.info("Closing the GUI...")
+            tk.Tk().quit()
+            Gui_Thread.join()
+
+        if Luna_AI_Process:
+            asyncio.run(Luna_AI_Process.turnOff())
+            Logger_Manager.info("Luna AI has been gracefully turned off.")
+
+        Logger_Manager.info("All tasks have been cleared.")
+
     except Exception as app_exception:
-        print(f"[ERROR] An unexpected error occurred: {app_exception}")
+        Logger_Manager.error(f"An unexpected error occurred: {app_exception}")
+
     finally:
         # At the end (before the exit execution has been completed), takes a snapshot of tracemalloc
         my_final_snapshot     = tracemalloc.take_snapshot()

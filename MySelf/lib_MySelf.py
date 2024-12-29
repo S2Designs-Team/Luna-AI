@@ -12,18 +12,27 @@ import os
 
 class MySelf():
 
-    _MY_SENSES:dict[str,ANeuralProcess] = []
+    _MY_SENSES:dict[str,ANeuralProcess] = {}
     _logger:logging.Logger              = None 
     _is_myself_initialized              = False
     _am_i_awake                         = False
 
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self, logger_manager=None):
+        """
+        Costruttore della classe MySelf.
+        :param logger_manager: Oggetto di gestione del logging (LoggerManager).
+        """
         # - Logger configuration
         # ----------------------------
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
-        self.logger = logging.getLogger(__name__)
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
+        #[sni] self.logger = logging.getLogger(__name__)
+        if logger_manager is None:
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.INFO)
+        else:
+            self.logger = logger_manager
 
         # - Recupera il percorso completo del file del chiamante
         # ------------------------------------------------------
@@ -36,10 +45,10 @@ class MySelf():
         self._script_directory              = os.path.dirname(self._script_path)
         self._script_name                   = os.path.basename(self._script_path)
         
+        # Configurazione
         self._config_name                   = "config.yaml"
         self._config_directory              = self._script_directory
         self._config_path                   = os.path.join(self._config_directory, self._config_name)
-
         self.configuration:dict             = self._loadConfiguration()            
 
     async def async_init(self):
@@ -78,7 +87,7 @@ class MySelf():
 
                 self.logger.info("    ├──>'%s' sense has been succesfully initialized.", sense_name)
             except Exception as e:
-                self.logger.error("[MySelf] => Error during the initialization of '%s': %s", sense_name, str(e), exc_info=True)
+                self.logger.error("[MySelf] => Error during the initialization of '%s': %s", sense_name, str(e))
                 raise RuntimeError(f"['{sense_name}' SENSE] Initialization failure.") from e
 
         self._is_myself_initialized = True
@@ -130,7 +139,7 @@ class MySelf():
         #else: 
         _ = await self.sleep()
         
-        # self.am_i_active = False
+        self.am_i_active = False
         return
         
     async def handleSelfStimuli(self, message):

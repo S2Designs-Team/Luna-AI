@@ -1,5 +1,6 @@
 # Luna_AI_main.py
 import datetime
+import threading
 import tkinter as tk
 import asyncio
 import tracemalloc
@@ -7,6 +8,7 @@ import sys
 import os
 
 from GUI.Desktop.gui_Console import LunaApp
+from AssetsLibs.Helpers.LogManager.lib_LogManager import LoggerManager
 from AssetsLibs.Helpers.EnvironmentInfo.GPU.lib_GPU_Info import GPUInfo
 from MySelf.lib_MySelf import MySelf
 
@@ -15,7 +17,10 @@ tracemalloc.start()
 
 # Global termination Event
 shutdown_event = asyncio.Event()
-Luna_AI_Process:MySelf = MySelf()
+# LUNA AI Main Process
+Luna_AI_Process:MySelf       = None 
+# Centralized Logger
+Logger_Manager:LoggerManager = None
 
 async def monitor_current_memory():
     """
@@ -42,27 +47,40 @@ async def run_luna_gui():
     GUI mode: starts a graphic user interface Tkinter (if supported).
     """      
     try:
-        root = tk.Tk()
-        app = LunaApp(root)
-        app.start_luna()
-        root.mainloop()        
+        def start_gui():
+            root = tk.Tk()
+            app = LunaApp(root, Logger_Manager)
+            app.startGui()
+
+        gui_thread = threading.Thread(target=start_gui)
+        gui_thread.start()
+        print("Graphic Interfaced Mode...started.")
+
+        # Aspetta la fine del thread GUI per sincronizzarlo con asyncio
+        while gui_thread.is_alive():
+            await asyncio.sleep(0.1)
+
         print("Graphic Interfaced Mode...started.")
     except ImportError:
         print("Error: tkinter not installed.")
+    except Exception as e:
+        print(f"Error in run_luna_gui: {e}")
 
 async def run_luna_being():
     """
     Main async function that initializes and manages the main loop.
     """ 
+    global Luna_AI_Process
     #Use GPUInfo to retrieve the GPU device"
     #my_process_unit_device = GPUInfo.check_gpu_availability()    
 
     try:
+        Luna_AI_Process = MySelf(Logger_Manager)
         _ = await Luna_AI_Process.async_init()
         await Luna_AI_Process.wakeUp()
 
     finally:
-        await Luna_AI_Process.TurnOff()
+        await Luna_AI_Process.turnOff()
         print("Luna has been gracefully turned off.")
 
 async def handle_mode_async(mode):
@@ -113,12 +131,14 @@ def show_command_help():
 
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("╔═════════════════════════════════════════════════════════════════════════════╗")
-    print("║ Welcome to Luna-AI project!                                                 ║")
-    print("╚═════════════════════════════════════════════════════════════════════════════╝") 
+
+    Logger_Manager = LoggerManager()
+    Logger_Manager.info("╔═════════════════════════════════════════════════════════════════════════════╗")
+    Logger_Manager.info("║ Welcome to Luna-AI project!                                                 ║")
+    Logger_Manager.info("╚═════════════════════════════════════════════════════════════════════════════╝") 
     
     if len(sys.argv) != 2:
-        print("Usage Help: python startLunaAI.py [gui|console]")
+        print("Usage Help: python startLunaAI.py [gui|console|help]")
         sys.exit(1)
 
     par_mode = sys.argv[1].lower()

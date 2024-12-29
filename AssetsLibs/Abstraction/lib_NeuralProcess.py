@@ -182,9 +182,9 @@ class ANeuralProcess(ABC):
         Inizializza il Processo Neurale caricando automaticamente il file config.yaml 
         dal percorso dello script.
         """
-        # - Configurazione del logging
+        # - Logger configuration
         # ----------------------------
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+        #logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
         self.logger = logging.getLogger(__name__)
 
         # - Recupera il percorso completo dell'entry point dell'applicazione

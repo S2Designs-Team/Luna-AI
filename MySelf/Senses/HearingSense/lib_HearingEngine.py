@@ -215,7 +215,7 @@ class HearingEngine(ANeuralProcess):
         
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------
-    def __init__(self, senseName="HearingSense"):
+    def __init__(self):
         super().__init__()
         # Database degli speaker riconosciuti (chiave: speaker_id, valore: embedding)
         self.speaker_db = {"001"}

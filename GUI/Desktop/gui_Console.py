@@ -1,17 +1,14 @@
 # Luna_AI_main.py
-import datetime
-import tracemalloc
-import os
-import asyncio
-import sys
-
+import logging
 import tkinter as tk
 from tkinter import scrolledtext
-import multiprocessing
+
+from AssetsLibs.Helpers.LogManager.lib_LogManager import LoggerManager
 
 class LunaApp:
-    def __init__(self, root):
+    def __init__(self, root, logger:LoggerManager = None):
         self.root = root
+        self.logger = logger
         self.root.title("Luna-AI Console")
         self.root.geometry("800x600")
 
@@ -23,13 +20,12 @@ class LunaApp:
         self.command_area = tk.Entry(self.root, width=80)
         self.command_area.grid(row=1, column=0, padx=10, pady=10)
         self.command_area.bind("<Return>", self.handle_command)
+       
+        # Registra la GUI come consumer dei log
+        self.logger.add_consumer(self.log, logging.DEBUG)
 
         # Variabili di stato
-        self.LUNA = None
         self.running = False
-
-        # Avvio della memoria tracemalloc
-        tracemalloc.start()
 
     def log(self, message):
         """Visualizza i messaggi nei log di LUNA"""
@@ -43,37 +39,26 @@ class LunaApp:
         user_input = self.command_area.get().strip()
         if user_input.lower() == "[exit]":
             self.stop_luna()
+        elif user_input.lower() == "help":
+            self.log("Comandi disponibili:\n[exit] - Per uscire dall'app\nhelp - Mostra questo messaggio di aiuto")
         else:
+            # Risposta automatica per qualsiasi comando
             self.log(f"User: {user_input}")
+            self.log("Luna: Non sono ancora programmata per rispondere a questo comando, ma sto imparando!")
         self.command_area.delete(0, tk.END)
 
-    def stop_luna(self):
-        """Ferma LUNA e chiude l'applicazione"""
-        if self.LUNA:
-            self.LUNA.am_i_active = False  # Termina il ciclo di LUNA
-            self.log("Stopping LUNA...")
+    def stopGui(self):
+        """Ferma e chiude l'applicazione"""
+        self.log("Luna AI sta per essere spenta...")
         self.root.quit()
 
-    def start_luna(self):
-        """Avvia il processo di LUNA"""
-        self.LUNA = MySelf()
-        asyncio.run(self.run_luna())
+    def startGui(self):
+        """Avvia l'interfaccia grafica"""
+        self.log("Benvenuto in Luna AI. Scrivi 'help' per vedere i comandi.")
+        self.root.mainloop()
 
-    async def run_luna(self):
-        """Esegui il ciclo di vita di LUNA"""
-        self.running = True
-        try:
-            self.log("Initializing LUNA...")
-            await self.LUNA.async_init()
-            await self.LUNA.wakeUp()
-
-            # Simuliamo il processo di LUNA
-            while self.running:
-                await asyncio.sleep(1)
-                # Logica di aggiornamento LUNA (simulata per ora)
-                self.log("LUNA is processing...")
-        except Exception as e:
-            self.log(f"Error occurred: {e}")
-        finally:
-            self.LUNA.TurnOff()
-            self.log("LUNA has been turned off.")
+# Esegui l'app
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = LunaApp(root)
+    app.start_luna()

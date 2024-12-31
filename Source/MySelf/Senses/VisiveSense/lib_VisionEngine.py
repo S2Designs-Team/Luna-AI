@@ -1,3 +1,8 @@
+import cv2
+from PIL import Image
+import numpy as np
+import asyncio
+from pathlib import Path
 from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
 
 class VisionEngine(ANeuralProcess):
@@ -6,13 +11,17 @@ class VisionEngine(ANeuralProcess):
     #--------------------------------------------------------------------------------------------------
     def __init__(self):
         super().__init__()
+        self.camera = None
+        self.image_processing_tasks = []
 
     def initialize(self):
         """
         Initializes the Vision Engine.
         """
-        self.logger.info("[VisionEngine]::[Initialize]")        
+        self.logger.info("[VisionEngine]::[Initialize]")      
+        self.camera = cv2.VideoCapture(0)  # Apre la webcam (ID 0 di default)  
         self.is_process_initialized = True
+        self.logger.info(f"[{self.__class__.__name__}] Visual Sense Initialized.")
 
     async def handleSelfStimuli(self, message):
         """

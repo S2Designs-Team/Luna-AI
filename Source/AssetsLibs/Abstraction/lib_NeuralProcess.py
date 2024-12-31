@@ -179,28 +179,28 @@ class ANeuralProcess(ABC):
     #--------------------------------------------------------------------------------------------------
     def __init__(self):
         """
-        Inizializza il Processo Neurale caricando automaticamente il file config.yaml 
-        dal percorso dello script.
+        Initializes the Neural Process by automatically loading the config.yaml 
+        file from the script's path.
         """
         # - Logger configuration
         # ----------------------------
         #logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
         self.logger = logging.getLogger(__name__)
 
-        # - Recupera il percorso completo dell'entry point dell'applicazione
-        # ------------------------------------------------------------------
+        # - Retrieves the full path of the application's entry point
+        # ----------------------------------------------------------
         app_entry_frame                     = inspect.stack()[-1]
         main_module                         = app_entry_frame.filename
         self._project_root                  = os.path.dirname(main_module)
 
-        # - Recupera il percorso completo del file del chiamante
-        # ------------------------------------------------------
+        # - Retrieves the full file path of the caller
+        # --------------------------------------------
         caller_frame                        = inspect.stack()[1]
         caller_module                       = inspect.getmodule(caller_frame[0])
         if caller_module and hasattr(caller_module, "__file__"):
             self._script_path = os.path.abspath(caller_module.__file__)
         else:
-            raise RuntimeError("Impossibile determinare il percorso del file della classe concreta.")
+            raise RuntimeError("Unable to determine the file path of the concrete class.")
         self._script_directory              = os.path.dirname(self._script_path)
         self._script_name                   = os.path.basename(self._script_path)
         
@@ -211,28 +211,27 @@ class ANeuralProcess(ABC):
         self.configuration:dict             = self._loadConfiguration()
         self._external_stimuli_directory    = os.path.join(self._project_root, "MySelf\\Senses\\_ExternalStimuli\\")
 
-        self._ininitializationTask          = None
+        self._initializationTask            = None
         self._incomingStimuliEvaluationTask = None
-        # [sni] bla bla bla
-        # self._ininitializationTask          = asyncio.create_task(self.initializeTask())
+
         self.initialize()
         self._stimuli_queue                 = asyncio.Queue()  # Coda per la comunicazione tra processi neurali
 
         
     def _loadConfiguration(self):
         """ 
-        Carica il file di configurazione 'config.yaml' presente nello stesso percorso della classe concreta.
-        :return: Dizionario con la configurazione caricata. 
+        Loads the 'config.yaml' configuration file located in the same path as the concrete class.
+        :return: Dictionary with the loaded configuration. 
         """
         return ConfigurationHelper().loadConfiguration(self.config_directory)
     
     async def _readExternalStimuli(self):
         """
-        Legge i file JSON dalla directory di input e restituisce una lista di stimoli.
-        :return: Lista di dizionari rappresentanti gli stimoli.
+        Reads the JSON files from the input directory and returns a list of stimuli.
+        :return: List of dictionaries representing the stimuli.
         """
         if not self.external_stimuli_directory:
-            raise ValueError(f"[{self.__class__.__name__}] Directory di input per gli stimoli esterni non configurata.")
+            raise ValueError(f"[{self.__class__.__name__}] Input directory for external stimuli not configured.")
         
         stimuli = []
         for filename in os.listdir(self._esternalStimuliDir):
@@ -242,22 +241,22 @@ class ANeuralProcess(ABC):
                     with open(file_path, 'r') as f:
                         stimuli.append(json.load(f))
                 except json.JSONDecodeError as e:
-                    self.logger.error("[%s] Errore nella decodifica di %s: %s", self.__class__.__name__, filename, e)
+                    self.logger.error("[%s] Error while decoding %s: %s", self.__class__.__name__, filename, e)
 
                 except Exception as e:
-                    print(f"[{self.__class__.__name__}] Errore durante la lettura di {filename}: {e}")
+                    print(f"[{self.__class__.__name__}] Error while reading {filename}: {e}")
                 finally:
                     try:
                         if os.Path.exists(file_path):
-                            os.remove(file_path)  # Elimina il file dopo la lettura
-                            self.logger.info("[%s] File di stimolo esterno rimosso %s: %s", self.__class__.__name__, file_path, e)
+                            os.remove(file_path)  # Deletes the file after reading
+                            self.logger.info("[%s] External stimulus file removed %s: %s", self.__class__.__name__, file_path, e)
                     except Exception as e:
-                        self.logger.warning("[%s] Impossibile eliminare il file di stimolo esterno %s: %s", self.__class__.__name__, file_path, e)
+                        self.logger.warning("[%s] Unable to delete the external stimulus file %s: %s", self.__class__.__name__, file_path, e)
         return stimuli
 
     async def _evaluateIncomingStimuli(self):
         """
-        Gestisce la comunicazione asincrona (ad esempio ricevere messaggi).
+        Manages asynchronous communication (e.g., receiving messages).
         """
         while self.am_i_active:
             try:            
@@ -269,14 +268,16 @@ class ANeuralProcess(ABC):
                 await self.handleExternalStimuli()        
 
             except asyncio.CancelledError:
-                self.logger.info("[%s] Valutazione stimoli interrotta.", self.__class__.__name__)
+                self.logger.info("[%s] Stimuli evaluation interrupted.", self.__class__.__name__)
                 break
 
             except Exception as e:
-                self.logger.error("[%s] Errore durante la valutazione degli stimoli: %s", self.__class__.__name__, str(e))
+                self.logger.error("[%s] Error during stimuli evaluation: %s", self.__class__.__name__, str(e))
 
     async def initializeTask(self):
-        # Metodo astratto implementato dalla classe concreta
+        """
+        Metodo astratto implementato dalla classe concreta
+        """
         self._initializationTask            = asyncio.create_task(self.initialize())
         while not self.is_process_initialized:
             try:
@@ -291,60 +292,66 @@ class ANeuralProcess(ABC):
     @abstractmethod
     def initialize(self):
         """
-        Metodo astratto per l'inizializzazione del Processo Neurale.
-        Deve essere implementato dalle classi concrete.
-        Da utilizzare per attribuire i valori di configurazione propri al Processo Neurale 
-        che viene eseguito e ad istanziare componenti impiegati per il proprio funzionamento.
+        [Abstract Method - It must be implemented by concrete classes.]/\n
+        Initializes the Neural Process.
+        This method is used to assign configuration values specific to the Neural 
+        Process being executed and to instantiate components required for its operation.
         """
         pass
 
     @abstractmethod
     async def handleSelfStimuli(self, message):
         """
-        Gestisce lo Stimolo Neurale presente nella Message Queue degli stimoli interiori. 
-        Al momento del richiamo di questo metodo il Processo Neurale 
-        ancora non sa se è uno stimolo che deve tenere in considerazione ed elaborare.
-        Qui dentro deve essere definita la logica check che serve al Processo Neurale per 
-        capire se lo stimolo deve essere considerato e la propria logica di rielaborazione.
-        Se è necessario da qui si può chiamare il metodo sendStimuli che invia un nuovo 
-        stimolo con il risultato della rielaborazione del Processo Neurale effettuata sul 
-        precedente stimolo.
+        [Abstract Method - It must be implemented by concrete classes.]\n
+        Handles the Neural Stimulus present in the Message Queue of internal stimuli.
+        At the moment this method is called, the Neural Process still does not know 
+        if the stimulus is something it needs to consider and process.
+        Inside this method, the check logic must be defined, enabling the Neural 
+        Process to determine whether the stimulus should be considered and its own 
+        reprocessing logic.
+        If necessary, the sendStimuli method can be called from here, which sends a 
+        new stimulus with the result of the Neural Process's reprocessing of the 
+        previous stimulus.
+        :param message: Internal stimulus message.
         """
         pass
 
     @abstractmethod
     async def handleExternalStimuli(self, message):
         """
-        Gestisce lo Stimolo Neurale presente nella Message Queue degli stimoli esterni. 
-        Al momento del richiamo di questo metodo il Processo Neurale 
-        ancora non sa se è uno stimolo che deve tenere in considerazione ed elaborare.
-        Qui dentro deve essere definita la logica check che serve al Processo Neurale per 
-        capire se lo stimolo deve essere considerato e la propria logica di rielaborazione.
-        Qui si deve richiamare il metodo sendStimuli che invia lo stimolo esterno al message queue
-        con per poter essere processato dal Processo Neurale di competenza.
+        [Abstract method - It must be implemented by concrete classes.]\n
+        Handles the Neural Stimulus present in the Message Queue of external stimuli.
+        At the moment this method is called, the Neural Process still does not know 
+        if the stimulus is something it needs to consider and process.
+        Inside this method, the check logic must be defined, enabling the Neural 
+        Process to determine whether the stimulus should be considered and its own 
+        reprocessing logic.
+        Here, the sendStimuli method must be called to send the external stimulus to 
+        the message queue so that it can be processed by the appropriate Neural Process.
+        : param message: External stimulus message.
         """
         pass
 
     async def sendStimuli(self, stimuli):
         """
-        Metodo per la comunicazione tra i vari processi neurali.
-        :param stimuli: Dizionario con i dati elaborati.
+        Method for communication between the various neural processes.
+        :param stimuli: Dictionary with processed data.
         """
         try:
             await self._stimuli_queue.put(stimuli)
-            self.logger.info("[%s] Stimolo inviato: %s", self.__class__.__name__, stimuli)
+            self.logger.info("[%s] Stimuli sent: %s", self.__class__.__name__, stimuli)
         except Exception as e:
-            self.logger.error("[%s] Errore durante l'invio dello stimolo: %s", self.__class__.__name__, e)
+            self.logger.error("[%s] Error during stimuli sending: %s", self.__class__.__name__, e)
 
     async def wakeUp(self):
         """
-        Attiva il Processo Neurale e fa partire il thread della propria logica
-        (definita nella classe concreta all'interno del metodo handleStimuli).
+        Activates the Neural Process and starts the thread for its logic
+        (definded in the concrete class within the handleStimuli method)
         """
-        self.logger.info("[%s] Avvio del Processo Neurale...", self.__class__.__name__)
+        self.logger.info("[%s] Starting the Neural Process...", self.__class__.__name__)
 
         if self._am_i_active:
-            raise RuntimeError("Il Processo Neurale è già attivo.")
+            raise RuntimeError("The Neural Process is already active.")
          
 
         self._am_i_active = True
@@ -354,7 +361,7 @@ class ANeuralProcess(ABC):
 
     async def sleep(self):
         """
-        Mette il Processo Neurale a riposo (ferma la logica di processamento degli stimoli).
+        Sets the Neural Process to rest (stops the stimulus processing logic).
         """
         if not self.am_i_active:
             raise RuntimeError("Neural process is not active.")        

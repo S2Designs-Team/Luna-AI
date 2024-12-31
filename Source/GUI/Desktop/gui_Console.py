@@ -6,8 +6,8 @@ from tkinter import scrolledtext
 from AssetsLibs.Helpers.LogManager.lib_LogManager import LoggerManager
 
 class LunaApp:
-    def __init__(self, root, logger:LoggerManager = None):
-        self.root = root
+    def __init__(self, gui_root, logger:LoggerManager = None):
+        self.root = gui_root
         self.logger = logger
         self.root.title("Luna-AI Console")
         self.root.geometry("800x600")

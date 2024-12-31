@@ -132,14 +132,36 @@ class MySelf():
 
     async def turnOff(self):
         """
+        Spegne MySelf, disattivando tutti i sensi e liberando le risorse.
         """
-        #if not self.am_i_active:
-        #    print("LUNA is already off... just wait until each process finishes to turn off.")
-        #    return
-        #else: 
-        _ = await self.sleep()
-        
-        self.am_i_active = False
+        if not self._is_myself_initialized:
+            self.logger.warning("[MySelf]::[turnOff] MySelf is not initialized yet.")
+            return
+
+        self.logger.info("[MySelf]::[turnOff] Turning off MySelf...")
+
+        # Disabilita ogni senso attivato
+        try:
+            # Esegui il ciclo di spegnimento per ogni senso
+            for sense_name, sense_instance in self._MY_SENSES.items():
+                if hasattr(sense_instance, "turn_off"):
+                    await sense_instance.turn_off()  # Funzione asincrona di spegnimento
+                else:
+                    self.logger.warning(f"[MySelf]::[turnOff] Sense '{sense_name}' has no 'turn_off' method.")
+
+            # Ora MySelf non è più attivo
+            self._am_i_awake = False
+            self._is_myself_initialized = False
+            self.logger.info("[MySelf]::[turnOff] All senses have been turned off successfully.")
+
+        except Exception as e:
+            self.logger.error(f"[MySelf]::[turnOff] Error while turning off MySelf: {e}")
+
+        finally:
+            self.logger.info("[MySelf]::[turnOff] MySelf is now off.")
+
+        # Pulizia e rilascio di altre risorse se necessario (es. file aperti, connessioni, etc.)
+        self._cleanUp()
         return
         
     async def handleSelfStimuli(self, message):

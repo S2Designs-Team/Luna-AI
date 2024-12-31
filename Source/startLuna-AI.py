@@ -43,7 +43,7 @@ async def monitor_current_memory():
     except Exception as monitor_current_memory_exeption:
         Logger_Manager.info(f"An error occurred in monitor_current_memory: {monitor_current_memory_exeption}")
 
-async def run_luna_gui():
+async def run_luna_gui_tkinter():
     """
     GUI mode: starts a graphic user interface Tkinter (if supported).
     """      
@@ -64,8 +64,8 @@ async def run_luna_gui():
         print("Graphic Interfaced Mode...started.")
     except ImportError:
         print("Error: tkinter not installed.")
-    except Exception as e:
-        print(f"Error in run_luna_gui: {e}")
+    except Exception as run_luna_gui_tkinter_exception:
+        print(f"Error in run_luna_gui_tkinter: {run_luna_gui_tkinter_exception}")
 
 async def run_luna_being():
     """
@@ -79,11 +79,8 @@ async def run_luna_being():
         Luna_AI_Process = MySelf(Logger_Manager)
         _ = await Luna_AI_Process.async_init()
         await Luna_AI_Process.wakeUp()
-    except Exception as app_exception:
-        Logger_Manager.error(f"An unexpected error occurred: {app_exception}")
-    finally:
-        await Luna_AI_Process.turnOff()
-        print("Luna has been gracefully turned off.")
+    except Exception as run_luna_being_exception:
+        Logger_Manager.error(f"An unexpected error occurred: {run_luna_being_exception}")
 
 async def handle_mode_async(mode):
     """
@@ -92,34 +89,27 @@ async def handle_mode_async(mode):
     try:
         match mode:
             case "console":
-                # Starts the GUI process
-                #LunaGUI_process   = multiprocessing.Process(target=run_luna_gui)
-                #LunaGUI_process.start()
-                #LunaGUI_process.join()
-                # Starts the Luna Being process
-                #LunaBeing_process = multiprocessing.Process(target=run_luna_being)
-                #LunaBeing_process.start()
-                #LunaBeing_process.join()
-                # Starts the continuous memory allocation monitoring process
-                #AppMemory_process = multiprocessing.Process(target=monitor_current_memory)
-                #AppMemory_process.start()
-                #AppMemory_process.join()
                 print ("NOT YET IMPLEMENTED")
+
             case "gui":
-                Tasks.append(asyncio.create_task(run_luna_gui()))
+                Tasks.append(asyncio.create_task(run_luna_gui_tkinter()))
                 Tasks.append(asyncio.create_task(run_luna_being()))
                 Tasks.append(asyncio.create_task(monitor_current_memory()))
                 await asyncio.gather(*Tasks)
+
             case "help":
                 show_command_help()
+
             case _:
                 print("Parameter(s) not valid. Use 'gui' to start Luna in Graphic Interfaced Mode or 'console' for the Console Mode.")
                 sys.exit(1)
-    except Exception as app_exception:
-        Logger_Manager.error(f"An unexpected error occurred: {app_exception}")
+    
+    except Exception as handle_mode_async_exception:
+        Logger_Manager.error(f"An unexpected error occurred: {handle_mode_async_exception}")
     finally:
-        for task in Tasks:
-            task.cancel()  # Cancels all the tasks                
+        # skipcq: PYL-W0621
+        for processed_task in Tasks:
+            processed_task.cancel()  # Cancels all the tasks                
 
 def show_command_help():
     """
@@ -147,8 +137,8 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         Logger_Manager.info("Manual interruption detected. Closing the program...")
 
-        for task in Tasks:
-            task.cancel()  # Properly clear all the tasks.
+        for processed_task in Tasks:
+            processed_task.cancel()  # Properly clear all the tasks.
 
         # Closing the Gui_Thread if it is running
         if Gui_Thread and Gui_Thread.is_alive():

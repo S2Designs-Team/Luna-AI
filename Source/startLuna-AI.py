@@ -11,14 +11,16 @@ from GUI.Desktop.gui_Console import LunaApp
 from AssetsLibs.Helpers.LogManager.lib_LogManager import LoggerManager
 from AssetsLibs.Helpers.EnvironmentInfo.GPU.lib_GPU_Info import GPUInfo
 from MySelf.lib_MySelf import MySelf
+from MySelf.lib_LunaAI import LunaAI
+from AssetsLibs.Abstraction.lib_BasicProcess import BasicProcess
 
 # Starts the monitoring of the memory allocation
-tracemalloc.start()
+#tracemalloc.start()
 
 # Global termination Event
 shutdown_event = asyncio.Event()
 # LUNA AI Main Process
-Luna_AI_Process:MySelf       = None 
+Luna_AI_Process:BasicProcess = None 
 # Centralized Logger
 Logger_Manager:LoggerManager = None
 # App Global main Tasks
@@ -73,12 +75,16 @@ async def run_luna_being():
     """ 
     global Luna_AI_Process
     #Use GPUInfo to retrieve the GPU device"
-    #my_process_unit_device = GPUInfo.check_gpu_availability()    
+    my_process_unit_device = GPUInfo.check_gpu_availability()    
 
     try:
-        Luna_AI_Process = MySelf(Logger_Manager)
+        Luna_AI_Process = LunaAI()
+        Luna_AI_Process.start()
+        await Luna_AI_Process.wakeUp()
+        """
         _ = await Luna_AI_Process.async_init()
         await Luna_AI_Process.wakeUp()
+        """
     except Exception as run_luna_being_exception:
         Logger_Manager.error(f"An unexpected error occurred: {run_luna_being_exception}")
 
@@ -94,7 +100,7 @@ async def handle_mode_async(mode):
             case "gui":
                 Tasks.append(asyncio.create_task(run_luna_gui_tkinter()))
                 Tasks.append(asyncio.create_task(run_luna_being()))
-                Tasks.append(asyncio.create_task(monitor_current_memory()))
+                #Tasks.append(asyncio.create_task(monitor_current_memory()))
                 await asyncio.gather(*Tasks)
 
             case "help":
@@ -119,7 +125,7 @@ def show_command_help():
 
 if __name__ == "__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
-
+    
     Logger_Manager = LoggerManager()
     Logger_Manager.info("╔═════════════════════════════════════════════════════════════════════════════╗")
     Logger_Manager.info("║ Welcome to Luna-AI project!                                                 ║")
@@ -156,6 +162,7 @@ if __name__ == "__main__":
         Logger_Manager.error(f"An unexpected error occurred: {app_exception}")
 
     finally:
+        """
         # At the end (before the exit execution has been completed), takes a snapshot of tracemalloc
         my_final_snapshot     = tracemalloc.take_snapshot()
         my_final_memory_stats = my_final_snapshot.statistics('lineno')
@@ -168,3 +175,4 @@ if __name__ == "__main__":
             print(my_processed_top_final_memory_stat)
 
         print("[INFO] All resources have been correctly deallocated.")
+        """

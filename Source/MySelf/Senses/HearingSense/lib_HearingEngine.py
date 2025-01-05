@@ -6,7 +6,7 @@ from pydub.playback import play
 import pyaudio
 import speech_recognition as SpeechRecognition
 
-from AssetsLibs.Abstraction.lib_NeuralProcess                                     import ANeuralProcess
+from AssetsLibs.Abstraction.lib_ANeuralProcess                                    import ANeuralProcess
 from AssetsLibs.Helpers.EnvironmentInfo.INPUT_AUDIO_DEVICES.lib_InputAudioDevices import InputAudioDevices
 
 

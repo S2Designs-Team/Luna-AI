@@ -9,7 +9,7 @@ class LoggerManager:
 
         # Console Handler
         #gui_console_handler = logging.StreamHandler()
-       # gui_console_handler.setLevel(logging.DEBUG)
+        #gui_console_handler.setLevel(logging.DEBUG)
         #gui_console_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
         #gui_console_handler.setFormatter(gui_console_formatter)
         #self.logger.addHandler(gui_console_handler)
@@ -33,6 +33,12 @@ class LoggerManager:
         handler_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
         handler.setFormatter(handler_formatter)        
         self.logger.addHandler(handler)
+
+    def getLogger(self, name=None):
+        if not name or isinstance(name, str) and name == logging.root.name:
+            return logging.root
+        return logging.getLogger(name)
+
 
     def log(self, level, message):
         """Logga un messaggio"""

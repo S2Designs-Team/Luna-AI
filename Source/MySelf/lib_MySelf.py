@@ -1,4 +1,4 @@
-from AssetsLibs.Abstraction.lib_NeuralProcess           import ANeuralProcess
+from AssetsLibs.Abstraction.lib_ANeuralProcess          import ANeuralProcess
 from AssetsLibs.Helpers.Configuration.lib_Configuration import ConfigurationHelper
 from MySelf.Senses.HearingSense.lib_HearingEngine       import HearingEngine
 from MySelf.Senses.VisiveSense.lib_VisionEngine         import VisionEngine

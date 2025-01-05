@@ -1,11 +1,11 @@
-import cv2
+#import cv2
 from PIL import Image
 import numpy as np
 import asyncio
 from pathlib import Path
-from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
+from AssetsLibs.Abstraction.lib_NeuralProcess import NeuralProcess
 
-class VisionEngine(ANeuralProcess):
+class VisionEngine(NeuralProcess):
 
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------

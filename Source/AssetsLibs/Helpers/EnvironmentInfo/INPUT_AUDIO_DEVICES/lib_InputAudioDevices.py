@@ -92,8 +92,15 @@ class InputAudioDevices:
             audio.terminate()
 
     @staticmethod
-    def get_device_infos(index = 0):
+    def getDeviceInfos(index = 0):
         """
+        Retrieves information for a specified input audio device.
+        Args:
+            index (int, optional): The index of the input audio device to retrieve information for. Defaults to 0.
+        Returns:
+            dict: A dictionary containing information about the specified input audio device.
+        Raises:
+            Exception: If there is an error retrieving the information for the specified input audio device.
         """
         try:
             my_input_audio_devices_manager = pyaudio.PyAudio()

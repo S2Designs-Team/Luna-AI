@@ -10,18 +10,18 @@ class ConfigurationHelper():
         """
         self.yaml = yaml
 
-    def loadConfiguration(self, config_dir):
+    def loadConfiguration(self, par_config_path):
         """
         Carica un file `config.yaml` dalla directory specificata.
         
-        :param config_dir: Directory contenente il file `config.yaml`.
-        :return: Dizionario con i parametri di configurazione.
+        :param par_config_path: The path of the configuration file.
+        :return: A dictionary containing all the configuration parameters.
         """
-        config_path = os.path.join(config_dir, "config.yaml")
-        if not os.path.exists(config_path):
-            raise FileNotFoundError(f"Configurazione non trovata: {config_path}")
+        if not os.path.exists(par_config_path):
+            # Restituisci un dizionario vuoto se il file non esiste
+            return {}
         
-        with open(config_path, "r") as file:
+        with open(par_config_path, "r") as file:
             return self.yaml.safe_load(file)
         
     def saveConfiguration(self, config_dir):

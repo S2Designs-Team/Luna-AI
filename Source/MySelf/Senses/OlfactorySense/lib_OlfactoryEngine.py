@@ -1,6 +1,6 @@
-from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
+from AssetsLibs.Abstraction.lib_NeuralProcess import NeuralProcess
 
-class OlfactoryEngine(ANeuralProcess):
+class OlfactoryEngine(NeuralProcess):
 
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------

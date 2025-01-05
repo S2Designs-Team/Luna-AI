@@ -19,6 +19,7 @@
 #  5. Perform a similarity search on the vector database to find similar documents
 #  6. Retrieve the similar documents and present them to the user
 ## run pip install -r requirements.txt to install the required packages
+
 import ollama
 ollama.pull("nomic-embbed-text")
 
@@ -38,6 +39,7 @@ from langchain_core.runnables             import RunnablePassthrough
 from langchain_ollama                     import ChatOllama
 
 class PDF_RAG():
+    _LLM:ChatOllama            = None
     _doc_path:str              = None
     _llm_model                 = None
     _current_document_path:str = None
@@ -55,6 +57,8 @@ class PDF_RAG():
         self._embedding_model_name    = "nomics-embbed-text"
         self._current_document_chunks = []
         self._vector_db               = par_vector_DB
+        # Setup our model to use
+        self._LLM                     = ChatOllama(self._llm_model)
         pass
 
     def ingestDocument(self, par_doc_path:str = None):
@@ -103,6 +107,27 @@ class PDF_RAG():
         """
         Perform a similarity search on the vector database to find similar documents
         """
+        # A simple technique to generate multiple questions from a singlr prompt
+        # baserd on those questions, getting the best of both worlds.
+        QUERY_PROMPT = PromptTemplate(
+            input_variables = ["question"],
+            template        = """
+                              You are an AI language model assistant. Your task is to
+                              generate five different questions of the given user question
+                              to retrieve relevant documents from a vector database. 
+                              By generating nultiple perspectives on the user question, your
+                              goal is to help the user to overcome some of the limitations of
+                              the distance-based similarity search. Provide these alternative 
+                              questions separated by newlines.
+                              Original question: {question}
+                              """,
+        )
+        retriever = MultiQueryRetriever.from_llm(
+            par_vector_DB.as_retriever(),
+            self._LLM,
+            prompt=QUERY_PROMPT,
+        )
+
         similar_documents = par_vector_DB.search("shortTermMemoryRag", self._current_document_chunks[0], top_k=5)
         print("Retrieving similar documents... Done")
         print(f"Similar documents: {similar_documents}")

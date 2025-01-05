@@ -1,6 +1,6 @@
-from AssetsLibs.Abstraction.lib_NeuralProcess import ANeuralProcess
+from AssetsLibs.Abstraction.lib_NeuralProcess import NeuralProcess
 
-class TouchEngine(ANeuralProcess):
+class TouchEngine(NeuralProcess):
 
     #- [CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------------

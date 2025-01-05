@@ -103,102 +103,102 @@ LUNA-AI/
 │   │   │   │                                             #
 │   │   │   └── Layers/                                   #
 │   │   │       ├── AutoReflection/                       #
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_AutoReflectionLayer.py            # Layer of Luna-AI's personal and introspective reflections.
-│   │   │       │   └── README.md                             # Introduction document to the logical layer of Luna-AI's personal and introspective reflections.
-│   │   │       │                                             #
-│   │   │       ├── Cognitive/                                #
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_CognitiveLayer.py                 # Luna-AI's cognitive layer.
-│   │   │       │   └── README.md                             # Introduction document to Luna-AI's cognitive logical layer.
-│   │   │       │                                             #
-│   │   │       ├── Emotional/                                #
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_EmotionalLayer.py                 # Luna-AI's emotional/empathetic layer.
-│   │   │       │   └── README.md                             # Introduction document to Luna-AI's emotional/empathetic layer.
-│   │   │       │                                             #
-│   │   │       ├── Imaginary/                                #
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_ImaginaryLayer.py                 # Luna-AI's imagination layer.
-│   │   │       │   └── README.md                             # Introduction document to Luna-AI's imaginary thoughts layer
-│   │   │       │                                             #
-│   │   │       ├── Logical/                                  # 
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_LogicalLayer.py                   # Luna-AI's logical thoughts layer.
-│   │   │       │   └── README.md                             # Introduction document to Luna-AI's logical thoughts layer.
-│   │   │       │                                             #
-│   │   │       ├── Mnemonic/                                 #
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_MnemonicLayer.py                  # Luna-AI's mnemonic thoughts layer.
-│   │   │       │   └── README.md                             # Introduction document to Luna-AI's mnemonic thoughts layer.
-│   │   │       │                                             #
-│   │   │       ├── Subconscious/                             #
-│   │   │       │   ├── __init__.py                           #
-│   │   │       │   ├── config.yaml                           #
-│   │   │       │   ├── lib_SubconsciousLayer.py              # Luna-AI's unconscious thoughts layer.
-│   │   │       │   └── README.md                             # Introduction document to Luna-AI's unconscious thoughts layer.
-│   │   │       │                                             #
-│   │   │       └── README.md                                 #
-│   │   │                                                     #
-│   │   ├── Senses/                                           #
-│   │   │   ├── _ExternalStimuli/                             # 
-│   │   │   │   ├── Aptic/                                    #
-│   │   │   │   │   ├── __init__.py                           #
-│   │   │   │   │   └── README.md                             #
-│   │   │   │   │                                             #
-│   │   │   │   ├── Audible/                                  #
-│   │   │   │   │   ├── __init__.py                           #
-│   │   │   │   │   └── README.md                             #
-│   │   │   │   │                                             #
-│   │   │   │   ├── Olfactory/                                #
-│   │   │   │   │   ├── __init__.py                           #
-│   │   │   │   │   └── README.md                             #
-│   │   │   │   │                                             #
-│   │   │   │   ├── Visive/                                   #
-│   │   │   │   │   ├── __init__.py                           #
-│   │   │   │   │   └── README.md                             #
-│   │   │   │   │                                             #
-│   │   │   │   └── __init__.py                               #
-│   │   │   │                                                 #
-│   │   │   ├── HearingSense/                                 #
-│   │   │   │   ├── __init__.py                               #
-│   │   │   │   ├── config.yaml                               #
-│   │   │   │   ├── lib_HearingEngine.py                      #
-│   │   │   │   └── README.md                                 #
-│   │   │   │                                                 #
-│   │   │   ├── OlfactorySense/                               #
-│   │   │   │   ├── __init__.py                               #
-│   │   │   │   ├── config.yaml                               #
-│   │   │   │   ├── lib_OlfactoryEngine.py                    #
-│   │   │   │   └── README.md                                 #
-│   │   │   │                                                 #
-│   │   │   ├── SpeechSense/                                  #
-│   │   │   │   ├── __init__.py                               #
-│   │   │   │   ├── config.yaml                               #
-│   │   │   │   ├── lib_SpeechEngine.py                       #
-│   │   │   │   └── README.md                                 #
-│   │   │   │                                                 #
-│   │   │   ├── TouchSense/                                   #
-│   │   │   │   ├── __init__.py                               #
-│   │   │   │   ├── config.yaml                               #
-│   │   │   │   ├── lib_TouchEngine.py                        #
-│   │   │   │   └── README.md                                 #
-│   │   │   │                                                 #
-│   │   │   └── VisiveSense/                                  #
-│   │   │       ├── __init__.py                               #
-│   │   │       ├── config.yaml                               #
-│   │   │       ├── lib_VisionEngine.py                       #
-│   │   │       └── README.md                                 #
-│   │   │                                                     #
-│   │   └── Spine/                                            #
-│   │       └── _MovementStimuli/                             #
-│   │           └── __init__.py                               #
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_AutoReflectionLayer.py        # Layer of Luna-AI's personal and introspective reflections.
+│   │   │       │   └── README.md                         # Introduction document to the logical layer of Luna-AI's personal and introspective reflections.
+│   │   │       │                                         #
+│   │   │       ├── Cognitive/                            #
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_CognitiveLayer.py             # Luna-AI's cognitive layer.
+│   │   │       │   └── README.md                         # Introduction document to Luna-AI's cognitive logical layer.
+│   │   │       │                                         #
+│   │   │       ├── Emotional/                            #
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_EmotionalLayer.py             # Luna-AI's emotional/empathetic layer.
+│   │   │       │   └── README.md                         # Introduction document to Luna-AI's emotional/empathetic layer.
+│   │   │       │                                         #
+│   │   │       ├── Imaginary/                            #
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_ImaginaryLayer.py             # Luna-AI's imagination layer.
+│   │   │       │   └── README.md                         # Introduction document to Luna-AI's imaginary thoughts layer
+│   │   │       │                                         #
+│   │   │       ├── Logical/                              # 
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_LogicalLayer.py               # Luna-AI's logical thoughts layer.
+│   │   │       │   └── README.md                         # Introduction document to Luna-AI's logical thoughts layer.
+│   │   │       │                                         #
+│   │   │       ├── Mnemonic/                             #
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_MnemonicLayer.py              # Luna-AI's mnemonic thoughts layer.
+│   │   │       │   └── README.md                         # Introduction document to Luna-AI's mnemonic thoughts layer.
+│   │   │       │                                         #
+│   │   │       ├── Subconscious/                         #
+│   │   │       │   ├── __init__.py                       #
+│   │   │       │   ├── config.yaml                       #
+│   │   │       │   ├── lib_SubconsciousLayer.py          # Luna-AI's unconscious thoughts layer.
+│   │   │       │   └── README.md                         # Introduction document to Luna-AI's unconscious thoughts layer.
+│   │   │       │                                         #
+│   │   │       └── README.md                             #
+│   │   │                                                 #
+│   │   ├── Senses/                                       #
+│   │   │   ├── _ExternalStimuli/                         # 
+│   │   │   │   ├── Aptic/                                #
+│   │   │   │   │   ├── __init__.py                       #
+│   │   │   │   │   └── README.md                         #
+│   │   │   │   │                                         #
+│   │   │   │   ├── Audible/                              #
+│   │   │   │   │   ├── __init__.py                       #
+│   │   │   │   │   └── README.md                         #
+│   │   │   │   │                                         #
+│   │   │   │   ├── Olfactory/                            #
+│   │   │   │   │   ├── __init__.py                       #
+│   │   │   │   │   └── README.md                         #
+│   │   │   │   │                                         #
+│   │   │   │   ├── Visive/                               #
+│   │   │   │   │   ├── __init__.py                       #
+│   │   │   │   │   └── README.md                         #
+│   │   │   │   │                                         #
+│   │   │   │   └── __init__.py                           #
+│   │   │   │                                             #
+│   │   │   ├── HearingSense/                             #
+│   │   │   │   ├── __init__.py                           #
+│   │   │   │   ├── config.yaml                           #
+│   │   │   │   ├── lib_HearingEngine.py                  #
+│   │   │   │   └── README.md                             #
+│   │   │   │                                             #
+│   │   │   ├── OlfactorySense/                           #
+│   │   │   │   ├── __init__.py                           #
+│   │   │   │   ├── config.yaml                           #
+│   │   │   │   ├── lib_OlfactoryEngine.py                #
+│   │   │   │   └── README.md                             #
+│   │   │   │                                             #
+│   │   │   ├── SpeechSense/                              #
+│   │   │   │   ├── __init__.py                           #
+│   │   │   │   ├── config.yaml                           #
+│   │   │   │   ├── lib_SpeechEngine.py                   #
+│   │   │   │   └── README.md                             #
+│   │   │   │                                             #
+│   │   │   ├── TouchSense/                               #
+│   │   │   │   ├── __init__.py                           #
+│   │   │   │   ├── config.yaml                           #
+│   │   │   │   ├── lib_TouchEngine.py                    #
+│   │   │   │   └── README.md                             #
+│   │   │   │                                             #
+│   │   │   └── VisiveSense/                              #
+│   │   │       ├── __init__.py                           #
+│   │   │       ├── config.yaml                           #
+│   │   │       ├── lib_VisionEngine.py                   #
+│   │   │       └── README.md                             #
+│   │   │                                                 #
+│   │   └── Spine/                                        #
+│   │       └── _MovementStimuli/                         #
+│   │           └── __init__.py                           #
 │   │                                                     #
 │   └── startLuna-AI.py                                   #
 │                                                         #

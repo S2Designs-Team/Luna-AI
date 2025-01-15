@@ -263,6 +263,9 @@ class HearingSense(NeuralProcess):
             self.LOGGER.error("[HearingSense]::[initialize] => Error during initialization: %s", e, exc_info=True)
             self.is_process_initialized = False
 
+
+    #- [CONCRETIZATION OF ABSTRACT METHODS SPECIFIC TO THIS CLASS]
+    #--------------------------------------------------------------------------------------------------
     async def elaboration(self):
         """
         Main elaboration logic for NeuralProcess.
@@ -285,8 +288,6 @@ class HearingSense(NeuralProcess):
             self.LOGGER.error(f"Error during neural process elaboration: {e}")
             raise e
 
-    #- [CONCRETIZATION OF ABSTRACT METHODS SPECIFIC TO THIS CLASS]
-    #--------------------------------------------------------------------------------------------------
     async def processInputs(self):
         """
         Processes input data and prepares it for neural network inference.
@@ -348,54 +349,57 @@ class HearingSense(NeuralProcess):
         Raises:
             ValueError: If the input audio sensor index is not set in the configuration file.
         """
-        #----------------------------
-        #- Recording parameters
-        #----------------------------
-        self.conf_input_audio_sensor_index                   = self.getConfigValue("input_audio_sensor", "input_audio_sensor_index")
-        self.conf_input_audio_sensor_format                  = self.getConfigValue("input_audio_sensor", "input_audio_sensor_bits_format")
-        self.conf_input_audio_sensor_channels                = self.getConfigValue("input_audio_sensor", "input_audio_sensor_channels")
-        self.conf_input_audio_sensor_rate                    = self.getConfigValue("input_audio_sensor", "input_audio_sensor_rate")
-        self.conf_input_audio_sensor_chunk                   = self.getConfigValue("input_audio_sensor", "input_audio_sensor_chunk")
-        self.conf_input_audio_sensor_max_record_duration     = self.getConfigValue("input_audio_sensor", "input_audio_sensor_max_record_duration")
-        self.conf_input_audio_sensor_output_path             = os.path.join(self.external_stimuli_directory, "Audible\\", (self.getConfigValue("input_audio_sensor", "input_audio_sensor_output_path")))
-        #------------------------------------        
-        #- Speech Recognition parameters
-        #------------------------------------
-        self.conf_speech_recognitiion_energy_threshold       = self.getConfigValue("speech_recognition", "energy_threshold")
-        self.conf_speech_recognitiion_dyn_energy_threshold   = self.getConfigValue("speech_recognition", "dynamic_energy_threshold")
-        self.conf_speech_recognitiion_dyn_energy_adj_damping = self.getConfigValue("speech_recognition", "dynamic_energy_adjustment_damping")
-        self.conf_speech_recognitiion_dyn_energy_ratio       = self.getConfigValue("speech_recognition", "dynamic_energy_ratio")
-        self.conf_speech_recognitiion_pause_threshold        = self.getConfigValue("speech_recognition", "pause_threshold")
-        self.conf_speech_recognitiion_operation_timeout      = self.getConfigValue("speech_recognition", "operation_timeout")
-        #--------------------------------        
-        #- Speech To Text parameters
-        #--------------------------------
-        self.STT_MODEL_NAME                                  = self.getConfigValue("transcription", "whisper_model_name")
-        #-------------------------------------        
-        #- Selected input audio device name
-        #-------------------------------------
-        if self.conf_input_audio_sensor_index is None:
-            self.LOGGER.error("[HearingEngine] => No INPUT_AUDIO_SENSOR_INDEX configuration parameter has been setted in the config.yaml file. Please provide it and retry!")
-            return
-        self._selected_input_audio_device_info                              = InputAudioDevices.getDeviceInfos(self.conf_input_audio_sensor_index)
+        try: 
+            #----------------------------
+            #- Recording parameters
+            #----------------------------
+            self.conf_input_audio_sensor_index                   = self.getConfigValue("input_audio_sensor", "input_audio_sensor_index")
+            self.conf_input_audio_sensor_format                  = self.getConfigValue("input_audio_sensor", "input_audio_sensor_bits_format")
+            self.conf_input_audio_sensor_channels                = self.getConfigValue("input_audio_sensor", "input_audio_sensor_channels")
+            self.conf_input_audio_sensor_rate                    = self.getConfigValue("input_audio_sensor", "input_audio_sensor_rate")
+            self.conf_input_audio_sensor_chunk                   = self.getConfigValue("input_audio_sensor", "input_audio_sensor_chunk")
+            self.conf_input_audio_sensor_max_record_duration     = self.getConfigValue("input_audio_sensor", "input_audio_sensor_max_record_duration")
+            self.conf_input_audio_sensor_output_path             = os.path.join(self.external_stimuli_directory, "Audible\\", (self.getConfigValue("input_audio_sensor", "input_audio_sensor_output_path")))
+            #------------------------------------        
+            #- Speech Recognition parameters
+            #------------------------------------
+            self.conf_speech_recognitiion_energy_threshold       = self.getConfigValue("speech_recognition", "energy_threshold")
+            self.conf_speech_recognitiion_dyn_energy_threshold   = self.getConfigValue("speech_recognition", "dynamic_energy_threshold")
+            self.conf_speech_recognitiion_dyn_energy_adj_damping = self.getConfigValue("speech_recognition", "dynamic_energy_adjustment_damping")
+            self.conf_speech_recognitiion_dyn_energy_ratio       = self.getConfigValue("speech_recognition", "dynamic_energy_ratio")
+            self.conf_speech_recognitiion_pause_threshold        = self.getConfigValue("speech_recognition", "pause_threshold")
+            self.conf_speech_recognitiion_operation_timeout      = self.getConfigValue("speech_recognition", "operation_timeout")
+            #--------------------------------        
+            #- Speech To Text parameters
+            #--------------------------------
+            self.STT_MODEL_NAME                                  = self.getConfigValue("transcription", "whisper_model_name")
+            #-------------------------------------        
+            #- Selected input audio device name
+            #-------------------------------------
+            if self.conf_input_audio_sensor_index is None:
+                self.LOGGER.error("[HearingEngine] => No INPUT_AUDIO_SENSOR_INDEX configuration parameter has been setted in the config.yaml file. Please provide it and retry!")
+                return
+            self._selected_input_audio_device_info                              = InputAudioDevices.getDeviceInfos(self.conf_input_audio_sensor_index)
 
-        self.LOGGER.info("[HearingEngine]::[parseConfiguration] => reading  '%s'", self.CONFIG_PATH)        
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::INDEX:.................  %s" , self.conf_input_audio_sensor_index)
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::NAME::................. '%s'", self._selected_input_audio_device_info['name'] )          
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::FORMAT::...............  %s" , self.conf_input_audio_sensor_format)
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::CHANNELS:..............  %s" , self.conf_input_audio_sensor_channels)
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::RATE:..................  %s" , self.conf_input_audio_sensor_rate)
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::CHUNK:.................  %s" , self.conf_input_audio_sensor_chunk)
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::MAX_RECORD_DURATION:...  %s" , self.conf_input_audio_sensor_max_record_duration)
-        self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::OUTPUT_PATH:........... '%s'", self.conf_input_audio_sensor_output_path)
-        self.LOGGER.debug("    ├ STT_MODEL::NAME:........................... '%s'", self.STT_MODEL_NAME)
-        self.LOGGER.debug("    ├ SPEECH RECOGNITION::ENERGY_THRESHOLD:......  %s" , self.conf_speech_recognitiion_energy_threshold)
-        self.LOGGER.debug("    ├ SPEECH RECOGNITION::DYN_ENERGY_THRESHOLD:..  %s" , self.conf_speech_recognitiion_dyn_energy_threshold)
-        self.LOGGER.debug("    ├ SPEECH RECOGNITION::DYN_ENERGY_ADJ_DAMPING:  %s" , self.conf_speech_recognitiion_dyn_energy_adj_damping)
-        self.LOGGER.debug("    ├ SPEECH RECOGNITION::DYN_ENERGY_RATIO:......  %s" , self.conf_speech_recognitiion_dyn_energy_ratio)
-        self.LOGGER.debug("    ├ SPEECH RECOGNITION::PAUSE_THRESHOLD:.......  %s" , self.conf_speech_recognitiion_pause_threshold)
-        self.LOGGER.debug("    ├ SPEECH RECOGNITION::OPERATION_TIMEOUT:.....  %s" , self.conf_speech_recognitiion_operation_timeout)
-
+            self.LOGGER.info("[HearingEngine]::[parseConfiguration] => reading   '%s'", self.config_path)        
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::INDEX:.................  %s" , self.conf_input_audio_sensor_index)
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::NAME::................. '%s'", self._selected_input_audio_device_info['name'] )          
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::FORMAT::...............  %s" , self.conf_input_audio_sensor_format)
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::CHANNELS:..............  %s" , self.conf_input_audio_sensor_channels)
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::RATE:..................  %s" , self.conf_input_audio_sensor_rate)
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::CHUNK:.................  %s" , self.conf_input_audio_sensor_chunk)
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::MAX_RECORD_DURATION:...  %s" , self.conf_input_audio_sensor_max_record_duration)
+            self.LOGGER.debug("    ├ INPUT AUDIO SENSOR::OUTPUT_PATH:........... '%s'", self.conf_input_audio_sensor_output_path)
+            self.LOGGER.debug("    ├ STT_MODEL::NAME:........................... '%s'", self.STT_MODEL_NAME)
+            self.LOGGER.debug("    ├ SPEECH RECOGNITION::ENERGY_THRESHOLD:......  %s" , self.conf_speech_recognitiion_energy_threshold)
+            self.LOGGER.debug("    ├ SPEECH RECOGNITION::DYN_ENERGY_THRESHOLD:..  %s" , self.conf_speech_recognitiion_dyn_energy_threshold)
+            self.LOGGER.debug("    ├ SPEECH RECOGNITION::DYN_ENERGY_ADJ_DAMPING:  %s" , self.conf_speech_recognitiion_dyn_energy_adj_damping)
+            self.LOGGER.debug("    ├ SPEECH RECOGNITION::DYN_ENERGY_RATIO:......  %s" , self.conf_speech_recognitiion_dyn_energy_ratio)
+            self.LOGGER.debug("    ├ SPEECH RECOGNITION::PAUSE_THRESHOLD:.......  %s" , self.conf_speech_recognitiion_pause_threshold)
+            self.LOGGER.debug("    ├ SPEECH RECOGNITION::OPERATION_TIMEOUT:.....  %s" , self.conf_speech_recognitiion_operation_timeout)
+        except Exception as e:
+            raise RuntimeError(f"\n[self.class_name]::[__parseConfiguration] => {e}")
+        
     def __initialize_speech_to_text(self):
         """
         """

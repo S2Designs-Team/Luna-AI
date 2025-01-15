@@ -1,11 +1,12 @@
 @echo off
 REM Copyright 2022 S2DesignsTeam (anonimo).
 REM
-REM Licensed under the Apache License, Version 2.0 (the "License");
+REM Licensed under the Creative Common Attribution-NonCommercial 4.0 
+REM International (the "License");
 REM you may not use this file except in compliance with the License.
 REM You may obtain a copy of the License at
 REM
-REM      http://www.apache.org/licenses/LICENSE-2.0
+REM      https://creativecommons.org/licenses/by/4.0/legalcode.txt
 REM 
 REM The above copyright notice and this permission notice shall be included 
 REM in all copies or substantial portions of the Software.

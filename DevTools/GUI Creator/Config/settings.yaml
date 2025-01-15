@@ -1,0 +1,27 @@
+main_window:
+  title:          "[S2 Designs team] GUI Creator for python - Qt5 WYSIWYG"
+  canvas_bg:      "white"
+  top:            0
+  left:           0
+  width:          1024
+  height:         720
+  panel_bg:       "lightgray"
+  grid_size:      10
+
+main_toolbox:
+  top:            0
+  left:           0
+  width:          200
+  height:         {main_window.height}
+
+main_designer_area:
+  resources:      [
+    ("bg_image" = ".\resources\main_designer_area.res.bg_image.png")
+  ]
+  top:            0
+  left:           200
+  width:          {main_window.width - main_toolbox.width}
+  height:         {}
+  bg_color:       "white"
+  bg_image:       {main_designer_area.resources.}
+  anchor:         top|left|right|bottom

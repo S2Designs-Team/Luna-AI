@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="component_icons">
+    <file>Calendar.png</file>
+    <file>check box.png</file>
+    <file>Date Picker.png</file>
+    <file>Draw Panel.png</file>
+    <file>image.png</file>
+    <file>Label.png</file>
+    <file>List Box.png</file>
+    <file>Radio Button.png</file>
+    <file>Text Box.png</file>
+    <file>Toggle Button.png</file>
+  </qresource>
+</RCC>

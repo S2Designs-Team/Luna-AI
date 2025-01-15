@@ -26,6 +26,16 @@
             ]
         },
         {
+            "name": "DEV-Debug: GUI Creator",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./DevTools/Gui Creator/GuiDesigner.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "preLaunchTask": "clear-terminal",
+            "args": []
+        },
+        {
             "name": "Debug-File",
             "type": "debugpy",
             "request": "launch",

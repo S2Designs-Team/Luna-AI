@@ -8,13 +8,23 @@ MySelf
 │   │
 │   ├── Knowledge/
 │   │   │
+│   │   ├── AuditoryMem/
+│   │   │
+│   │   ├── ConceptualMem/
+│   │   │
 │   │   ├── EmotionalMem/
 │   │   │
 │   │   ├── LongTermMem/
 │   │   │
-│   │   └── ShortTermMem/
+│   │   ├── SelfExperiencesMem/
+│   │   │
+│   │   ├── ShortTermMem/
+│   │   │
+│   │   └── VisualMem/
 │   │
 │   └── Layers/
+│       │
+│       ├── AutoReflection/
 │       │
 │       ├── Cognitive/
 │       │
@@ -26,9 +36,7 @@ MySelf
 │       │
 │       ├── Mnemonic/
 │       │
-│       ├── AutoReflection/
-│       │
-│       └── Subconsciou/
+│       └── Subconscious/
 │
 ├── Senses/
 │   │
@@ -42,13 +50,13 @@ MySelf
 │   │   │
 │   │   └── Visive/
 │   │
-│   ├── ApticSense/
-│   │
 │   ├── HearingSense/
 │   │
 │   ├── OlfactorySense/
 │   │
 │   ├── SpeechSense/
+│   │
+│   ├── TouchSense/
 │   │
 │   └── VisiveSense/
 │   

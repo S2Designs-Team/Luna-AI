@@ -7,91 +7,90 @@ from abc                                                       import ABC, abstr
 import sys
 from AssetsLibs.Helpers.LogManager.lib_LogManager              import LoggerManager
 from AssetsLibs.Helpers.Configuration.lib_Configuration        import ConfigurationHelper
-from AssetsLibs.Helpers.MessageLogManagement.lib_ProcessLogger import ProcessLogger  # Aggiunto import per ProcessLogger
+from AssetsLibs.Helpers.MessageLogManagement.lib_ProcessLogger import ProcessLogger  # Added import for ProcessLogger
 
 class BasicProcess(ABC):
 
     #- [PRIVATE OBJECTS]
     #--------------------------------------------------------------------------------------------------
-    __logger:ProcessLogger             = None   # Logger specifico
-    _process:multiprocessing.Process   = None   # Oggetto processo
+    __logger:ProcessLogger             = None   # Specific logger
+    __process:multiprocessing.Process  = None   # Process object
 
     #- [PRIVATE FIELDS]
     #--------------------------------------------------------------------------------------------------
-    _project_root:str                  = None   # Directory root del progetto (Directory)
-    _concrete_class_name:str           = None   # Nome della classe concreta (ClassName)
-    _script_directory:str              = None   # Directory del file script (Directory)
-    _script_file_name:str              = None   # FileName dello script della classe concreta (FileName)
-    _script_path:str                   = None   # Percorso del file script (Directory + FileName)
+    __project_root:str                 = None   # Project root directory (Directory)
+    __concrete_class_name:str          = None   # Concrete class name (ClassName)
+    __script_directory:str             = None   # Directory of the script file (Directory)
+    __script_file_name:str             = None   # File name of the concrete class script (FileName)
+    __script_path:str                  = None   # Path of the script file (Directory + FileName)
     
-    __config_directory:str             = None   # Directory del file di configurazione (Directory)
-    __config_file_name:str             = None   # FileName di configurazione (FileName)
-    __config_path:str                  = None   # Percorso del file di configurazione (Directory + FileName)
-    __configuration:dict               = None   # Configurazione della classe concreta (Dictionary)
+    __config_directory:str             = None   # Configuration file directory (Directory)
+    __config_file_name:str             = None   # Configuration file name (FileName)
+    __config_path:str                  = None   # Configuration file path (Directory + FileName)
+    __configuration:dict               = None   # Configuration of the concrete class (Dictionary)
 
-    _is_process_initialized:bool       = False  # Flag di inizializzazione del processo
+    __is_process_initialized:bool      = False  # Process initialization flag
     
     @property
     def is_process_initialized(self):
-        return self._is_process_initialized
-    
+        return self.__is_process_initialized
     @is_process_initialized.setter
     def is_process_initialized(self, value:bool):
-        self._is_process_initialized = value
+        self.__is_process_initialized = value
     
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------------
     @property
-    def PROJECT_ROOT(self):
+    def project_root(self):
         """
         Readonly Property: The full path of the application's entry point.
         """   
-        return self._project_root
+        return self.__project_root
     
     @property
-    def CLASS_NAME(self):
+    def class_name(self):
         """
         Readonly Property: The name of the concrete class.
         """
-        return self._concrete_class_name 
+        return self.__concrete_class_name 
 
     @property
-    def CLASS_DIRECTORY(self):
+    def class_directory(self):
         """
         Readonly Property: The directory of the concrete class.
         """
-        return self._script_directory
+        return self.__script_directory
 
     @property
-    def CLASS_PATH(self):
+    def class_path(self):
         """
         Readonly Property: The file path of the concrete class.
         """
-        return self._script_path
+        return self.__script_path
     
     @property
-    def CLASS_FILE_NAME(self):
+    def class_file_name(self):
         """
         Readonly Property: The file name of the concrete class.
         """
-        return self._script_file_name
+        return self.__script_file_name
 
     @property
     def configuration(self):
         return self.__configuration
 
     @property
-    def CONFIG_DIRECTORY(self):
+    def config_directory(self):
         """
         Property: The configuration directory.\n\n
         If the configuration directory is not set,
         it is the script directory.
         """
         if not self.__config_directory:
-            self.__config_directory = self._script_directory
+            self.__config_directory = self.__script_directory
         return self.__config_directory
-    @CONFIG_DIRECTORY.setter
-    def CONFIG_DIRECTORY(self, value):
+    @config_directory.setter
+    def config_directory(self, value):
         """
         Args:
             value (str): The path to the configuration directory.
@@ -100,18 +99,18 @@ class BasicProcess(ABC):
         """
         if isinstance(value, str):
             self.__config_directory = value
-            self.__config_path = os.path.join(self.CONFIG_DIRECTORY, self.CONFIG_FILENAME)
+            self.__config_path = os.path.join(self.config_directory, self.config_file_name)
         else:
-            raise TypeError("CLASS_CONFIG_DIRECTORY must be string.")
+            raise TypeError("The config_directory value must be string.")
 
     @property
-    def CONFIG_FILENAME(self):
+    def config_file_name(self):
         """
         Property: The configuration File Name.
         """
         return self.__config_file_name
-    @CONFIG_FILENAME.setter
-    def CONFIG_FILENAME(self, value):
+    @config_file_name.setter
+    def config_file_name(self, value):
         """
         Args:
             value (str): The name of the configuration file.
@@ -120,24 +119,16 @@ class BasicProcess(ABC):
         """
         if isinstance(value, str):
             self.__config_file_name = value
-            self.__config_path = os.path.join(self.CONFIG_DIRECTORY, self.CONFIG_FILENAME)
+            self.__config_path = os.path.join(self.config_directory, self.config_file_name)
         else:
-            raise TypeError("CLASS_CONFIG_FILENAME must be string.")   
+            raise TypeError("The config_file_name value must be string.")   
        
     @property
-    def CONFIG_PATH(self):
+    def config_path(self):
         """
         Readonly Property: The configuration File Path.
         """        
         return os.path.join(self.__config_path)
-
-        """
-        Configuration File Path (Property Setter).
-        """
-        if isinstance(value, str):
-            self._config_path = value
-        else:
-            raise TypeError("CLASS_CONFIG_PATH must be string.")
     
     @property
     def LOGGER(self):
@@ -182,7 +173,7 @@ class BasicProcess(ABC):
         its operations.
         The Shadow call is done by constructor.
         """
-        raise NotImplementedError("[%s] Must implement the 'initialize' method.", self.CLASS_NAME)
+        raise NotImplementedError("[%s] Must implement the 'initialize' method.", self.class_name)
         pass
    
     @abstractmethod
@@ -191,7 +182,7 @@ class BasicProcess(ABC):
         [Abstract Method - It must be implemented by concrete classes.]/\n
         Abstract Method to define the main elaboration logic for the concrete process.
         """
-        raise NotImplementedError("[%s] Must implement the 'elaboration' method.", self.CLASS_NAME)
+        raise NotImplementedError("[%s] Must implement the 'elaboration' method.", self.class_name)
         pass
     
     #- [EXPOSED METHODS]
@@ -237,8 +228,8 @@ class BasicProcess(ABC):
 
         Args:
             par_config_path (str, optional): The path to the configuration file to be loaded.
-                                                If not provided, the default configuration path
-                                                (self.CONFIG_PATH) will be used.
+                                             If not provided, the default configuration path
+                                             (self.CONFIG_PATH) will be used.
 
         Returns:
             The updated configuration after appending the new configuration.
@@ -262,16 +253,16 @@ class BasicProcess(ABC):
                 main_module = sys.argv[0]  # Ottieni il modulo principale dal comando di esecuzione
 
             # Calcola la directory del progetto
-            self._project_root = os.path.dirname(os.path.abspath(main_module))
+            self.__project_root = os.path.dirname(os.path.abspath(main_module))
 
             # Verifica che la directory sia valida
-            if not os.path.isdir(self._project_root):
-                raise RuntimeError(f"Invalid project root directory: {self._project_root}")
+            if not os.path.isdir(self.__project_root):
+                raise RuntimeError(f"[BasicProcess]::[__getExcecutionRoot] => Invalid project root directory: {self.__project_root}")
 
         except Exception as e:
-            raise RuntimeError(f"Error determining execution root: {e}")
+            raise RuntimeError(f"[BasicProcess]::[__getExcecutionRoot] => Error determining execution root: {e}")
 
-        return self._project_root
+        return self.__project_root
     
     def __getConcreteClassFileName(self):
         """
@@ -280,9 +271,9 @@ class BasicProcess(ABC):
         my_class_file_path = inspect.getfile(self.__class__)
         my_class_file_name = os.path.basename(my_class_file_path)
         if not my_class_file_name:
-            raise RuntimeError("Unable to determine the file name of the concrete class.")
-        self._script_file_name = my_class_file_name
-        return self._script_file_name
+            raise RuntimeError(f"[BasicProcess]::[__getConcreteClassName] => Unable to determine the file name of the concrete class.")
+        self.__script_file_name = my_class_file_name
+        return self.__script_file_name
     
     def __getConcreteClassName(self):
         """
@@ -290,21 +281,21 @@ class BasicProcess(ABC):
         """        
         my_class_class_name = self.__class__.__name__
         if not my_class_class_name:
-            raise RuntimeError("Unable to determine the class name of the concrete class.")
-        self._concrete_class_name = my_class_class_name        
-        return self._concrete_class_name
+            raise RuntimeError(f"[BasicProcess]::[__getConcreteClassName] => Unable to determine the class name of the concrete class.")
+        self.__concrete_class_name = my_class_class_name        
+        return self.__concrete_class_name
     
     def __getConcreteClassDirectory(self):
         """
         Determines the directory of the concrete class dynamically.
         """        
-        class_file_path = inspect.getfile(self.__class__)
-        class_directory = os.path.dirname(class_file_path)
-        if not class_directory:
-            raise RuntimeError("Unable to determine the directory of the concrete class.")
-        self._script_directory = class_directory
+        my_class_file_path = inspect.getfile(self.__class__)
+        my_class_directory = os.path.dirname(my_class_file_path)
+        if not my_class_directory:
+            raise RuntimeError(f"[BasicProcess]::[__getConcreteClassDirectory] => Unable to determine the directory of the concrete class.")
+        self.__script_directory = my_class_directory
 
-        return self._script_directory
+        return self.__script_directory
     
     def __getConcreteClassAbsPath(self):
         """
@@ -312,21 +303,21 @@ class BasicProcess(ABC):
         """
         my_class_file_path = inspect.getfile(self.__class__)
         if not my_class_file_path:
-            raise RuntimeError("Unable to determine the path of the concrete class.")
-        self._script_path = my_class_file_path
-        return self._script_path
+            raise RuntimeError(f"[BasicProcess]::[__getConcreteClassAbsPath] => error occurred: Unable to determine the path of the concrete class.")
+        self.__script_path = my_class_file_path
+        return self.__script_path
 
     def __getConfigFileName(self):
         """
         Private method to get the configuration file name.
 
-        This method sets the CONFIG_FILENAME attribute to "config.yaml" and returns it.
+        This method sets the 'config_file_name' value to "config.yaml" and returns it.
 
         Returns:
             str: The name of the configuration file.
         """
-        self.CONFIG_FILENAME = "config.yaml"
-        return self.CONFIG_FILENAME
+        self.config_file_name = "config.yaml"
+        return self.config_file_name
 
     def __initializeLogger(self):
         """
@@ -349,9 +340,11 @@ class BasicProcess(ABC):
         Returns:
             dict: The loaded configuration.
         """
-
-        self.__configuration = ConfigurationHelper().loadConfiguration(self.CONFIG_PATH)
-        return self.__configuration
+        try: 
+            self.__configuration = ConfigurationHelper().loadConfiguration(self.config_path)
+            return self.__configuration
+        except Exception as e:
+            raise RuntimeError(f"[BasicProcess]::[__loadConfiguration] => error occurred: {e.with_traceback}")
     
     async def _run(self):
         """

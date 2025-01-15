@@ -17,13 +17,16 @@ class LunaAI(BasicProcess):
         return self._am_i_sleeping
     
     def printProperties(self):
-        self.LOGGER.debug("Project root:..................... %s", self.PROJECT_ROOT)
-        self.LOGGER.debug("Concrete class name:.............. %s", self.CLASS_NAME)
-        self.LOGGER.debug("Concrete class file name:......... %s", self.CLASS_FILE_NAME)
-        self.LOGGER.debug("Concrete class path:.............. %s", self.CLASS_PATH)
-        self.LOGGER.debug("Concrete class config file name:.. %s", self.CONFIG_FILENAME)
-        self.LOGGER.debug("Concrete class config directory:.. %s", self.CONFIG_DIRECTORY)
-        self.LOGGER.debug("Concrete class config path:....... %s", self.CONFIG_PATH)
+        try: 
+            self.LOGGER.debug("Project root:..................... %s", self.project_root)
+            self.LOGGER.debug("Concrete class name:.............. %s", self.class_name)
+            self.LOGGER.debug("Concrete class file name:......... %s", self.class_file_name)
+            self.LOGGER.debug("Concrete class path:.............. %s", self.class_path)
+            self.LOGGER.debug("Concrete class config file name:.. %s", self.config_file_name)
+            self.LOGGER.debug("Concrete class config directory:.. %s", self.config_directory)
+            self.LOGGER.debug("Concrete class config path:....... %s", self.config_path)
+        except Exception as e:
+            raise  RuntimeError(f"[{self.class_name}]::[printProperties] => error occurred: {e.with_traceback}")
 
     def initialize(self):
         """
@@ -37,8 +40,8 @@ class LunaAI(BasicProcess):
         
         for sense_name, sense_class in senses_to_initialize:
             try:
-                self.LOGGER.info("    ├──> '%s' sense initialization started...", sense_name)
-                sense_instance= sense_class()  # Istanzia la classe del senso
+                self.LOGGER.info("    ├──> Calling '%s' sense initialization...", sense_name)
+                sense_instance:NeuralProcess = sense_class()  # Istanzia la classe del senso
                 sense_instance.start()
                 self._senses_instances[sense_name] = sense_instance
 

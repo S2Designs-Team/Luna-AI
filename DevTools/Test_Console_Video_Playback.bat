@@ -17,75 +17,75 @@ REM See the License for the specific language governing permissions and
 REM limitations under the License.
 REM
 REM +-------------------------------------------------------------------------------------------------+
-REM ¦ Table draw chars                                                                                ¦
+REM ï¿½ Table draw chars                                                                                ï¿½
 REM +-------------------------+----------------------+-------------------------+----------------------+
-REM ¦ Double lines            ¦ Single line          ¦ Double lined columns    ¦   Double lined rows  ¦
+REM ï¿½ Double lines            ï¿½ Single line          ï¿½ Double lined columns    ï¿½   Double lined rows  ï¿½
 REM +-------------+-----------+----------+-----------+-------------+-----------+----------+-----------+   
-REM ¦ Example     ¦ ANSI CHAR ¦ Example  ¦ ANSI CHAR ¦ Example     ¦ ANSI CHAR ¦ Example  ¦ ANSI CHAR ¦
+REM ï¿½ Example     ï¿½ ANSI CHAR ï¿½ Example  ï¿½ ANSI CHAR ï¿½ Example     ï¿½ ANSI CHAR ï¿½ Example  ï¿½ ANSI CHAR ï¿½
 REM +-------------+-----------+----------+-----------+-------------+-----------+----------+-----------+
-REM ¦ ++==++==++  ¦ ÉÍËÍ»     ¦ +--+--+  ¦ ÚÄÂÄ¿     ¦ ++--++--++  ¦ ÖÄÒÄ·     ¦ +===+    ¦ ÕÍÑÍ¸     ¦
-REM ¦ ¦¦  ¦¦  ¦¦  ¦ º º º     ¦ ¦  ¦  ¦  ¦ ³ ³ ³     ¦ ¦¦  ¦¦  ¦¦  ¦ º º º     ¦ ¦ ¦ ¦    ¦ ³ ³ ³     ¦
-REM ¦ ¦+==++==+¦  ¦ ÌÍÎÍ¹     ¦ +--+--+  ¦ ÃÄÅÄ´     ¦ ¦+--++--+¦  ¦ ÇÄ×Ä¶     ¦ ¦=+=¦    ¦ ÆÍØÍµ     ¦
-REM ¦ ¦¦  ¦¦  ¦¦  ¦ º º º     ¦ ¦  ¦  ¦  ¦ ³ ³ ³     ¦ ¦¦  ¦¦  ¦¦  ¦ º º º     ¦ ¦ ¦ ¦    ¦ ³ ³ ³     ¦
-REM ¦ ++==++==++  ¦ ÈÍÊÍ¼     ¦ +--+--+  ¦ ÀÄÁÄÙ     ¦ ++--++--++  ¦ ÓÄÐÄ½     ¦ +===+    ¦ ÔÍÏÍ¾     ¦
+REM ï¿½ ++==++==++  ï¿½ ï¿½ï¿½ï¿½Í»     ï¿½ +--+--+  ï¿½ ï¿½ï¿½ï¿½Ä¿     ï¿½ ++--++--++  ï¿½ ï¿½ï¿½ï¿½Ä·     ï¿½ +===+    ï¿½ ï¿½ï¿½ï¿½Í¸     ï¿½
+REM ï¿½ ï¿½ï¿½  ï¿½ï¿½  ï¿½ï¿½  ï¿½ ï¿½ ï¿½ ï¿½     ï¿½ ï¿½  ï¿½  ï¿½  ï¿½ ï¿½ ï¿½ ï¿½     ï¿½ ï¿½ï¿½  ï¿½ï¿½  ï¿½ï¿½  ï¿½ ï¿½ ï¿½ ï¿½     ï¿½ ï¿½ ï¿½ ï¿½    ï¿½ ï¿½ ï¿½ ï¿½     ï¿½
+REM ï¿½ ï¿½+==++==+ï¿½  ï¿½ ï¿½ï¿½ï¿½Í¹     ï¿½ +--+--+  ï¿½ ï¿½ï¿½ï¿½Ä´     ï¿½ ï¿½+--++--+ï¿½  ï¿½ ï¿½ï¿½ï¿½Ä¶     ï¿½ ï¿½=+=ï¿½    ï¿½ ï¿½ï¿½ï¿½Íµ     ï¿½
+REM ï¿½ ï¿½ï¿½  ï¿½ï¿½  ï¿½ï¿½  ï¿½ ï¿½ ï¿½ ï¿½     ï¿½ ï¿½  ï¿½  ï¿½  ï¿½ ï¿½ ï¿½ ï¿½     ï¿½ ï¿½ï¿½  ï¿½ï¿½  ï¿½ï¿½  ï¿½ ï¿½ ï¿½ ï¿½     ï¿½ ï¿½ ï¿½ ï¿½    ï¿½ ï¿½ ï¿½ ï¿½     ï¿½
+REM ï¿½ ++==++==++  ï¿½ ï¿½ï¿½ï¿½Í¼     ï¿½ +--+--+  ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½     ï¿½ ++--++--++  ï¿½ ï¿½ï¿½ï¿½Ä½     ï¿½ +===+    ï¿½ ï¿½ï¿½ï¿½Í¾     ï¿½
 REM +-------------+-----------+----------+-----------+-------------+-----------+----------+-----------+
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 @echo off
-:: Percorso della directory corrente di main.bat
+:: Path of the current directory
 set "main_dir=%~dp0"
 
 
 :: =====================================================================
 :: = SHOW MESSAGE ======================================================
 :: =====================================================================
-:: Percorso del file lib_MessageBox.bat
+:: Path to the lib_MessageBox.bat file
 set "lib_messagebox_path=%main_dir%BatchCoreLibs\lib_MessageBox.bat"
 
-:: Verifica che il file lib_MessageBox.bat esista
+:: Check if lib_MessageBox.bat exixts
 if not exist "%lib_messagebox_path%" (
-    echo Errore: Il file "%lib_messagebox_path%" non è stato trovato.
+    echo Error: File "%lib_messagebox_path%" not found.
     pause
     exit /b 1
 )
-:: Richiama il file lib_MessageBox.bat per visualizzare il messaggio
-call "%lib_messagebox_path%"  "Ciao! Questo è un messaggio con effetto digitazione." > log.log 2>&1
-:: Pausa per assicurarsi che il messaggio sia visibile
+:: Call the lib_MessageBox.bat file to display the message
+call "%lib_messagebox_path%"  "Ciao! Questo ï¿½ un messaggio con effetto digitazione." > log.log 2>&1
+:: Pause to ensure the message is visible
 :: pause  
 
 :: =====================================================================
 :: = PLAY VIDEO ========================================================
 :: =====================================================================
-:: Percorso del file lib_PlayVideo.bat
+:: The lib_PlayVideo.bat file path
 set "lib_playvideo_path=%main_dir%BatchCoreLibs\lib_PlayVideo.bat"
 
-:: Verifica che il file lib_PlayVideo.bat esista
+:: Check if lib_PlayVideo.bat exixts
 if not exist "%lib_playvideo_path%" (
-    echo Errore: Il file "%lib_playvideo_path%" non è stato trovato.
+    echo Errore: File "%lib_playvideo_path%" not found.
     pause
     exit /b 1
 )
 
-:: Percorso del video
+:: Path of the video
 set "video_path=%main_dir%\video001.mp4"
 
-:: Verifica che il file video esista
+:: Check if video file exixts
 if not exist "%video_path%" (
-    echo Errore: Il file "%video_path%" non è stato trovato.
+    echo Errore: File "%video_path%" not found.
     pause
     exit /b 1
 )
 
-:: Richiama il file lib_PlayVideo.bat per riprodurre il video
+:: Call lib_PlayVideo.bat to play the video file (and write log into log.log file).
 call "%lib_playvideo_path%" "%video_path%" > log.log 2>&1
 
 :: Controlla il risultato dell'esecuzione
 if errorlevel 1 (
-    echo Si è verificato un errore. Controlla il file log.log per maggiori dettagli.
+    echo Error occurred. Check the log.log file for more details.
     pause
 ) else (
-    echo Video riprodotto correttamente.
+    echo Video correctly played.
     pause
 )
 
@@ -93,21 +93,21 @@ ENDLOCAL
 exit /b 0
 
 :SET_TEXT_FORMATTERS
-  :: Definisci il carattere di escape ANSI manualmente
+:: Define the ANSI escape character manually
   for /F %%A in ('"prompt $E & for %%B in (1) do rem"') do set "ESC=%%A"
 
-  :: Codici di formattazione carattere
+  :: Character formatting codes
   set "fR=%ESC%[0m"              :: Reset
   set "fB=%ESC%[1m"              :: Bold
   set "fU=%ESC%[4m"              :: Underline
   set "fI=%ESC%[7m"              :: Inverted
 
-  :: Reset individuali (opzionali)
+  :: Individual resets (optional)
   set "fB_=%ESC%[22m"            :: Bold reset
   set "fU_=%ESC%[24m"            :: Underline reset
   set "fI_=%ESC%[27m"            :: Inverted reset
 
-  :: Codici di formattazione colore font
+  :: Font color formatting codes
   set "fC_Black=%ESC%[30m"       :: Font color Black
   set "fC_Red=%ESC%[31m"         :: Font color Red
   set "fC_Green=%ESC%[32m"       :: Font color Green
@@ -117,7 +117,7 @@ exit /b 0
   set "fC_Cyan=%ESC%[36m"        :: Font color Cyan
   set "fC_White=%ESC%[37m"       :: Font color White
 
-  :: Codici di formattazione colore font chiaro
+  :: Light font color formatting codes
   set "fC_LBlack=%ESC%[90m"      :: Font color Light Black
   set "fC_LRed=%ESC%[91m"        :: Font color Light Red
   set "fC_LGreen=%ESC%[92m"      :: Font color Light Green

@@ -23,4 +23,4 @@
 
 
 # <CENTER>![it_flag](Source/GUI/Resources/tn_it-flag.gif) [Italian version](/Documents/PROJECT_INTRODUCTION/ITA.md) </CENTER>
-TEXT
+

@@ -10,13 +10,13 @@ from ObjectsLib.ConfigDictionary.lib_ConfigDictionary         import ConfigDicti
 from AppComponents.MainWindow.lib_MainWindow                  import MainWindow
 
 class GUICreator(QMainWindow):
-    # Impostazioni predefinite
+    # Default settings
     __default_settings = {
         "canvas_bg"     : "white",     #
         "window_width"  : 320,         #
         "window_height" : 800,         #
         "panel_bg"      : "lightgray", #
-        "grid_size"     : 20           # Dimensione della griglia per snapping
+        "grid_size"     : 20           # Grid size for snapping
     }
     __config_dir                = "DevTools\\GUI Creator\\Config\\"
     __config_file_path          = os.path.join(__config_dir, "settings.yaml")
@@ -26,34 +26,34 @@ class GUICreator(QMainWindow):
                                  
     def __init__(self, root):
         super().__init__()
-        # Carica le impostazioni
+        # Load settings
         self.__settings = self.__ConfigurationManager.loadYaml(self.__config_file_path)
 
-        # Applica le impostazioni
+        # Apply settings
         self.__applySettings()
 
-        # Layout principale
+        # Main layout
         self.create_layout()
 
-        # Binding del click sulla canvas per selezionare un'area dove posizionare il componente
+        # Binding the click on the canvas to select an area to place the component
         self.design_canvas.bind("<Button-1>", self.create_component_at_position)
 
-        # Variabile per memorizzare i widget aggiunti
+        # Variable to store added widgets
         self.widgets = []
         self.selected_widget = None
         self.drag_data = {"widget": None, "x": 0, "y": 0}
 
-        # Menu principale
+        # Main menu
         self.create_menu()
 
     def applySettings(self, par_ComponentManager:ComponentManager) -> None:
         """
-        Applica le impostazioni calcolando le formule e aggiornando i componenti.
-        component_manager: Oggetto che gestisce i componenti dell'interfaccia.
+        Applies settings by calculating formulas and updating components.
+        component_manager: Object that manages the interface components.
         """
         def resolveReference(reference: str) -> Any:
             """
-            Risolve un riferimento tipo <nome_componente>.<nome_proprietà>.
+            Resolves a reference like <component_name>.<property_name>.
             """
             keys = reference.lower().split('.')
             current = self.settings

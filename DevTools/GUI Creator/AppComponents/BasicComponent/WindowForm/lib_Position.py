@@ -1,4 +1,3 @@
-
 class Position():
 
     __top:int         = 0

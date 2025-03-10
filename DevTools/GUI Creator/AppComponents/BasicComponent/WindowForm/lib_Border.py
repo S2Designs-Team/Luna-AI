@@ -43,6 +43,7 @@ class Border():
                 self.__left_thickness = thickness
             else:
                 raise ValueError(f"Invalid side name: {side}")
+        return self
     
     @property
     def radius(self, par_corner_filter:EnumCorners=EnumCorners.ALL_CORNERS):
@@ -73,6 +74,7 @@ class Border():
                 self.__bottom_left_radius= radius
             else:
                 raise ValueError(f"Invalid corner name: {corner}")
+        return self
 
     @property
     def color(self):
@@ -80,5 +82,6 @@ class Border():
     @color.setter
     def color(self, value):
         self.__color = value
+        return self
     
 

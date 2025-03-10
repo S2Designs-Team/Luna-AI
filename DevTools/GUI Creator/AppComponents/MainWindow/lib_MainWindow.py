@@ -13,6 +13,9 @@ from AppComponents.MainMenu.lib_MainMenu                      import MainMenuBar
 from AppComponents.MainStatusBar.lib_MainStatusBar            import MainStatusBar
 from AppComponents.ToolBox.lib_ToolBox                        import ToolBox
 from AppComponents.PropertyPanel.lib_PropertyPanel            import PropertyPanel
+from AppComponents.BasicComponent.WindowForm.lib_WindowForm   import WindowForm
+from AppComponents.BasicComponent.WindowForm.lib_UIElement    import UIElement
+from AppComponents.BasicComponent.WindowForm.lib_Size         import Size
 
 class MainWindow(QMainWindow):
  
@@ -27,145 +30,26 @@ class MainWindow(QMainWindow):
     _WorkArea_container:QWidget  = None
     _designer_focused_component  = None
 
+    #- [CLASS CONSTRUCTOR]
+    #--------------------------------------------------------------------------------------------
     def __init__(self):
         super().__init__()
-        # Carica le impostazioni
+        # Load the settings
         self.__loadSettings()
-        # Inizializza tutti i componenti della finestra principale
+
+        # Initialize all components of the main window.
         self.__initMainWindow()
         self.__initMainMenuBar()
         self.__initWorkArea()
         self.__initStatusBar()
 
-        # Usa uno splitter per separare le sezioni con pannelli ridimensionabili
-        self.splitter = QSplitter(Qt.Horizontal)
-        # Configura proporzioni iniziali dello splitter
-        self.splitter.setSizes([200, 700, 300])  # Dimensioni iniziali (Toolbox, Canvas, Pannello proprietà)
-        self.main_layout.addWidget(self.splitter)        
-
+        # Initialize all sub components in the WorkArea.
         self.__initToolbox()
-        self.__initCanvas()
+        self.__initGuiDesignArea()
         self.__initPropertyPanel()
 
-    def __loadSettings(self):
-        try:
-            # Load settings
-            self.__settings = self.__ConfigurationManager.loadYaml(self.__config_file_path)
-        except Exception as e:
-            print(f"Error loading the application settings: {e}")
-
-    def __initMainWindow(self):
-        try:
-            self.objectName="MainWindow"
-            # Apply settings to the main window
-            self.setWindowTitle(self.__settings.getProperty("main_window.title"))  
-            self.setGeometry(self.__settings.getProperty("main_window.top"), 
-                             self.__settings.getProperty("main_window.left"), 
-                             self.__settings.getProperty("main_window.width"),
-                             self.__settings.getProperty("main_window.height"))    
-        except Exception as e:
-            print(f"Error MainWindow properties: {e}")
-            # Opzionalmente, torna ai valori predefiniti
-            self.setWindowTitle("[S2 Designs team] GUI Creator for python - Qt5 WYSIWYG")  
-            self.setGeometry(0, 0, 800, 600)
-
-    def __initMainMenuBar(self):
-        self._MainMenuBar = MainMenuBar()
-        # Inizializza la barra dei menu
-        self.setMenuBar(self._MainMenuBar)
-
-    def __initWorkArea(self):
-        # Configura il layout principale
-        self._WorkArea_container = QWidget()
-        self.setCentralWidget(self._WorkArea_container)
-        self.main_layout = QHBoxLayout()
-        self._WorkArea_container.setLayout(self.main_layout)
-        pass
-
-    def __initToolbox(self):
-        """Inizializza la Toolbox come un componente separato."""
-        self.toolbox = ToolBox()
-        self.splitter.addWidget(self.toolbox)
-
-    def __initCanvas(self):
-        """Inizializza il Canvas (area centrale per il design della GUI)."""
-        self.canvas_frame = QWidget()
-        self.canvas_frame.setStyleSheet("background-color: lightGray;")   
-        self.canvas_frame.setAcceptDrops(True)
-
-        # Aggiungi un componente contenitore window
-        self.component_window = ResizableWidget(self.canvas_frame)
-        self.component_window.setGeometry(0, 0, 600, 800)  # Imposta la dimensione e la posizione del contenitore
-        self.component_window.setMinimumSize(QSize(600, 800))  # Imposta la dimensione minima
-        self.component_window.setStyleSheet("""
-            background-color: #FFD700;  /* Colore vivace */
-            border: 2px solid black;  /* Bordo nero */
-            border-radius: 10px;  /* Angoli arrotondati */
-        """)
-        self.component_window.mousePressEvent = self.onComponentWindowClick
-
-        # Aggiungi un'ombra al componente window
-        shadow_effect = QGraphicsDropShadowEffect(self.component_window)
-        shadow_effect.setBlurRadius(15)
-        shadow_effect.setOffset(5, 5)
-        shadow_effect.setColor(QColor(0, 0, 0, 160))
-        self.component_window.setGraphicsEffect(shadow_effect)
-
-        # Aggiungi una barra del titolo alla finestra
-        self.title_bar = QWidget(self.component_window)
-        self.title_bar.setGeometry(0, 0, 600, 40)  # Aumenta l'altezza della barra del titolo
-        self.title_bar.setStyleSheet("""
-            background-color: #2E2E2E; 
-            color: white; 
-            border-top-left-radius: 10px; 
-            border-top-right-radius: 10px;
-            border-bottom-left-radius: 0px; 
-            border-bottom-right-radius: 0px;
-        """)
-        self.title_layout = QHBoxLayout(self.title_bar)
-        self.title_label = QLabel("Window Title", self.title_bar)
-        self.title_layout.addWidget(self.title_label)
-        self.title_layout.addStretch()
-        self.close_button = QPushButton("X", self.title_bar)
-        self.close_button.setFixedSize(30, 30)
-        self.close_button.setStyleSheet("background-color: red; color: white; border: none;")
-        self.title_layout.addWidget(self.close_button)
-
-        # Zona di lavoro
-        self.work_area = WorkArea(self.component_window)
-        self.work_area.setGeometry(0, 40, 600, 760)  # Imposta la dimensione e la posizione della zona di lavoro
-        self.work_area.setStyleSheet("""
-            background-color: #FFFFFF; 
-            border-top-left-radius: 0px; 
-            border-top-right-radius: 0px;
-            border-bottom-left-radius: 10px; 
-            border-bottom-right-radius: 10px;
-        """)
-        self.work_area.mousePressEvent = self.onComponentWindowClick
-
-        # Aggiungi la work_area al layout del component_window
-        layout = QVBoxLayout(self.component_window)
-        layout.addWidget(self.title_bar)
-        layout.addWidget(self.work_area)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-        self.component_window.setLayout(layout)
-
-        self.splitter.addWidget(self.canvas_frame)
-
-    def __initPropertyPanel(self):
-        """Inizializza il Pannello delle proprietà (selezione degli attributi del componente)."""
-        # Pannello delle proprietà
-        self.properties_panel = PropertyPanel(self)
-        self.splitter.addWidget(self.properties_panel)
-
-    def __initStatusBar(self):
-        """Inizializza la Status Bar."""
-        self._MainStatusBar = MainStatusBar()
-        self.setStatusBar(self._MainStatusBar)
-        # Imposta un messaggio iniziale
-        self._MainStatusBar.setMessage("Application ready")
-
+    #- [CLASS EXPOSED METHODS]
+    #--------------------------------------------------------------------------------------------
     def update_status(self, message: str, timeout: int = 0):
         """Metodo per aggiornare la status bar."""
         self._MainStatusBar.setMessage(message, timeout)
@@ -182,7 +66,7 @@ class MainWindow(QMainWindow):
         widget_under_cursor = self.childAt(event.pos())
 
         if widget_under_cursor:
-            component_name = widget_under_cursor.objectName()
+            component_name = widget_under_cursor.objectName
             pos_x = event.x()
             pos_y = event.y()
 
@@ -216,40 +100,128 @@ class MainWindow(QMainWindow):
         self.properties_panel.updateProperties(component)
         self.work_area.setFocusedComponent(component)  # Forza il ridisegno per richiamare paintEvent
 
+    #- [CLASS PRIVATE METHODS]
+    #--------------------------------------------------------------------------------------------
+    def __loadSettings(self):
+        try:
+            # Load settings
+            self.__settings = self.__ConfigurationManager.loadYaml(self.__config_file_path)
+        except Exception as e:
+            print(f"Error loading the application settings: {e}")
 
-class WorkArea(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._designer_focused_component = None
+    def __initMainWindow(self):
+        try:
+            self.objectName="MainWindow"
+            # Property to distinguish the design mode
+            self.isDesignerWindow = True            
+            # Apply settings to the main window
+            self.setWindowTitle(self.__settings.getProperty("main_window.title"))  
+            self.setGeometry(self.__settings.getProperty("main_window.top"), 
+                             self.__settings.getProperty("main_window.left"), 
+                             self.__settings.getProperty("main_window.width"),
+                             self.__settings.getProperty("main_window.height"))    
+        except Exception as e:
+            print(f"Error MainWindow properties: {e}")
+            # Optionally, revert to default values
+            self.setWindowTitle("[S2 Designs team] GUI Creator for python - Qt5 WYSIWYG")  
+            self.setGeometry(0, 0, 800, 600)
 
-    def setFocusedComponent(self, component):
-        self._designer_focused_component = component
-        self.update()  # Forza il ridisegno per richiamare paintEvent
+    def __initMainMenuBar(self):
+        self._MainMenuBar = MainMenuBar()
+        # Initialize the menu bar
+        self.setMenuBar(self._MainMenuBar)
 
-    def paintEvent(self, event):
-        """Disegna il bordo e i quadratini di ridimensionamento per il componente selezionato"""
+    def __initWorkArea(self):
+        """
+        Initialize the Designer application Work Area as a separate component.
+        """
+        # Configure the main layout
+        self._WorkArea_container = QWidget()
+        self.setCentralWidget(self._WorkArea_container)
+        self.main_layout = QHBoxLayout()
+        self._WorkArea_container.setLayout(self.main_layout)
 
-        super().paintEvent(event)
+        # Use a splitter to separate sections with resizable panels.
+        self.splitter = QSplitter(Qt.Horizontal)
+        # Set the initial proportions of the splitter
+        self.splitter.setSizes([200, 700, 300])  # Initial sizes (Toolbox, Canvas, Properties Panel)
+        self.main_layout.addWidget(self.splitter) 
 
-        if self._designer_focused_component:
-            painter = QPainter(self)
-            if not painter.isActive():
-                return
-            pen = QPen(QColor(0, 0, 255), 2, Qt.SolidLine)
-            painter.setPen(pen)
-            rect = self._designer_focused_component.geometry()
-            painter.drawRect(rect)
+        pass
 
-            # Disegna i quadratini di ridimensionamento
-            handle_size = 6
-            handles = [
-                QPoint(rect.left(), rect.top()),
-                QPoint(rect.right(), rect.top()),
-                QPoint(rect.left(), rect.bottom()),
-                QPoint(rect.right(), rect.bottom())
-            ]
-            for handle in handles:
-                painter.fillRect(QRect(handle.x() - handle_size // 2, handle.y() - handle_size // 2, handle_size, handle_size), QColor(255, 0, 0))
+    def __initToolbox(self):
+        """
+        Initialize the Toolbox as a separate component.
+        """
+        self.toolbox = ToolBox()
+        self.splitter.addWidget(self.toolbox)
+
+    def __initGuiDesignArea(self):
+        """
+        Initialize the Design Area (central area for GUI design).
+        """
+        self.gui_design_area = QFrame()
+        self.gui_design_area.setStyleSheet("background-color: lightGrey;")
+        self.gui_design_area.setAcceptDrops(False)
+        layout = QVBoxLayout(self.gui_design_area)
+
+        # Add a WindowForm container component  
+        self.designer_window = WindowForm(self.gui_design_area)
+        print(f"WindowForm Ctrl Name : {self.designer_window.name}")
+        print(f"           Ctrl type : {self.designer_window.getType()}")
+        print(f"           Handle ID : {self.designer_window.getHandle()}")
+        print(f"           Parent    : {self.designer_window.parent.objectName()}")
+        print(f"           Size      : w:{self.designer_window.size().width()}, h:{self.designer_window.size().height()}")
+
+        # Aggiungi un'ombra al componente window
+        shadow_effect = QGraphicsDropShadowEffect(self.designer_window)
+        shadow_effect.setBlurRadius(15)
+        shadow_effect.setOffset(5, 5)
+        shadow_effect.setColor(QColor(0, 0, 0, 160))
+
+        self.designer_window.setGraphicsEffect(shadow_effect)
+        layout.addWidget(self.designer_window)
+        layout.setContentsMargins(0, 0, 0, 0)  # Rimuovi margini
+
+        self.gui_design_area.setLayout(layout)
+        self.splitter.addWidget(self.gui_design_area)
+
+
+        # # Zona di lavoro
+        # self.work_area = WorkArea(self.designer_window)
+        # self.work_area.setGeometry(0, 40, 600, 760)  # Imposta la dimensione e la posizione della zona di lavoro
+        # self.work_area.setStyleSheet("""
+        #     background-color: #FFFFFF; 
+        #     border-top-left-radius: 0px; 
+        #     border-top-right-radius: 0px;
+        #     border-bottom-left-radius: 10px; 
+        #     border-bottom-right-radius: 10px;
+        # """)
+        # self.work_area.mousePressEvent = self.onComponentWindowClick
+
+        # # Aggiungi la work_area al layout del component_window
+        # layout = QVBoxLayout(self.designer_window)
+        # layout.addWidget(self.title_bar)
+        # layout.addWidget(self.work_area)
+        # layout.setContentsMargins(0, 0, 0, 0)
+        # layout.setSpacing(0)
+        # self.designer_window.setLayout(layout)
+
+    def __initPropertyPanel(self):
+        """
+        Initialize the Properties Panel (component attributes selection).
+        """
+        # Properties Panel
+        self.properties_panel = PropertyPanel(self)
+        self.splitter.addWidget(self.properties_panel)
+
+    def __initStatusBar(self):
+        """Inizializza la Status Bar."""
+        self._MainStatusBar = MainStatusBar()
+        self.setStatusBar(self._MainStatusBar)
+        # Imposta un messaggio iniziale
+        self._MainStatusBar.setMessage("Application ready")
+
 
 
 class ResizableWidget(QWidget):

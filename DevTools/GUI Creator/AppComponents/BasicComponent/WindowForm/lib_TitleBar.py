@@ -1,17 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton
-from PyQt5.QtCore import Qt, pyqtProperty, QPoint
-from .lib_Border   import Border
-from .lib_Position import Position
+from PyQt5.QtCore    import Qt, pyqtProperty, QPoint
+from .lib_UIElement  import UIElement
+from AppComponents.BasicComponent.Enums.lib_Enums          import EnumLayout
 
-class BasicUIControl(QWidget):
-    __instanceHandleId:str      = None
-    __name:str                  = "BasicUIControl"
-    __type:str                  = __build_class__.__name__
-    __position:Position         = Position()
-    __width_value:int           = 100
-    __height_value:int          = 100
-    __borders:Border            = None
-
+class TitleBar(UIElement):
     #- [PROPERTIES]
     #--------------------------------------------------------------------------------------------
     @property
@@ -19,195 +11,103 @@ class BasicUIControl(QWidget):
         """
         The title text of the window form.
         """
-        return self.__title_text
+        return self.LBL_Title.text
     @title.setter
     def title(self, value:str):
         """
         Args:
             value (str): The title text to be set.
         """
-        self.__title_text = value
-
-    @property
-    def position(self)->Position:
-        return self.__position
-    @position.setter
-    def position(self, value:Position):
-        self.__position = value
-
-    @property
-    def width(self):
-        """
-        The width value of the title bar.
-        """
-        return self.__width_value
-    @width.setter
-    def width(self, value:int):
-        """
-        Args:
-            value (int): The width value to set.
-        """
-        self.__width_value = value
-
-    @property
-    def height(self):
-        """
-        The height value of the title bar.
-        """
-        return self.__height_value
-    @height.setter
-    def height(self, value:int):
-        """
-        Args:
-            value (int): The height value to be set.
-        """
-        self.__height_value = value
+        self.titleCaption_ctrl.setText(value)
+        self.titleCaption_ctrl.update()
     
-    @property
-    def borders(self):
-        return self.__borders
-    @borders.setter
-    def borders(self, value:Border):
-        self.__borders = value
-
-    @property
-    def background(self):
-        return self.__background
-    
-
-class TitleBar(QWidget):
-    __instanceHandleId:str      = None
-    __name:str                  = "Titlebar"
-    __type:str                  = __build_class__.__name__    
-    __title_text:str            = None
-    
-    __top_value:int             = 0
-    __left_value:int            = 0
-    __width_value:int           = 100
-    __height_value:int          = 100
-    __border:Border             = Border.
-
-    #- [PROPERTIES]
+    #- [CLASS CONSTRUCTOR]
     #--------------------------------------------------------------------------------------------
-    @property
-    def title(self):
-        """
-        The title text of the window form.
-        """
-        return self.__title_text
-    @title.setter
-    def title(self, value:str):
-        """
-        Args:
-            value (str): The title text to be set.
-        """
-        self.__title_text = value
-
-    @property
-    def top(self):
-        """
-        The top value of the window form.
-        """
-        return self.__top_value
-    @top.setter
-    def top(self, value):
-        """
-        Args:
-            value (int): The value to set as the top position.
-        """
-        self.__top_value = value
-
-    @property
-    def left(self):
-        """
-        The left value of the title bar.
-        """
-        return self.__left_value
-    @left.setter
-    def left(self, value):
-        """
-        Args:
-            value (int): The new left value to be set.
-        """
-        self.__left_value
-
-    @property
-    def width(self):
-        """
-        The width value of the title bar.
-        """
-        return self.__width_value
-    @width.setter
-    def width(self, value:int):
-        """
-        Args:
-            value (int): The width value to set.
-        """
-        self.__width_value = value
-
-    @property
-    def height(self):
-        """
-        The height value of the title bar.
-        """
-        return self.__height_value
-    @height.setter
-    def height(self, value:int):
-        """
-        Args:
-            value (int): The height value to be set.
-        """
-        self.__height_value = value
-    
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._parent = parent
-        self._is_dragging = False
+    def __init__(self, par_parent:QWidget=None):
+        super().__init__(par_parent)
+        self.objectName      = "TitleBar"
+        self.layout_type     = EnumLayout.HORIZONTAL
+        self.setPosition(0, 0)
+        self.setSize(par_parent.width, 40)
+        self._is_dragging   = False
         self._drag_position = None
+        #self.css_style = f"""
+        #    background-color:           #2E2E2E; 
+        #    border:                     1px solid black;
+        #    border-top-left-radius:     10px;
+        #    border-top-right-radius:    10px;
+        #    border-bottom-left-radius:  0px; 
+        #    border-bottom-right-radius: 0px;
+        #"""
+        self.titleCaption_ctrl   = self.__createTitleCaption()
+        self.iconizerButton_ctrl = self.__createIconizerButton()
+        self.expanderButton_ctrl = self.__createExpanderButton()
+        self.exiterButton_ctrl   = self.__createExiterButton()
 
-        self.initUI()
+        self.addChild(self.titleCaption_ctrl)
+        self.layout.addStretch()
+        self.addChild(self.iconizerButton_ctrl)
+        self.addChild(self.expanderButton_ctrl)
+        self.addChild(self.exiterButton_ctrl)
 
-    def initUI(self):
-        self.setFixedHeight(40)
-        self.setStyleSheet("""
-            background-color: #2E2E2E; 
-            color: white; 
-            border-top-left-radius: 10px; 
-            border-top-right-radius: 10px;
+        self.__setEventsCallbacks()
+ 
+
+    #- [CLASS PRIVATE METHODS]
+    #--------------------------------------------------------------------------------------------
+    def __createTitleCaption(self):
+        my_new_ctrl            = QLabel()
+        my_new_ctrl.objectName = "LBL_Title"
+        my_new_ctrl.setText("Default title")
+        my_new_ctrl.setFixedSize(self.width, 30)
+        my_new_ctrl.setStyleSheet(f"""
+            color:            #FFD700;
+            background-color: transparent;   
+            border-radius:    10px;
         """)
+        return my_new_ctrl
 
-        self.title_layout = QHBoxLayout(self)
-        self.title_layout.setContentsMargins(5, 0, 5, 0)
-        self.title_layout.setSpacing(5)
+    def __createIconizerButton(self):
+        my_new_ctrl = QPushButton("-", self)
+        my_new_ctrl.setFixedSize(24, 24)
+        my_new_ctrl.setStyleSheet("background-color: gray; color: white; border: none; border-radius: 12px;")
+        return my_new_ctrl
 
-        self.title_label = QLabel("Window Title", self)
-        self.title_label.setStyleSheet("color: white;")
-        self.title_layout.addWidget(self.title_label)
+    def __createExpanderButton(self):
+        my_new_ctrl = QPushButton("□", self)
+        my_new_ctrl.setFixedSize(24, 24)
+        my_new_ctrl.setStyleSheet("background-color: gray; color: white; border: none; border-radius: 12px;")
+        return my_new_ctrl
 
-        self.title_layout.addStretch()
+    def __createExiterButton(self):
+        my_new_ctrl = QPushButton("X", self)
+        my_new_ctrl.setFixedSize(24, 24)
+        my_new_ctrl.setStyleSheet("background-color: red; color: white; border: none; border-radius: 12px;")
+        return my_new_ctrl
 
-        self.window_iconizer = QPushButton("-", self)
-        self.window_iconizer.setFixedSize(30, 30)
-        self.window_iconizer.setStyleSheet("background-color: gray; color: white; border: none;")
-        self.title_layout.addWidget(self.window_iconizer)
+    def __setEventsCallbacks(self):
+        self.eventsHandler.setOnMouseClick_delegate(self.onMouseClick)
+        self.eventsHandler.setOnMouseHover_delegate(self.onMouseMoveOver)
 
-        self.window_expander = QPushButton("□", self)
-        self.window_expander.setFixedSize(30, 30)
-        self.window_expander.setStyleSheet("background-color: gray; color: white; border: none;")
-        self.title_layout.addWidget(self.window_expander)
+    #- [CLASS EVENTS]
+    #--------------------------------------------------------------------------------------------
+    def onMouseClick(self, sender, event):
+        print(f"[{self.objectName}] Handles the click on the UI element surface")
+        self.title="Title bar clicked. Title Caption changed."
+        pass
+        
+    def getGraphDrawer(self):
+        pass
 
-        self.window_exiter = QPushButton("X", self)
-        self.window_exiter.setFixedSize(30, 30)
-        self.window_exiter.setStyleSheet("background-color: red; color: white; border: none;")
-        self.title_layout.addWidget(self.window_exiter)
-
+    """
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self._is_dragging = True
-            self._drag_position = event.globalPos() - self._parent.frameGeometry().topLeft()
+            self._drag_position = event.globalPos() - self.__parent.frameGeometry().topLeft()
             event.accept()
+    """
 
-    def mouseMoveEvent(self, event):
+    def onMouseMoveOver(self, sender, event):
         if self._is_dragging:
             self._parent.move(event.globalPos() - self._drag_position)
             event.accept()
@@ -216,11 +116,4 @@ class TitleBar(QWidget):
         if event.button() == Qt.LeftButton:
             self._is_dragging = False
             event.accept()
-
-    def getTitle(self):
-        return self.title_label.text()
-
-    def setTitle(self, title):
-        self.title_label.setText(title)
-
-    Title = pyqtProperty(str, getTitle, setTitle)
+    

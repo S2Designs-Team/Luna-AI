@@ -1,0 +1,37 @@
+Per quanto riguarda il problem solving, lo si può considerare come una combinazione equilibrata di capacità analitiche, creatività e ingegno. Chi si trova ad affrontare un problema deve per prima cosa saper analizzare la situazione in modo efficace. Una buona dose di creatività e ingegno viene in aiuto per trovare la soluzione più appropriata in circostanze spesso inedite e impreviste. Per padroneggiare la capacità di problem solving è, inoltre, fondamentale saper lavorare sia in autonomia che in team, essere in grado di valutare con obiettività la situazione, e riuscire a prendere decisioni anche sotto pressione. 
+
+Il processo di problem solving può essere suddiviso in 8 passaggi da seguire: scopriamo quali sono e come metterli in pratica durante un progetto di programmazione.
+
+ 
+
+1. Identificare il problema
+
+Per prima cosa, è necessario capire qual è il problema che ci si trova ad affrontare e quale impatto può avere sul progetto. È, inoltre, bene annotare quando ci si è resi conto della situazione e da quanto tempo è in corso. Nel caso di un problema di portata ridotta e facile da arginare potrebbero non essere necessari passaggi aggiuntivi. In caso contrario, si procede con lo step successivo.
+
+2. Chiarire la natura del problema
+
+Se il problema richiede ulteriore attenzione, è il momento di chiarirne la natura nel modo più preciso possibile. In questa fase bisogna raccogliere tutte le informazioni necessarie per capire a fondo la situazione, rivolgendosi, magari, a un altro developer o a un project manager per ottenere precisazioni aggiuntive. Attraverso l’attenta analisi delle informazioni raccolte si può, poi, stabilire se la risoluzione del problema è prioritaria, oppure se la si può rimandare ad un secondo momento.
+
+3. Stabilire degli obiettivi
+
+A questo punto è utile stabilire uno o più obiettivi, oppure la condizione ottimale che si desidera raggiungere. Bisogna, quindi, domandarsi che cosa si otterrà risolvendo questo problema, e in che modo farlo contribuirà al completamento del progetto. Tenere a mente gli ostacoli da rimuovere e i vantaggi che si avranno è ottimo anche per mantenersi motivati. In questa fase, il web developer dovrà, infine, stabilire entro quando prevede di raggiungere gli obiettivi stabiliti.
+
+4. Individuare la causa del problema
+
+Non è raro che un problema semplice derivi da criticità rilevanti e con radici più profonde. Si può trattare per esempio di un errore di valutazione nelle fasi iniziali del progetto, oppure di un fraintendimento tra i web developer incaricati di lavorare su front end e back end. È, dunque, utile indagare a fondo per determinare le ragioni per cui il problema è emerso. Nel caso di problemi complessi e di ampia portata, dividerli in segmenti più piccoli è spesso utile per fare chiarezza. Attraverso le informazioni acquisite nelle fasi precedenti e in questa, si potrà confermare con relativa sicurezza il problema maggiore alla base di quello attuale. 
+
+5. Definire un piano d’azione
+
+Ora che la natura del problema e le sue cause sono chiare, è il momento di creare una lista di passaggi pratici per procedere alla sua risoluzione. Durante un progetto di gruppo è utile confrontarsi con gli altri membri del team per stilare un elenco che comprenda diverse possibili soluzioni. Si procederà poi a pianificare una strategia precisa, assegnando a ogni sviluppatore web del team un compito preciso con una scadenza prestabilita. 
+
+6. Eseguire il piano d’azione
+
+Dopo aver creato un piano d’azione preciso e chiaro, non rimane che metterlo in atto. Per il successo di questa fase è fondamentale comunicare con chiarezza e puntualità con i colleghi, così da coordinare al meglio le azioni di ognuno. Infine, è necessario verificare alla data concordata che tutti i passaggi siano stati completati come pianificato.
+
+7. Osservare e valutare i risultati
+
+Una volta presi tutti i provvedimenti necessari per risolvere il problema, una fase di riflessione contribuirà a evitare che si ripetano in futuro di situazioni analoghe. Bisogna quindi osservare i risultati e valutare se le azioni intraprese hanno permesso di realizzare gli obiettivi che ci si era posti. In caso contrario, sarà necessario ripetere il processo adottando una soluzione alternativa.
+
+8. Continuare a migliorare
+
+Se il piano d’azione si rivela un successo è utile continuare a implementare le soluzioni efficaci anche in altri progetti, rendendole parte della routine del proprio team di developer. Per concludere il processo, è indispensabile comunicare ai colleghi ciò che si è appreso e come mettere in pratica la lezione imparata attraverso questa esperienza. In questo modo si eviterà l’insorgere di problemi analoghi in futuro, migliorando la capacità di problem solving dell’intero team. 

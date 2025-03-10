@@ -1,0 +1,132 @@
+FONTE: https://fondazionepatriziopaoletti.org/blog/ricerca-e-cervello/cervello-e-percezione-del-tempo/
+
+Cervello e percezione del tempo
+Come sperimentiamo lo scorrere degli eventi
+17/09/2024 | Ludovica Ortame | Le news su ricerca e cervello, Ricerca e cervello
+Il tempo è sempre stato un importante oggetto di studi trattandosi di un concetto fondamentale 
+per la conoscenza umana, nonché componente centrale della nostra quotidianità ed esperienza del 
+mondo. Il concetto di tempo fa riferimento alla dimensione con cui si concepisce, organizza, 
+rappresenta e misura lo scorrere degli eventi e il susseguirsi di stati. Continuità illimitata 
+ma suddivisibile, è distinguibile in passato, presente e futuro.
+
+INDICE
+Psicologia della percezione del tempo
+Modelli teorici e meccanismi alla base
+Correlati neurali
+Tempo, coscienza e sé
+Tempo e vita quotidiana
+
+PSICOLOGIA DELLA PERCEZIONE DEL TEMPO
+Da una prospettiva puramente psicologica, la percezione soggettiva dello scorrere del tempo è un 
+fenomeno affascinante e misterioso che ha catturato la curiosità di filosofi e scienziati per 
+secoli nell’arco della storia. Nonostante il crescente interesse nella ricerca abbia portato ad 
+approfondite indagini sulla natura dell’esperienza del tempo, non esiste ancora un consenso unanime 
+su come gli esseri umani percepiscano questo fenomeno.
+Una visione affascinante che si pone in contrapposizione alla concettualizzazione occidentale dello 
+scorrere del tempo viene da un popolo indio delle Ande, gli Aymara. Secondo tale popolazione, il 
+passato viene rappresentato come qualcosa che si trova di fronte all’uomo, nella direzione in cui 
+si può guardare. Contrariamente, il futuro si trova alle sue spalle, poiché non lo si conosce ancora 
+e l’uomo, in relazione ad esso, è cieco. Perciò, secondo gli Aymara il passato può essere visualizzato 
+di fronte ai propri occhi in quanto lo si conosce già, mentre il futuro è ignoto.
+
+MODELLI TEORICI E MECCANISMI ALLA BASE
+L’interesse per lo studio empirico della percezione del tempo ha portato negli ultimi decenni a un 
+aumento delle indagini sulle sue basi cognitive e neurali, e allo sviluppo di diversi modelli teorici. 
+Tali modelli possono essere riconducibili a due prospettive principali, che si differenziano in base 
+alla concettualizzazione di un meccanismo centrale responsabile della scansione del tempo (ad esempio, 
+un orologio interno), o meno.
+
+- L’orologio interno
+Tra i modelli definiti internal clock models, una delle prospettive contemporanee più accreditate è 
+quella del pacemaker-contatore, in cui viene ipotizzata la presenza di un sistema che emette delle 
+pulsazioni in termini di unità temporali (o battiti, come un pacemaker), e un accumulatore all’interno 
+del quale tali unità temporali vengono raccolte, permettendo una stima dell’intervallo trascorso in 
+base alla quantità di battiti raccolti nell’accumulatore durante un dato lasso di tempo.
+
+- Diversi processi cognitivi
+Contrariamente, una diversa cornice d’interpretazione che non fa riferimento ad un meccanismo centrale 
+dedicato, descrive la percezione del tempo come il risultato dell’attività di differenti meccanismi. 
+Numerosi studi hanno evidenziato quali sono i principali processi cognitivi responsabili della codifica 
+e manipolazione delle informazioni temporali, volti a fornire un’esperienza coerente e unificata del 
+tempo, ma anche responsabili delle distorsioni nella percezione di esso.
+
+L‘attenzione, ad esempio, è uno dei principali meccanismi coinvolti. Infatti, diversi studi suggeriscono 
+che, a seconda della quantità di risorse attenzionali orientate verso lo scorrere del tempo, la 
+percezione temporale può risultare dilatata o contratta.
+La memoria rappresenta un’altra caratteristica centrale, non solo perché responsabile dell’elaborazione 
+e l’immagazzinamento delle informazioni, ma anche in quanto implicata nella rappresentazione sequenziale 
+degli eventi, permettendoci di ricordare il passato e pianificare il futuro.
+Infine, diversi studi dimostrano che il nostro senso del tempo viene influenzato e alterato anche dalle 
+emozioni che proviamo in determinati momenti. Infatti, tale relazione andrebbe a supportare il fenomeno 
+comune secondo il quale il tempo sembra volare quando ci si diverte e si trascina quando ci si annoia. 
+Alcuni studi suggeriscono che i diversi stati emotivi modulino la percezione dello scorrere del tempo 
+andando ad alterare il funzionamento dell’orologio interno, aumentandone o rallentandone la velocità.
+ 
+LA PLASTICITÀ CEREBRALE
+
+Una nuova visione del cervello
+
+Correlati neurali
+Lo sviluppo di nuove tecniche e metodologie di ricerca ha permesso, negli ultimi decenni, di indagare 
+i correlati neurali dell’elaborazione temporale, identificandone diverse strutture coinvolte. 
+La principale area cerebrale riconosciuta come orologio biologico responsabile della scansione del 
+nostro ritmo circadiano è il nucleo soprachiasmatico. Tale struttura è costituita da un gruppo di 
+cellule nervose che ricevono informazioni dalle connessioni retiniche, scandendo il ritmo individuale 
+in base agli stimoli ambientali (ad esempio, l’alternanza di luce e buio nell’arco della giornata).
+
+Un esperimento in grotta
+Un interessante studio sul funzionamento intrinseco del ritmo circadiano umano è stato condotto dallo 
+speleologo francese Michel Siffre, che nel 1962 si isolò in una grotta a 130 metri di profondità con 
+lo scopo di studiare il funzionamento dell’orologio interno umano in assenza di indicatori temporali 
+esterni. Siffre trascorse due mesi interi nella grotta, sperimentando un forte spostamento del tempo 
+interno al punto che, quando i suoi colleghi lo informarono che stavano scendendo per recuperarlo, 
+era convinto che mancassero ancora venticinque giorni al termine dello studio.
+
+Il ruolo del cervelletto e della corteccia cerebrale
+Diversi studi suggeriscono inoltre che il cervelletto potrebbe essere un’altra struttura importante 
+per la temporalità umana. Risultati recenti suggeriscono infatti che il cervelletto, oltre ad essere 
+coinvolto nel coordinamento e nell’equilibrio, potrebbe essere implicato nella temporizzazione proprio 
+per il suo ruolo nelle funzioni motorie attraverso le connessioni con gli organi di senso, fornendo 
+una scansione temporale soprattutto in termini di durate molto brevi (millisecondi). In breve, il 
+cervelletto influenza la percezione del tempo aiutando il cervello a prevedere gli intervalli di tempo, 
+integrando gli input sensoriali con le azioni motorie e consentendo una tempistica precisa per le 
+azioni e i processi cognitivi.
+
+Infine, alcuni studi suggeriscono che diverse aree della corteccia cerebrale si attivano durante 
+l’elaborazione di informazioni temporale. In particolare, le cortecce frontali e parietali e l’area 
+motoria supplementare (SMA) avrebbero un ruolo critico nella temporizzazione.
+
+Tempo, coscienza e sé
+Il concetto di tempo è dunque un elemento fondamentale della nostra esperienza cosciente del mondo e 
+di noi stessi, rappresentando una caratteristica centrale della coscienza. In letteratura vengono 
+definiti due principali aspetti del sé: il Sé Minimo (SM), ossia il soggetto dell’esperienza nel 
+momento presente, e il Sé Narrativo (NS), che supporta un senso di identità e continuità coerente nel 
+tempo. Questa duplice definizione è stata estesa nel Modello Sferico della Coscienza attraverso 
+l’aggiunta di un terzo stato di sé, chiamato Overcoming of the Self (OCS), il “Superamento del sé”, 
+definito come la completa assenza di qualsiasi senso di sé e di temporalità, talvolta associato a 
+stati meditativi profondi. La continuità temporale è quindi una condizione necessaria per l’esperienza 
+cosciente del sé.
+La relazione tra tempo e coscienza rappresenta un affascinante ambito di indagine, che è supportato 
+da un crescente interesse di ricerca in ambito psicologico, filosofico e neuroscientifico. Ad esempio, 
+nell’ultimo decennio si è riscontrato un aumento delle ricerche volte ad indagare la relazione tra 
+percezione del tempo e stati alterati di coscienza, come ad esempio la meditazione.
+
+Tempo e vita quotidiana
+Per concludere, la percezione del tempo è un fenomeno affascinante che permea diversi aspetti della 
+nostra vita, dai compiti più semplici, come camminare o parlare, ai processi cognitivi più complessi, 
+come la pianificazione e l’interazione sociale.  Si tratta dunque di un fenomeno che svolge un ruolo 
+cruciale nella vita quotidiana, consentendoci di organizzare ed eseguire le azioni, orientandoci in 
+modo coerente nel mondo circostante.
+D’altra parte, il modo in cui esperiamo soggettivamente lo scorrere del tempo è influenzato da diversi 
+fattori, quali l’orientamento dell’attenzione, la memoria di un evento, o le emozioni coinvolte durante 
+un dato momento. Inoltre, l’influenza di tali fattori può causare delle distorsioni temporali in diverse 
+occasioni, come una sensazione di accorciamento o allungamento del tempo trascorso.
+
+A differenza della vista e dell’udito, non esiste un organo di senso dedicato alla percezione del tempo, 
+ma numerose strutture cerebrali contribuiscono alla formazione di un senso temporale, offrendoci una 
+visione coerente del mondo. È dunque importante continuare ad indagare questo fenomeno anche in relazione 
+ad altri aspetti specifici della nostra vita, in modo da approfondire e aumentare la conoscenza del 
+nostro funzionamento.
+
+
+FONTI CORRELATE: ["The effect of attention and working memory on the estimation of elapsed time"][URL:"https://www.nature.com/articles/s41598-018-25119-y"]
